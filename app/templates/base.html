@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="static/css/style.css" />
+    <title>San Ligtas</title>
+</head>
+
+<body>
+<div id="main">
+        <nav>
+        <img src="/static/img/logo.png" width="160" height="50" style="margin-top: 13px;">    
+            <ul>
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Alerts</a></li>
+                <li><a href="#">Relief Updates</a></li>
+                <li><a href="#">Map</a></li>
+                <li><a href="#">Weather</a> </li>
+                <li><a href="#">About Us</a> </li>
+            </ul>
+        </nav>
+        <div class="maincontainer">
+
+            {% block content %}
+            {% endblock %}
+
+        </div>    
+        <!-- <footer>
+            <div class="logo"></div>
+            <p>© 2019 San Ligtas. Privacy Policy Legal</p>
+        </footer> -->
+
+</div>
+</body>
+
+
+</html>
