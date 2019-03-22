@@ -1,5 +1,5 @@
 from flask import Flask, render_template, flash, redirect, url_for, session, request, logging,send_from_directory
-from flask_mysqldb import MySQL
+import psycopg2
 
 
 app = Flask(__name__)
