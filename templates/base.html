@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" type="text/css" href="static/css/style.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<title>San Ligtas</title>
+
+</head>
+<body>
+
+<div class="header">
+  <h1 style="color: white; font-size: 40px; margin: 0; padding-top: 20px; float: left; padding-left: 20px; letter-spacing: 5px; font-family: 'Oswald', sans-serif;">San Ligtas</h1>
+   <form class="search-button" action="#" style="max-width: 300px;">
+    <input type="text" placeholder="Search...">
+    <button type="submit"><i class="fa fa-search"></i></button>
+  </form>
+  <ul>
+    <li><a href="#" style="color: white; font-size: 13px;">About Us</a></li>
+     <li><a href="#" style="color: white; font-size: 13px;">Contact Us</a></li>
+  </ul>
+
+
+  <!-- <img src="/static/img/header.png" id="header-logo">  -->
+</div>
+
+<div id="navbar">
+ <!--  <img src="/static/img/logo.png" width="165" height="65" style="margin-top: 2px; margin-left: 30px;">  -->   
+  <ul>
+    <li><a href="#" style="font-size: 13px;">HOME</a></li>
+    <li><a href="#" style="font-size: 13px;">ALERTS</a></li>
+    <li><a href="#" style="font-size: 13px;">EVACUATION CENTER</a></li>
+    <li><a href="#" style="font-size: 13px;">RELIEF UPDATES</a></li>
+    <li><a href="#" style="font-size: 13px;">WEATHER</a></li>
+  </ul>
+</div>
+<!-- <div id="weather-holder">
+  
+</div> -->
+
+<div class="content">
+  {% block content %}
+  {% endblock %}
+</div>
+
+<div class="footer" style="text-align: center;">
+	<p>All Rights Reserved © 2019</p>
+</div>
+
+<script>
+window.onscroll = function() {myFunction()};
+
+var navbar = document.getElementById("navbar");
+var sticky = navbar.offsetTop;
+
+function myFunction() {
+  if (window.pageYOffset >= sticky) {
+    navbar.classList.add("sticky")
+  } else {
+    navbar.classList.remove("sticky")
+  }
+}
+</script>
+
+
+
+</body>
+</html>
