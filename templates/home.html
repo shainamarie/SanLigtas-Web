@@ -68,7 +68,7 @@
 	<p>This feature provides real-time weather update.</p>
 	<div class="weather-container">
 		<div class="icon"><img src="http://openweathermap.org/img/w/{{ weather_icon }}.png"></div>
-		<center><b><p>{{ city }} City</p></b></center>
+		<b><p>{{ city }} City</p></b>
 		<center><b><h4>{{ celcius }} &#8451; - {{ weather }} </h4></b></center>
 	</div>
 </div>
@@ -187,8 +187,8 @@ function showDivs(n) {
 	}
 </script>
   
-<!-- <script async defer
+<script async defer
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAOeYMvF7kPJ7ZcAjOVWiRA8PjCk5E_TsM&callback=initMap">
-</script> -->
+</script>
         
 {% endblock %}

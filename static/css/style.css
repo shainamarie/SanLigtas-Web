@@ -567,7 +567,8 @@ hr {
 .weather-container p {
 	font-size: 15px; 
 	color: white; 
-	margin-bottom: 5px;
+	margin: auto;
+	text-align: center;
 }
 
 .weather-container h4 {
