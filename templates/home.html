@@ -1,187 +1,158 @@
 {% extends "base.html" %}
 {% block content %}
-<!-- <div class="description">
-	<img src="/static/img/description.png" style="min-width: 100%;
-	height: 200px; z-index: -10;"> 
-	<div class="centered">
-		<h2 style="text-shadow: 1px  1px 2px black;">SAN LIGTAS</h2>
-		<p style="color: white; text-shadow:
-    1px  1px 2px black; letter-spacing: 2px;"><b>San Ligtas aims to help people get the right information before, during and after a calamity. We are here to help the locals give information regarding the hazards, emergency and other disaster related calamities.</p>
-	</div>
-</div> -->
 
-<!-- <hr> -->
+<!-- IMAGE SLIDER/ CAROUSEL/ NEWS -->
+<!-- NEEDS TO BE LOOP -->
 
-<div class="slideshow-container">
-	<div class="mySlides fade">
-		<!-- <div class="numbertext">1 / 3</div> -->
-		<img src="static/img/carousel1.png" style="width: 100%">
-		<!-- <div class="text">DEM Announces Receipt of $343 Million in Citrus Grant Funds, Workshops to Assist Farmers to Apply</div> -->
-	</div>
-
-	<div class="mySlides fade">
-		<!-- <div class="numbertext">2 / 3</div> -->
-		<img src="static/img/carousel2.png" style="width: 100%">
-		<!-- <div class="text">DCF To Initiate Federal Disaster Snap Food Assistance Program In 12 Counties</div> -->
-	</div>
-
-	<div class="mySlides fade">
-		<!-- <div class="numbertext">3 / 3</div> -->
-		<img src="static/img/carousel3.png" style="width: 100%">
-		<!-- <div class="text">Notice of Public Meeting - Satellite Voice and Data Services for VSAT</div> -->
-	</div>
-
-	<a class="prev" onclick="plusSlides(-1)">&#10094;</a>
-	<a class="next" onclick="plusSlides(1)">&#10095;</a>
+<div class="w3-display-container mySlides" style="position: relative; z-index: -5;">
+  <img src="static/img/carousel1.png" style="width:100%">
+  <div class="w3-display-bottomleft w3-container w3-padding-16 w3-black" style="width: 100%;opacity: 0.8; text-align: center;"><a href="#" style="text-decoration: none;">
+  	Notice of Public Meeting - Satellite Voice and Data Services for VSAT</a>
+  </div>
 </div>
 
+<div class="w3-display-container mySlides" style="position: relative; z-index: -5;">
+  <img src="static/img/carousel2.png" style="width:100%">
+  <div class="w3-display-bottomleft w3-container w3-padding-16 w3-black" style="width: 100%;opacity: 0.8; text-align: center;"><a href="#" style="text-decoration: none;">
+    DCF To Initiate Federal Disaster Snap Food Assistance Program In 12 Counties</a>
+  </div>
+</div>
+
+<div class="w3-display-container mySlides" style="position: relative; z-index: -5;">
+  <img src="static/img/carousel3.png" style="width:100%">
+  <div class="w3-display-bottomleft w3-container w3-padding-16 w3-black" style="width: 100%;opacity: 0.8; text-align: center;"><a href="#" style="text-decoration: none;">
+    Governor Ron DeSantis Announces Additional Reimbursement for Florida</a>
+  </div>
+</div>
+
+<!-- END OF IMAGE SLIDER -->
+
+<!-- FEATURES -->
+
 <br>
-
-<!-- <div style="text-align:center">
-  <span class="dot"></span> 
-  <span class="dot"></span> 
-  <span class="dot"></span> 
-</div> -->
-
-
+<br>
 <div class="features">
-<h1 style="margin-left: 15px; color: #022450; font-size: 20px;">FEATURES</h1>
 
 <div class="tab">
-	<button class="tablinks" onclick="openMenu(event, 'Map')">Map</button>
-	<button class="tablinks" onclick="openMenu(event, 'Alerts')">Alerts</button>
-	<button class="tablinks" onclick="openMenu(event, 'Weather')">Weather</button>	
+	<button class="tablinks" onclick="openMenu(event, 'Map')">MAP</button>
+	<button class="tablinks" onclick="openMenu(event, 'Alerts')">ALERTS</button>
+	<button class="tablinks" onclick="openMenu(event, 'Weather')">WEATHER</button>	
 </div>
 
 <div id="Map" class="tabcontent" style="display: block;">
-	<h3 style="color: #413939; font-size: 25px; margin-left: 50px; margin-bottom: 8px;">Map</h3>
-	<p style="color: #413939; font-size: 15px; margin-left: 50px; margin-top: 5px;">This feature shows the nearest and all possible evacutaion centers available, and shows how critical area during a calamity.</p>
+	<h3>Map</h3>
+	<p>This feature shows the nearest and all possible evacutaion centers available, and shows how critical area during a calamity.</p>
 	<div id="map"></div>
 </div>
 <div id="Alerts" class="tabcontent">
-	<h3 style="color: #413939; font-size: 25px; margin-left: 50px; margin-bottom: 8px;">Alerts</h3>
-	<p style="color: #413939; font-size: 15px; margin-left: 50px; margin-top: 5px;">This feature gives information to the people such as announcements related in disaster risk and management.</p>
+	<h3>Alerts</h3>
+	<p>This feature gives information to the people such as announcements related in disaster risk and management.</p>
 	<div class="alert-board">
 		<div id="alert1">
 			<div class="date">03/05/19</div>
-			<center><h5 style="color: #0d4e86; font-size: 12px; padding-left: 7px; padding-right: 7px;">Notice of Public Meeting - Satellite Voice and Data Services for VSAT</h5><span style="color: red;">Click more...</span></center>
+			<center><h5>Notice of Public Meeting - Satellite Voice and Data Services for VSAT</h5><span>Click more...</span></center>
 
 		</div>
 		<div id="alert2">
 			<div class="date">03/09/19</div>
-			<center><h5 style="color: #0d4e86; font-size: 12px; padding-left: 7px; padding-right: 7px;">DCF To Initiate Federal Disaster Snap Food Assistance Program In 12 Counties</h5><span style="color: red;">Click more...</span></center>
+			<center><h5>DCF To Initiate Federal Disaster Snap Food Assistance Program In 12 Counties</h5><span>Click more...</span></center>
 		</div>
 		<div id="alert3">
 			<div class="date">03/14/19</div>
-			<center><h5 style="color: #0d4e86; font-size: 12px; padding-left: 7px; padding-right: 7px;">Governor Ron DeSantis Announces Additional Reimbursement for Florida</h5><span style="color: red;">Click more...</span></center>
+			<center><h5>Governor Ron DeSantis Announces Additional Reimbursement for Florida</h5><span>Click more...</span></center>
 		</div>
 	</div>
 </div>
 <div id="Weather" class="tabcontent">
-	<h3 style="color: #413939; font-size: 25px; margin-left: 50px; margin-bottom: 8px;">Weather</h3>
-	<p style="color: #413939; font-size: 15px; margin-left: 50px; margin-top: 5px;">This feature provides real-time weather update.</p>
+	<h3>Weather</h3>
+	<p>This feature provides real-time weather update.</p>
 	<div class="weather-container">
 		<div class="icon"><img src="http://openweathermap.org/img/w/{{ weather_icon }}.png"></div>
-		<center><b><p style="font-size: 15px; color: #3A3836; margin-bottom: 5px;">{{ city }} City</p></b></center>
-		<center><b><p style="font-size: 15px; color: #3A3836; margin-top: 0px;">{{ celcius }} &#8451; - {{ weather }} </p></b></center>
+		<center><b><p>{{ city }} City</p></b></center>
+		<center><b><h4>{{ celcius }} &#8451; - {{ weather }} </h4></b></center>
 	</div>
 </div>
 </div>
  
-<!-- <hr> -->
+<!-- END OF FEATURES -->
+
+
+<!-- ANNOUNCEMENTS -->
 
 <div class="announcements">
-<h1 style="margin-left: 15px; color: #022450; font-size: 20px;">ANNOUNCEMENTS</h1>
+<h1>ANNOUNCEMENTS</h1>
 
 	<div class="boards">
 		<div id="board1">
-			<img src="static/img/board1.jpg" style="width: 300px; height: 200px; z-index: -15;">
+			<img src="static/img/board1.jpg">
 			<div class="date2">03/05/19</div>
-			<center><h5 style="color: #0d4e86; font-size: 12px; padding-left: 7px; padding-right: 7px;">Notice of Public Meeting - Satellite Voice and Data Services for VSAT</h5></center>
+			<center><h5>Notice of Public Meeting - Satellite Voice and Data Services for VSAT</h5></center>
 
 
 			
 			
 		</div>
 		<div id="board2">
-			<img src="static/img/board2.jpg" style="width: 300px; height: 200px; z-index: -15;">
+			<img src="static/img/board2.jpg">
 			<div class="date2">03/13/19</div>
-			<center><h5 style="color: #0d4e86; font-size: 12px; padding-left: 7px; padding-right: 7px;">DCF To Initiate Federal Disaster Snap Food Assistance Program In 12 Counties</h5></center>
+			<center><h5>DCF To Initiate Federal Disaster Snap Food Assistance Program In 12 Counties</h5></center>
 
 		</div>
 		<div id="board3">
-			<img src="static/img/board3.jpg" style="width: 300px; height: 200px; z-index: -15;">
+			<img src="static/img/board3.jpg">
 			<div class="date2">03/17/19</div>
-			<center><h5 style="color: #0d4e86; font-size: 12px; padding-left: 7px; padding-right: 7px;">Governor Ron DeSantis Announces Additional Reimbursement for Florida</h5></center>
+			<center><h5>Governor Ron DeSantis Announces Additional Reimbursement for Florida</h5></center>
 		
 		</div>
 
 		<div id="board4">
-			<img src="static/img/board4.jpg" style="width: 300px; height: 200px; z-index: -15;">
+			<img src="static/img/board4.jpg">
 			<div class="date2">03/21/19</div>
-			<center><h5 style="color: #0d4e86; font-size: 12px; padding-left: 7px; padding-right: 7px;">DEM Announces Receipt of $343 Million in Citrus Grant Funds, Workshops to Assist Farmers to Apply</h5></center>
+			<center><h5>DEM Announces Receipt of $343 Million in Citrus Grant Funds, Workshops to Assist Farmers to Apply</h5></center>
 		</div>
 	</div>	
-<a href="#" style="margin-top: 15px; padding-top: 15px; color: red; font-size: 15px; left: 0;">Click here for more >>></a>
+<a href="#">Click here for more >>></a>
 </div>
 
 <hr>
 
-<!-- <div class="info">
-	<div id="one"></div>
-	<div id="two"></div>
-	<div id="three"></div>
+<!-- END OF ANNOUNCEMENT -->
 
-</div>
- -->
-<!-- <script>
-	var slideIndex = 1;
-	showSlides(slideIndex);
-
-	function plusSlides(n) {
-	  showSlides(slideIndex += n);
-	}
-
-	function currentSlide(n) {
-	  showSlides(slideIndex = n);
-	}
-
-	function showSlides(n) {
-	  var i;
-	  var slides = document.getElementsByClassName("mySlides");
-	  var dots = document.getElementsByClassName("dot");
-	  if (n > slides.length) {slideIndex = 1}    
-	  if (n < 1) {slideIndex = slides.length}
-	  for (i = 0; i < slides.length; i++) {
-	      slides[i].style.display = "none";  
-	  }
-	  for (i = 0; i < dots.length; i++) {
-	      dots[i].className = dots[i].className.replace(" active", "");
-	  }
-	  slides[slideIndex-1].style.display = "block";  
-	  dots[slideIndex-1].className += " active";
-	}
-</script> -->
 
 <script>
-var slideIndex = 0;
-showSlides();
+	var slideIndex = 0;
+	carousel();
 
-function showSlides() {
+	function carousel() {
+	  var i;
+	  var x = document.getElementsByClassName("mySlides");
+	  for (i = 0; i < x.length; i++) {
+	    x[i].style.display = "none"; 
+	  }
+	  slideIndex++;
+	  if (slideIndex > x.length) {slideIndex = 1} 
+	  x[slideIndex-1].style.display = "block"; 
+	  setTimeout(carousel, 5000); // Change image every 2 seconds
+	}
+</script>
+
+<script>
+var slideIndex = 1;
+showDivs(slideIndex);
+
+function plusDivs(n) {
+  showDivs(slideIndex += n);
+}
+
+function showDivs(n) {
   var i;
-  var slides = document.getElementsByClassName("mySlides");
-  var dots = document.getElementsByClassName("dot");
-  for (i = 0; i < slides.length; i++) {
-    slides[i].style.display = "none";  
+  var x = document.getElementsByClassName("mySlides");
+  if (n > x.length) {slideIndex = 1}
+  if (n < 1) {slideIndex = x.length}
+  for (i = 0; i < x.length; i++) {
+    x[i].style.display = "none";  
   }
-  slideIndex++;
-  if (slideIndex > slides.length) {slideIndex = 1}    
-  for (i = 0; i < dots.length; i++) {
-    dots[i].className = dots[i].className.replace(" active", "");
-  }
-  slides[slideIndex-1].style.display = "block";  
-  dots[slideIndex-1].className += " active";
-  setTimeout(showSlides, 10000); // Change image every 2 seconds
+  x[slideIndex-1].style.display = "block";  
 }
 </script>
 
@@ -216,8 +187,8 @@ function showSlides() {
 	}
 </script>
   
-<script async defer
+<!-- <script async defer
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAOeYMvF7kPJ7ZcAjOVWiRA8PjCk5E_TsM&callback=initMap">
-</script>
+</script> -->
         
 {% endblock %}
