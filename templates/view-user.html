@@ -15,25 +15,21 @@
 
 	<div class="column">
 		<tr>
-		  	<th>HOME ID</th>
-		    <th>NAME</th>
-		    <th>ADDRESS</th>
-		    <th>GENDER</th>
-		    <th>DATE</th>
-		    <th>ACTIONS</th>
+		  	<th>USERNAME</th>
+		    <th>EMAIL</th>
+		    <th>PUBLIC ID</th>
 		  </tr>
 	</div>
-  
+  {% for user in json_data.data %}
   <tr>
-  	<td>1</td>
-    <td>Alfreds Futterkiste</td>
-    <td>Canaway, Tibanga</td>
-    <td>Male</td>
-    <td>03/01/19</td>
-    <td><a href = "#"><button>Delete</button></input></a></td>
-    <td><a href = "#"><button>Update</button></a></td>
+  	<td> {{ user.username }}</td>
+    <td>{{ user.email }}</td>
+    <td>{{ user.public_id }}</td>
+    <!-- <td><a href = "#"><button>Delete</button></input></a></td>
+    <td><a href = "#"><button>Update</button></a></td> -->
   </tr>
-  <tr>
+  {% endfor %}
+  <!-- <tr>
   	<td>2</td>
     <td>Berglunds snabbköp</td>
     <td>VillaVerder, Iligan</td>
@@ -95,7 +91,7 @@
     <td>Palao, Iligan</td>
     <td>Female</td>
     <td>03/29/19</td>
-  </tr>
+  </tr> -->
 </table>
 </div>
 </div>

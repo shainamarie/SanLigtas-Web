@@ -9,8 +9,8 @@
 	<div class="form-holder">
 		<h2>User Information</h2>
 	
-		<form class="add" action="#" method="POST" xmlns="http://www.w3.org/1999/html">
-				<td>
+		<form class="add" action="{{ url_for('add_user') }}" method="post" xmlns="http://www.w3.org/1999/html">
+				<!-- <td>
 	             <label for="username">Username:</label>
 	         	<input type = "text" name = "username" placeholder="Username" />
 	         	</td>
@@ -36,10 +36,26 @@
          </td>
 
          	<td>
-             <label for="publicid">Public ID:</label>
-         <input type = "text" name = "publicid" placeholder="Public ID" />
+             <label for="public_id">Public ID:</label>
+         <input type = "number" name = "public_id" placeholder="Public ID" />
      </td>
-         <button style="display: block; margin: 0 auto; margin-bottom: 20px;" type="submit">Submit</button>
+         <button style="display: block; margin: 0 auto; margin-bottom: 20px;" type="submit">Submit</button> -->
+          <label for="email"><b>Email</b></label>
+          <input type="text" placeholder="Enter email" name="email" required>
+
+          <label for="username"><b>Username</b></label>
+          <input type="text" placeholder="Enter username" name="username" required>
+
+          <label for="password"><b>Password</b></label>
+          <input type="password" placeholder="Enter Password" name="password" required>
+
+          <label for="public_id"><b>Public ID</b></label>
+          <input type="text" placeholder="Enter public id" name="public_id" required>
+            
+          <button type="submit">Submit</button>
+          <!-- <label>
+            <input type="checkbox" checked="checked" name="remember"> Remember me
+          </label> -->
       	</form>
 	</div>
 

@@ -14,7 +14,7 @@
 
 <div class="login-container">
 	<div class="admin-container">
-	<h2>Welcome to San Ligtas</h2>
+	<h2 style="font-family: 'Oswald', sans-serif;">Welcome to San Ligtas</h2>
 		<button onclick="document.getElementById('id01').style.display='block'">MAIN ADMIN</button>
 		<button onclick="document.getElementById('id02').style.display='block'">EVACUATION ADMIN</button>
 		<button onclick="document.getElementById('id03').style.display='block'">SOCIAL WORKER ADMIN</button>
@@ -82,7 +82,7 @@
 	  
 	  <form class="modal-content animate" action="/action_page.php">
 	    <div class="imgcontainer">
-	      <span onclick="document.getElementById('id02').style.display='none'" class="close" title="Close Modal">&times;</span>
+	      <span onclick="document.getElementById('id03').style.display='none'" class="close" title="Close Modal">&times;</span>
 	      <img src="static/img/admin1.png">
 	      <h4>Admin</h4>
 	    </div>
@@ -125,6 +125,18 @@ window.onclick = function(event) {
 <script>
 // Get the modal
 var modal = document.getElementById('id02');
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+    if (event.target == modal) {
+        modal.style.display = "none";
+    }
+}
+</script>
+
+<script>
+// Get the modal
+var modal = document.getElementById('id03');
 
 // When the user clicks anywhere outside of the modal, close it
 window.onclick = function(event) {

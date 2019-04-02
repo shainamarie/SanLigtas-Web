@@ -22,6 +22,10 @@ body {
   background-color: #1c5c94;
 }
 
+.admin-container h2 {
+  font-family: 'Oswald', sans-serif;
+}
+
 .admin-container button {
   color: white;
   background-color: #0d867a;
