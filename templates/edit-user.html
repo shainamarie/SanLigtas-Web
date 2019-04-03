@@ -1,0 +1,46 @@
+{% extends "mainadmin-base.html" %}
+{% block content %}
+<div class="content-holder">
+	<div class="title">
+		<h4>USER MANAGEMENT</h4>
+		<span>Home / Users / <b> Update </b></span>
+	</div>
+
+	<div class="form-holder">
+		<h2>User Information</h2>
+	
+		<form action="{{ url_for('update', public_id=public_id) }}" method="post" xmlns="http://www.w3.org/1999/html">
+          <div class="add">
+            <label for="username"><b>Username</b></label>
+            <input type="text" value="{{ username }}" name="username" required>
+
+            <label for="email"><b>Email</b></label>
+            <input type="text" value="{{ email }}" name="email" required>
+         </div> 
+
+         <div class="add">
+            <label for="first_name"><b>First Name</b></label>
+            <input type="text" value="{{ first_name }}" name="first_name" required>
+
+            <label for="last_name"><b>Last name</b></label>
+            <input type="text" value="{{ last_name }}" name="last_name" required>
+         </div> 
+
+         <div class="add">
+           <label for="admin_type"><b>Admin </b></label>
+          <input type="admin_type" value="{{ admin_type }}" name="admin_type" required>
+         
+
+          <label for="password"><b>New Password</b></label>
+          <input type="password" value="" name="password" required>
+         </div> 
+        
+           <div class="submit-button">  
+          <button type="submit">Submit</button>
+        </div>
+      	</form>
+	</div>
+
+</div>
+
+{% endblock %}
