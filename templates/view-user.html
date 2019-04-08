@@ -16,82 +16,24 @@
 	<div class="column">
 		<tr>
 		  	<th>USERNAME</th>
+        <th>NAME</th>
+        <th>ADMIN</th>
+        <th>DATE REG</th>
 		    <th>EMAIL</th>
-		    <th>PUBLIC ID</th>
+        <th>ACTIONS</th>
 		  </tr>
 	</div>
   {% for user in json_data.data %}
   <tr>
-  	<td> {{ user.username }}</td>
+    <td> {{ user.username }}</td>
+    <td> {{ user.first_name }} {{ user.last_name }}</td>
+    <td> {{ user.admin_type }}</td>
+    <td> {{ user.registered_on }} </td>
     <td>{{ user.email }}</td>
-    <td>{{ user.public_id }}</td>
-    <!-- <td><a href = "#"><button>Delete</button></input></a></td>
-    <td><a href = "#"><button>Update</button></a></td> -->
+    <td><a href = "{{ url_for('update', username=user.username, email=user.email, public_id=user.public_id, first_name=user.first_name, last_name=user.last_name, admin_type=user.admin_type) }}"><img src="/static/img/edits.png" style="margin-right: 15px; margin-left: 15px;" width="20" height="25"  /></a><a href = "{{ url_for('delete', public_id=user.public_id) }}"><img src="/static/img/deletes.png"  width="20" height="25" style="margin-left: 15px; margin-right: 15px;" /></input></a>
+    </td>
   </tr>
   {% endfor %}
-  <!-- <tr>
-  	<td>2</td>
-    <td>Berglunds snabbköp</td>
-    <td>VillaVerder, Iligan</td>
-    <td>Male</td>
-    <td>03/06/19</td>
-  </tr>
-  <tr>
-  	<td>3</td>
-    <td>Angela Lee</td>
-    <td>Santiago, Iligan</td>
-    <td>Female</td>
-    <td>03/11/19</td>
-  </tr>
-  <tr>
-  	<td>4</td>
-    <td>Ernst Handel</td>
-    <td>Paseo, Tibanga</td>
-    <td>Male</td>
-    <td>03/13/19</td>
-  </tr>
-  <tr>
-  	<td>5</td>
-    <td>Helen Bennett</td>
-    <td>Boulevard, Tibanga</td>
-    <td>Female</td>
-    <td>03/16/19</td>
-  </tr>
-  <tr>
-  	<td>6</td>
-    <td>Königlich Essen</td>
-    <td>San Miguel, Tibanga</td>
-    <td>Male</td>
-    <td>03/17/19</td>
-  </tr>
-  <tr>
-  	<td>7</td>
-    <td>Yoshi Tannamuri</td>
-    <td>Linamon, Iligan</td>
-    <td>Female</td>
-    <td>03/20/19</td>
-  </tr>
-  <tr>
-  	<td>8</td>
-    <td>Giovanni Rovelli</td>
-    <td>Dalipuga, Iligan</td>
-    <td>Male</td>
-    <td>03/21/19</td>
-  </tr>
-  <tr>
-  	<td>9</td>
-    <td>Simon Crowther</td>
-    <td>Cagayan de Oro</td>
-    <td>Male</td>
-    <td>03/24/19</td>
-  </tr>
-  <tr>
-  	<td>10</td>
-    <td>Marie Bertrand</td>
-    <td>Palao, Iligan</td>
-    <td>Female</td>
-    <td>03/29/19</td>
-  </tr> -->
 </table>
 </div>
 </div>

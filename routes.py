@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for, session, g
+import dateutil.parser
 import requests, json
 import pytemperature
 
@@ -6,15 +7,20 @@ import pytemperature
 # from blueprints.AdminSignUp import createuser, updateuser, deleteData
 
 
-app = Flask(__name__)
-app.config.from_object(__name__)
-app.secret_key = 'secretkey'
+app = Flask(__name__, template_folder="templates")
+app.config['SESSION_TYPE'] = 'filesystem'
+app.config['SECRET_KEY'] = 'zxcvbnm'
 
 
-def api_login(autho):
-    session['token'] = autho
-    g.token = session['token'] 
-    return session['token']
+def api_login(autho, username, last_name, first_name):
+	session['user'] = username
+	session['token'] = autho
+	session['first_name'] = first_name 
+	session['last_name'] = last_name
+	g.token = session['token'] 
+	g.user = session['user']
+	print(g.user)
+	return session['token']
 
 
 
@@ -33,29 +39,36 @@ def index():
 	return render_template('login.html')
 
 
+@app.route('/unauthorized')
+def unauthorized():
+	return render_template('unauthorized.html')
 
 
 @app.route('/login', methods=['POST', 'GET'])
 def loginprocess():
 	if request.method == 'POST':
-		# session.pop('user', None)
+		session.pop('user', None)
 		email = request.form['email']
 		password = request.form['password']
+		url = 'http://127.0.0.1:5000/auth/login'
 		files = {
 			'email' : (None, email),
 			'password' : (None, password),
 		}
-		response = requests.post('http://127.0.0.1:5000/auth/login', files=files)
+		response = requests.request('POST', url, files=files)
 		login_dict = json.loads(response.text)
-		print(response.text)
 		message = login_dict["message"]
-		autho = login_dict["Authorization"]
 		print(message)
 		if message == "Login failed. Check email or password.":
 			return render_template('login.html')
 		else:
-			token = api_login(autho)
-		return redirect(url_for('mainadminhome'))
+			autho = login_dict["Authorization"]
+			first_name = login_dict["first_name"]
+			last_name = login_dict["last_name"]
+			username = login_dict["username"]
+			token = api_login(autho, username, last_name, first_name)
+			print(token)
+		return redirect(url_for('mainadminhome', username=username, last_name=last_name, first_name=first_name))
 	else:
 		return render_template('login.html')
 
@@ -64,80 +77,148 @@ def loginprocess():
 
 @app.route('/logout', methods=['POST', 'GET'])
 def logout():
-	print(session['token'])
-	headers = { 'Authorization' : '{}'.format(session['token']) }
-	response = requests.post('http://127.0.0.1:5000/auth/logout', headers=headers)
-	print(response.text)
-	return redirect(url_for('index'))
+	if g.user:
+		print(session['token'])
+		url = 'http://127.0.0.1:5000/auth/logout'
+		headers = { 
+			'Authorization' : '{}'.format(session['token']) 
+		}
+		response = requests.request('POST', url, headers=headers)
+		print(response.text)
+		return redirect(url_for('index'))
+	else:
+		return redirect('unauthorized')
 
 
 
 
-@app.route('/main-admin/home')
-def mainadminhome():
-	return render_template('mainadmin-base.html')
-
+@app.route('/main-admin/home/<username>/<first_name>/<last_name>')
+def mainadminhome(username, first_name, last_name):
+	print(g.user)
+	if g.user:
+		return render_template('mainadmin-base.html', username=username, first_name=first_name, last_name=last_name)
+	else:
+		return redirect('unauthorized')
 
 
 
 
 @app.route('/view-user')
 def viewuser():
-	headers = { 'Authorization' : '{}'.format(session['token']) }
-	response = requests.get('http://127.0.0.1:5000/user/', headers=headers)
-	# print(response.text)
-	json_data = response.json()
-	print(json_data)
-	email = json_data['data'][0]['email']
-
-	print(email)
-	# view_dict = json.loads(response.text)
-	# email = view_dict[0]["email"]
-
-	return render_template('view-user.html', json_data=json_data)
-
+	if g.user:
+		url = 'http://127.0.0.1:5000/user/'
+		headers = {
+			'Authorization' : '{}'.format(session['token'])
+		}
+		response = requests.request('GET', url, headers=headers)
+		json_data = response.json()
+		print(json_data)
+		email = json_data['data'][0]['email']
+		date1 = json_data['data'][0]['registered_on']
+		return render_template('view-user.html', json_data=json_data)
+	else:
+		return redirect('unauthorized')
 
 
 
 
 @app.route('/adduser', methods=['POST', 'GET'])
 def add_user():	
-	if request.method == 'POST':
-		email = request.form.get('email', '')
-		username = request.form.get('username', '')
-		password = request.form.get('password', '')
-		public_id = request.form.get('public_id', '')
-		files = {
-			'email' : (None, email),
-			'username' : (None, username),
-			'password' : (None, password),
-			'public_id' : (None, public_id),
-		}
-		response = requests.post('http://127.0.0.1:5000/user/', files=files)
-		login_dict = json.loads(response.text)
-		print(email)
-		print(password)
-		print(public_id)
-		print(response.text)
-		message = login_dict["message"]
-		print(message)
-		if message == "Email already used.":
-			return render_template('add-user.html')
+	if g.user:
+		if request.method == 'POST':
+			email = request.form.get('email', '')
+			first_name = request.form.get('first_name', '')
+			last_name = request.form.get('last_name', '')
+			admin_type = request.form.get('admin_type', '')
+			username = request.form.get('username', '')
+			password = request.form.get('password', '')
+			url = 'http://127.0.0.1:5000/user/'
+			files = {
+				'email' : (None, email),
+				'username' : (None, username),
+				'password' : (None, password),
+				'admin_type' : (None, admin_type),
+				'first_name' : (None, first_name),
+				'last_name' : (None, last_name)
+			}
+			response = requests.request('POST', url, files=files)
+			login_dict = json.loads(response.text)
+			print(email)
+			print(password)
+			print(response.text)
+			message = login_dict["message"]
+			print(message)
+			if message == "Email already used.":
+				return redirect(url_for('adduser'))
+			else:
+				print(response)
+			return redirect(url_for('viewuser'))
 		else:
-			# token = api_login(email, password, response)
-			print(response)
-			# print(session['token'])
-		return render_template('home.html')
+			return render_template('add-user.html')
 	else:
-		return render_template('mainadmin-base.html')
-
-	return render_template('add-user.html')
+		return redirect('unauthorized')
 
 
 
-@app.route('/add-user')
-def adduser():
-	return render_template('add-user.html')
+@app.route('/delete/user/<public_id>')
+def delete(public_id):
+	if g.user:
+		print(session['token'])
+		headers = { 'Authorization' : '{}'.format(session['token']) }
+		public_id = public_id
+		print(public_id)
+		url = 'http://127.0.0.1:5000/user/'+public_id
+		files = {
+				'public_id' : (None, public_id),
+			}
+		response = requests.request('DELETE', url, headers=headers, files=files)
+		del_dict = json.loads(response.text)
+		print(response.text)
+		return redirect(url_for('viewuser'))
+	else: 
+		return render_template('unauthorized')
+
+
+
+
+@app.route('/update/user/<username>/<email>/<public_id>/<first_name>/<last_name>/<admin_type>')
+def update(username, email, public_id, first_name, last_name, admin_type):
+	if g.user:
+		if request.method == 'POST':
+			email = request.form.get('email', '')
+			username = request.form.get('username', '')
+			password = request.form.get('password', '')
+			first_name = request.form.get('first_name', '')
+			last_name = request.form.get('last_name', '')
+			admin_type = request.form.get('admin_type', '')
+
+			print(session['token'])
+			headers = { 
+				'Authorization' : '{}'.format(session['token']) 
+			}
+			public_id = public_id
+			print(public_id)
+			url = 'http://127.0.0.1:5000/user/'+public_id
+			files = {
+				'email' : (None, email),
+				'username' : (None, username),
+				'password' : (None, password),
+				'first_name' : (None, first_name),
+				'last_name' : (None, last_name),
+				'admin_type' : (None, admin_type),
+
+			}
+			response = requests.request('PUT', url, headers=headers, files=files)
+			del_dict = json.loads(response.text)
+			print(response.text)
+
+			return redirect(url_for('viewuser'))
+		else:
+			# return render_template('add-user.html')
+			return render_template('edit-user.html', username=username, email=email, public_id=public_id, first_name=first_name, last_name=last_name, admin_type=admin_type)
+	else:
+		return redirect('unauthorized')
+
 
 
 @app.route('/home')

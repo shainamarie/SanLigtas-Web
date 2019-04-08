@@ -18,14 +18,14 @@
   <ul>
   	<li><div class="logout"><a href="{{ url_for('logout') }}">Log out</a></div></li>
   	<li><img src="/static/img/logout.png" align="right"/></li>
-  	<li><div class="welcome">Welcome to San Ligtas</div></li>
+  	<li><div class="welcome">Welcome, {{ session['username'] }}</div></li>
 
 </div>
 
 <div class="w3-sidebar w3-light-#343a40; w3-bar-block" style="width: 225px; z-index: 2; background-color:#343a40; position: fixed; top:0;">
 	<div class="name">
 		<img src="/static/img/avatarq.png" align="left" />
-		<h1>Shaina Samonte</h1>
+		<h1>{{ session['first_name'] }} {{ session['last_name'] }}</h1>
 		<p>Main Admin</p>
 	</div>
 
@@ -33,9 +33,10 @@
 		<img src="/static/img/users.png" align="left" />
 		<h1><a href="#">Users > </a></h1>
 		<div class="dropdown">
-			<a href="/add-user">Add Users</a>
+			<a href="/adduser">Add Users</a>
 			<a href="/view-user">View Users</a>
-			<a href="#">Update Users</a>
+			<a href="/view-user">Update Users</a>
+			<a href="/view-user">Delete Users</a>
 		</div>
 	</div>
 
