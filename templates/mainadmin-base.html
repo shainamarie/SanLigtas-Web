@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" type="text/css" href="/static/css/mainadmin.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+
+<title>San Ligtas | Main Admin</title>
+
+</head>
+<style>
+
+</style>
+<body>
+
+<div id="navbar">
+  <ul>
+  	<li><div class="logout"><a href="{{ url_for('logout') }}">Log out</a></div></li>
+  	<li><img src="/static/img/logout.png" align="right"/></li>
+  	<li><div class="welcome">Welcome, {{ session['username'] }}</div></li>
+
+</div>
+
+<div class="w3-sidebar w3-light-#343a40; w3-bar-block" style="width: 225px; z-index: 2; background-color:#343a40; position: fixed; top:0;">
+	<div class="name">
+		<img src="/static/img/avatarq.png" align="left" />
+		<h1>{{ session['first_name'] }} {{ session['last_name'] }}</h1>
+		<p>Main Admin</p>
+	</div>
+
+	<div class="users">
+		<img src="/static/img/users.png" align="left" />
+		<h1><a href="#">Users > </a></h1>
+		<div class="dropdown">
+			<a href="/adduser">Add Users</a>
+			<a href="/view-user">View Users</a>
+			<a href="/view-user">Update Users</a>
+			<a href="/view-user">Delete Users</a>
+		</div>
+	</div>
+
+	<div class="messages">
+		<img src="/static/img/messages.png" align="left" />
+		<h1><a href="#">Messages</a></h1>
+	</div>
+	
+	<div class="updates">
+		<img src="/static/img/updates.png" align="left" />
+		<h1><a href="#">Updates</a></h1>
+	</div>
+
+	<div class="alerts">
+		<img src="/static/img/alerts.png" align="left" />
+		<h1><a href="#">Alerts </a></h1>
+	</div>
+
+	<div class="evacs">
+		<img src="/static/img/evacs.png" align="left" />
+		<h1><a href="#">Evacuation </a></h1>
+	</div>
+
+	<div class="maps">
+		<img src="/static/img/maps.png" align="left" />
+		<h1><a href="#">Map</a></h1>
+	</div>
+
+	<div class="stats">
+		<img src="/static/img/stats.png" align="left" />
+		<h1><a href="#">Statistics</a></h1>
+	</div>
+
+	<div class="webs">
+		<img src="/static/img/webs.png" align="left" />
+		<h1><a href="/home">View Website</a></h1>
+	</div>
+
+</div>
+
+<div class="content">
+	{% block content %}
+ 	{% endblock %}
+
+</div>
+
+
+</body>
+</html>

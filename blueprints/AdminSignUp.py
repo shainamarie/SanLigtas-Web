@@ -1,4 +1,4 @@
-    import psycopg2
+ import psycopg2
     try:
        connection = psycopg2.connect(user="postgres",
                                       password="password",
