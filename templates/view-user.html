@@ -27,11 +27,13 @@
   <tr>
     <td> {{ user.username }}</td>
     <td> {{ user.first_name }} {{ user.last_name }}</td>
-    <td> {{ user.admin_type }}</td>
+    <td> {{ dict[user.role] }}</td>
     <td> {{ user.registered_on }} </td>
     <td>{{ user.email }}</td>
-    <td><a href = "{{ url_for('update', username=user.username, email=user.email, public_id=user.public_id, first_name=user.first_name, last_name=user.last_name, admin_type=user.admin_type) }}"><img src="/static/img/edits.png" style="margin-right: 15px; margin-left: 15px;" width="20" height="25"  /></a><a href = "{{ url_for('delete', public_id=user.public_id) }}"><img src="/static/img/deletes.png"  width="20" height="25" style="margin-left: 15px; margin-right: 15px;" /></input></a>
+    {% if user.role!=3 %}
+    <td><a href = "/update/user/{{user.public_id}}"><img src="/static/img/edits.png" style="margin-right: 15px; margin-left: 15px;" width="20" height="25"  /></a><a href = "{{ url_for('delete', public_id=user.public_id) }}"><img src="/static/img/deletes.png"  width="20" height="25" style="margin-left: 15px; margin-right: 15px;" /></input></a>
     </td>
+    {% endif %}
   </tr>
   {% endfor %}
 </table>
