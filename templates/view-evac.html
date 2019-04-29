@@ -4,8 +4,8 @@
 <div class="content-holder">
 
 	<div class="title">
-		<h4>USER MANAGEMENT</h4>
-		<span>Home / Users / <b> View </b></span>
+		<h4>EVACUATION CENTER</h4>
+		<span>Home / Evacuaton / <b> View </b></span>
 	</div>
 
 
@@ -15,57 +15,49 @@
 
 	<div class="column">
 		<tr>
-		  	<th>USERNAME</th>
         <th>NAME</th>
-        <th>GENDER</th>
-        <th>ROLE</th>
-		    <th>EMAIL</th>
+        <th>ADDRESS</th>
+        <th>CAPACITY</th>
         <th>ACTIONS</th>
-		  </tr>
+		</tr>
 	</div>
-  {% for user in json_data.data %}
+  {% for evac in json_data.data %}
   <tr>
-    <td> {{ user.username }}</td>
-    <td> {{ user.first_name }} {{ user.last_name }}</td>
-    <td> {{ user.gender }}</td>
-    <td> {{ user.role }}</td>
-    <td> {{ user.email }}</td>
-
+    <td> {{ evac.name }}</td>
+    <td> {{ evac.address }}</td>
+    <td> {{ evac.capacity }}</td>
     <td style="position: relative; display: flex; ">
-      <a href = "{{ url_for('update_user',public_id=user.public_id) }}"><img src="/static/img/edits.png" style="margin:5px;" width="20" height="25"  /></a>
+      <a href = "{{ url_for('update_center', public_id=evac.public_id) }}"><img src="/static/img/edits.png" style="margin:5px;" width="20" height="25"  /></a>
 
-      <a href = "{{ url_for('delete_user', public_id=user.public_id) }}"><img src="/static/img/deletes.png"  width="20" height="25" style="margin: 5px;" /></a>
-
+      <a href = "{{ url_for('delete_evac', public_id=evac.public_id) }}"><img src="/static/img/deletes.png"  width="20" height="25" style="margin: 5px;" /></a>
 
       <!-- <button id="myBtn"><a href="#myModal"><img src="/static/img/deletes.png"  width="20" height="25" style="margin: 5px;" /></input></a></button> -->
-      
     </td>
-
   </tr>
-  <div id="myModal" class="modal">
-      <!-- Modal content -->
-        <div class="modal-content" >
-          <span class="close">&times;</span>
-          <p>Are you sure to delete this user?</p>
-          <div style="position: relative; display: flex; justify-content: center;" >
-          <button style="background-color:#de0020;"><a href="{{ url_for('delete_user', public_id=public_id) }}">Yes</a></button>
-          <button style="background-color: #0bbc94;"><a href="{{ url_for('viewuser') }}">No</a></button>
-        </div>
-  </div> 
- 
  {% endfor %}
 </table>
 <!-- Trigger/Open The Modal -->
 
 
 <!-- The Modal -->
+  <div id="myModal" class="modal">
 
+  <!-- Modal content -->
+  <div class="modal-content" >
+    <span class="close">&times;</span>
+    <p>Are you sure to delete this center?</p>
+    <div style="position: relative; display: flex; justify-content: center;" >
+    <button style="background-color:#de0020;"><a href="{{ url_for('delete_evac', public_id=public_id) }}">Yes</a></button>
+    <button style="background-color: #0bbc94;"><a href="">No</a></button>
+  </div>
+  </div>
+ 
 </div>
 </div>
 </div>
 </div>
 
-
+  
 
 <script>
 // Get the modal

@@ -111,8 +111,6 @@ a {
 	position: absolute;
 	min-width: 200px;
 	margin-left: 50px;
-	/*margin-left: 120px;*/
-	
 	margin-top: 0px;
 	z-index: 3;
 	background-color: #747981;
@@ -141,6 +139,10 @@ a {
 }
 
 .users:hover .dropdown {
+	display: block;
+}
+
+.evacs:hover .dropdown {
 	display: block;
 }
 
@@ -623,3 +625,4 @@ form {
   text-decoration: none;
   cursor: pointer;
 }
+
