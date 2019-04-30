@@ -246,6 +246,7 @@ def update_user(public_id):
 					'Authorization' : '{}'.format(session['token']) 
 				}
 			response1 = requests.request('GET', url1, headers=headers)
+			print(url1)
 			print(response1.text)
 			user_dict = json.loads(response1.text)
 
@@ -265,24 +266,26 @@ def update_user(public_id):
 			
 			public_id = public_id
 			print(public_id)
-			url2 = 'http://127.0.0.1:5000/user/admin/'+public_id
+			url3 = 'http://127.0.0.1:5000/user/admin/'+public_id
 			headers = { 
 					'Authorization' : '{}'.format(session['token']) 
 				}
-			files = {
+			payload = {
 				
 				'username' : (None, username),
 				'email' : (None, email),
 				'first_name' : (None, first_name),
 				'last_name' : (None, last_name),
+				'password' : 'admin',
 				'role' : (None, role),
 				'gender' : (None, gender)
 			}
-			response = requests.request('PUT', url2, headers=headers, files=files)
+			response = requests.request('PUT', url3, headers=headers, data=payload)
+			# print(url2)
 			del_dict = json.loads(response.text)
 			print(response.text)
 
-			return redirect(url_for('view_user'))
+			return redirect(url_for('viewuser'))
 		else:
 			return render_template('edit-user.html', username=username, email=email, public_id=public_id, first_name=first_name, last_name=last_name, role=role, gender=gender)
 	else:
