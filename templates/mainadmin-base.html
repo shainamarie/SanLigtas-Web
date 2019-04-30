@@ -18,7 +18,9 @@
   <ul>
   	<li><div class="logout"><a href="{{ url_for('logout') }}">Log out</a></div></li>
   	<li><img src="/static/img/logout.png" align="right"/></li>
+
   	<li><div class="welcome">Welcome, {{ session['user'] }}</div></li>
+
 
 </div>
 
@@ -33,13 +35,15 @@
 		<img src="/static/img/users.png" align="left" />
 		<h1><a href="#">Users > </a></h1>
 		<div class="dropdown">
+
 			<a href="/add/user/admin">Add Users</a>
+
 			<a href="/view-user">View Users</a>
 			<a href="/view-user">Update Users</a>
 			<a href="/view-user">Delete Users</a>
 		</div>
 	</div>
-	
+
 
 	<div class="messages">
 		<img src="/static/img/messages.png" align="left" />
@@ -58,6 +62,7 @@
 
 	<div class="evacs">
 		<img src="/static/img/evacs.png" align="left" />
+
 		<h1><a href="#">Evacuation > </a></h1>
 		<div class="dropdown">
 			<a href="/view/center">View Center</a>
@@ -65,6 +70,7 @@
 			<a href="/view/center">Update Center</a>
 			<a href="/view/center">Assign Users</a>
 		</div>
+
 	</div>
 
 	<div class="maps">

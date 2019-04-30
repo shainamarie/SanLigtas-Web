@@ -27,12 +27,14 @@ def api_login(autho, username, last_name, first_name):
 
 
 
+
 def generate_password():
 	characters = string.ascii_letters + string.punctuation + string.digits
 	password = "".join(choice(characters) for x in range(randint(8, 16)))
 	# print(password)
 
 	return password
+
 
 
 @app.before_request
@@ -61,7 +63,9 @@ def loginprocess():
 		session.pop('user', None)
 		email = request.form['email']
 		password = request.form['password']
+
 		url = 'http://127.0.0.1:5000/authadmin/login'
+
 		files = {
 			'email' : (None, email),
 			'password' : (None, password),
@@ -90,7 +94,9 @@ def loginprocess():
 def logout():
 	if g.user:
 		print(session['token'])
+
 		url = 'http://127.0.0.1:5000/authadmin/logout'
+
 		headers = { 
 			'Authorization' : '{}'.format(session['token']) 
 		}
@@ -117,17 +123,22 @@ def mainadminhome(username, first_name, last_name):
 @app.route('/view-user')
 def viewuser():
 	if g.user:
+
 		url = 'http://127.0.0.1:5000/user/admin/'
+
 		headers = {
 			'Authorization' : '{}'.format(session['token'])
 		}
 		response = requests.request('GET', url, headers=headers)
 		json_data = response.json()
+
 		# print(json_data['data'][0]['registered_on'])
 		print(json_data)
+
 		return render_template('view-user.html', json_data=json_data)
 	else:
 		return redirect('unauthorized')
+
 
 
 
@@ -141,7 +152,6 @@ def add_user():
 			last_name = request.form.get('last_name', '')
 			role = request.form.get('role', '')
 			username = request.form.get('username', '')
-			# password = 'admin'
 			gender = request.form.get('gender', '')
 			print(role)
 			print(gender)
@@ -161,10 +171,12 @@ def add_user():
 			response = requests.request('POST', url, files=files)
 			login_dict = json.loads(response.text)
 			print(email)
+			print(password)
 			print(response.text)
 			message = login_dict["message"]
 			print(message)
 			if message == "Email already used.":
+
 				return redirect(url_for('add_user'))
 			else:
 				print(response)
@@ -184,57 +196,16 @@ def delete_user(public_id):
 		public_id = public_id
 		print(public_id)
 		url = 'http://127.0.0.1:5000/user/admin/'+public_id
+
 		files = {
 				'public_id' : (None, public_id),
 			}
 		response = requests.request('DELETE', url, headers=headers, files=files)
-	
+
 		return redirect(url_for('viewuser'))
 	else: 
 		return render_template('unauthorized')
 
-
-
-
-# @app.route('/update/user/<public_id>')
-# def update_user(public_id):
-# 	if g.user:
-# 		if request.method == 'POST':
-# 			email = request.form.get('email', '')
-# 			username = request.form.get('username', '')
-# 			password = request.form.get('password', '')
-# 			first_name = request.form.get('first_name', '')
-# 			last_name = request.form.get('last_name', '')
-# 			gender = request.form.get('gender', '')
-# 			role = request.form.get('role', '')
-
-# 			print(session['token'])
-# 			headers = { 
-# 				'Authorization' : '{}'.format(session['token']) 
-# 			}
-# 			public_id = public_id
-# 			print(public_id)
-# 			url = 'http://127.0.0.1:5000/user/admin/'+public_id
-# 			files = {
-# 				'email' : (None, email),
-# 				'username' : (None, username),
-# 				'password' : (None, password),
-# 				'first_name' : (None, first_name),
-# 				'last_name' : (None, last_name),
-# 				'role' : (None, role),
-# 				'gender': (None, gender)
-
-# 			}
-# 			response = requests.request('PUT', url, headers=headers, files=files)
-# 			del_dict = json.loads(response.text)
-# 			print(response.text)
-
-# 			return redirect(url_for('viewuser'))
-# 		else:
-# 			# return render_template('add-user.html')
-# 			return render_template('edit-user.html', username=username, email=email, public_id=public_id, first_name=first_name, last_name=last_name, role=role)
-# 	else:
-# 		return redirect('unauthorized')
 
 
 @app.route('/update/user/<public_id>', methods=['POST', 'GET'])
@@ -388,8 +359,6 @@ def update_center(public_id):
 			return redirect(url_for('view_center'))
 		else:
 			return render_template('edit-evacs.html', name=name, address=address, public_id=public_id, capacity=capacity)
-	else:
-		return redirect('unauthorized')
 
 
 
@@ -410,6 +379,7 @@ def delete_evac(public_id):
 		return redirect(url_for('view_center'))
 	else: 
 		return render_template('unauthorized')
+
 
 
 

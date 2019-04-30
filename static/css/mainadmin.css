@@ -142,9 +142,11 @@ a {
 	display: block;
 }
 
+
 .evacs:hover .dropdown {
 	display: block;
 }
+
 
 .users h1 a:hover {
 	opacity: 0.8;
@@ -494,6 +496,7 @@ button {
 
 
 
+
 .form-holder h2 {
   padding-top: 12px;
   padding-bottom: 12=px;
@@ -564,6 +567,7 @@ form {
 }
 
 
+
 #customers button {
 	background-color: inherit;
 	border: none;
@@ -625,4 +629,5 @@ form {
   text-decoration: none;
   cursor: pointer;
 }
+
 
