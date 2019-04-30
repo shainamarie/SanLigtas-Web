@@ -28,23 +28,28 @@
         </div>
 
         <div class="form3">
-          <label for="admin_type"><b>Role</b></label>
-          <select>
-            <option name="role" value="Main Admin">Main Admin</option>
-            <option name="role" value="Relief Admin">Relief Admin</option>
-            <option name="role" value="Social Worker Admin">Social Worker Admin</option>
+
+          <label for="role"><b>Role</b></label>
+          <select name="role">
+            <option>Select Role</option>
+            <option value="Main Admin">Main Admin</option>
+            <option value="Relief Admin">Relief Admin</option>
+            <option value="Social Worker Admin">Social Worker Admin</option>
           </select>
             
           <label for="password"><b>Gender</b></label>
-          <select>
-            <option name="gender" value="male">Male</option>
-            <option name="gender" value="female">Female</option>
+          <select name="gender">
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+
           </select>
         </div>
 
         <div class="submit-button">  
-          <button type="submit">Submit</button>
-          <button><a href="{{ url_for('viewuser') }}" >Cancel</a></button>
+
+          <button style="background-color: #1ab394;" type="submit">Submit</button>
+          <button style="background-color: #0bbc94;" type="submit" value="Cancel" formnovalidate="formnovalidate">Cancel</button>
+
         </div>
       </form>
      </div>

@@ -2,6 +2,8 @@ from flask import Flask, render_template, request, redirect, url_for, session, g
 import dateutil.parser
 import requests, json
 import pytemperature
+import string
+from random import *
 
 
 # from blueprints.AdminSignUp import createuser, updateuser, deleteData
@@ -21,6 +23,17 @@ def api_login(autho, username, last_name, first_name):
 	g.user = session['user']
 	print(g.user)
 	return session['token']
+
+
+
+
+
+def generate_password():
+	characters = string.ascii_letters + string.punctuation + string.digits
+	password = "".join(choice(characters) for x in range(randint(8, 16)))
+	# print(password)
+
+	return password
 
 
 
@@ -50,7 +63,9 @@ def loginprocess():
 		session.pop('user', None)
 		email = request.form['email']
 		password = request.form['password']
-		url = 'http://127.0.0.1:5000/auth/login'
+
+		url = 'http://127.0.0.1:5000/authadmin/login'
+
 		files = {
 			'email' : (None, email),
 			'password' : (None, password),
@@ -79,7 +94,9 @@ def loginprocess():
 def logout():
 	if g.user:
 		print(session['token'])
-		url = 'http://127.0.0.1:5000/auth/logout'
+
+		url = 'http://127.0.0.1:5000/authadmin/logout'
+
 		headers = { 
 			'Authorization' : '{}'.format(session['token']) 
 		}
@@ -106,15 +123,18 @@ def mainadminhome(username, first_name, last_name):
 @app.route('/view-user')
 def viewuser():
 	if g.user:
-		url = 'http://127.0.0.1:5000/user/'
+
+		url = 'http://127.0.0.1:5000/user/admin/'
+
 		headers = {
 			'Authorization' : '{}'.format(session['token'])
 		}
 		response = requests.request('GET', url, headers=headers)
 		json_data = response.json()
+
+		# print(json_data['data'][0]['registered_on'])
 		print(json_data)
-		email = json_data['data'][0]['email']
-		date1 = json_data['data'][0]['registered_on']
+
 		return render_template('view-user.html', json_data=json_data)
 	else:
 		return redirect('unauthorized')
@@ -122,24 +142,31 @@ def viewuser():
 
 
 
-@app.route('/adduser', methods=['POST', 'GET'])
+
+@app.route('/add/user/admin', methods=['POST', 'GET'])
 def add_user():	
 	if g.user:
 		if request.method == 'POST':
 			email = request.form.get('email', '')
 			first_name = request.form.get('first_name', '')
 			last_name = request.form.get('last_name', '')
-			admin_type = request.form.get('admin_type', '')
+			role = request.form.get('role', '')
 			username = request.form.get('username', '')
-			password = request.form.get('password', '')
-			url = 'http://127.0.0.1:5000/user/'
+			gender = request.form.get('gender', '')
+			print(role)
+			print(gender)
+			password_generator = generate_password()
+			print(password_generator)
+			password = password_generator
+			url = 'http://127.0.0.1:5000/user/admin/'
 			files = {
 				'email' : (None, email),
 				'username' : (None, username),
 				'password' : (None, password),
-				'admin_type' : (None, admin_type),
+				'role' : (None, role),
 				'first_name' : (None, first_name),
-				'last_name' : (None, last_name)
+				'last_name' : (None, last_name),
+				'gender' : (None, gender)
 			}
 			response = requests.request('POST', url, files=files)
 			login_dict = json.loads(response.text)
@@ -149,7 +176,8 @@ def add_user():
 			message = login_dict["message"]
 			print(message)
 			if message == "Email already used.":
-				return redirect(url_for('adduser'))
+
+				return redirect(url_for('add_user'))
 			else:
 				print(response)
 			return redirect(url_for('viewuser'))
@@ -161,63 +189,197 @@ def add_user():
 
 
 @app.route('/delete/user/<public_id>')
-def delete(public_id):
+def delete_user(public_id):
 	if g.user:
 		print(session['token'])
 		headers = { 'Authorization' : '{}'.format(session['token']) }
 		public_id = public_id
 		print(public_id)
-		url = 'http://127.0.0.1:5000/user/'+public_id
+		url = 'http://127.0.0.1:5000/user/admin/'+public_id
+
 		files = {
 				'public_id' : (None, public_id),
 			}
 		response = requests.request('DELETE', url, headers=headers, files=files)
-		del_dict = json.loads(response.text)
-		print(response.text)
+
 		return redirect(url_for('viewuser'))
 	else: 
 		return render_template('unauthorized')
 
 
 
-
-@app.route('/update/user/<username>/<email>/<public_id>/<first_name>/<last_name>/<admin_type>')
-def update(username, email, public_id, first_name, last_name, admin_type):
+@app.route('/update/user/<public_id>', methods=['POST', 'GET'])
+def update_user(public_id):
 	if g.user:
+		if request.method != 'POST':
+			url1 = 'http://127.0.0.1:5000/user/admin/'+public_id
+			headers = { 
+					'Authorization' : '{}'.format(session['token']) 
+				}
+			response1 = requests.request('GET', url1, headers=headers)
+			print(url1)
+			print(response1.text)
+			user_dict = json.loads(response1.text)
+
+			return render_template('edit-user.html', username=user_dict['username'], email=user_dict['email'], public_id=user_dict['public_id'], first_name=user_dict['first_name'], last_name=user_dict['last_name'], role=user_dict['role'], gender=user_dict['gender'])
+
+
+
 		if request.method == 'POST':
-			email = request.form.get('email', '')
 			username = request.form.get('username', '')
-			password = request.form.get('password', '')
+			email = request.form.get('email', '')
 			first_name = request.form.get('first_name', '')
 			last_name = request.form.get('last_name', '')
-			admin_type = request.form.get('admin_type', '')
+			role = request.form.get('role', '')
+			gender = request.form.get('gender', '')
 
 			print(session['token'])
-			headers = { 
-				'Authorization' : '{}'.format(session['token']) 
-			}
+			
 			public_id = public_id
 			print(public_id)
-			url = 'http://127.0.0.1:5000/user/'+public_id
-			files = {
-				'email' : (None, email),
+			url3 = 'http://127.0.0.1:5000/user/admin/'+public_id
+			headers = { 
+					'Authorization' : '{}'.format(session['token']) 
+				}
+			payload = {
+				
 				'username' : (None, username),
-				'password' : (None, password),
+				'email' : (None, email),
 				'first_name' : (None, first_name),
 				'last_name' : (None, last_name),
-				'admin_type' : (None, admin_type),
-
+				'password' : 'admin',
+				'role' : (None, role),
+				'gender' : (None, gender)
 			}
-			response = requests.request('PUT', url, headers=headers, files=files)
+			response = requests.request('PUT', url3, headers=headers, data=payload)
+			# print(url2)
 			del_dict = json.loads(response.text)
 			print(response.text)
 
 			return redirect(url_for('viewuser'))
 		else:
-			# return render_template('add-user.html')
-			return render_template('edit-user.html', username=username, email=email, public_id=public_id, first_name=first_name, last_name=last_name, admin_type=admin_type)
+			return render_template('edit-user.html', username=username, email=email, public_id=public_id, first_name=first_name, last_name=last_name, role=role, gender=gender)
 	else:
 		return redirect('unauthorized')
+
+
+
+
+@app.route('/view/center')
+def view_center():
+	if g.user:
+		url = 'http://127.0.0.1:5000/distcenter/'
+		headers = {
+			'Authorization' : '{}'.format(session['token'])
+		}
+		response = requests.request('GET', url, headers=headers)
+		json_data = response.json()
+		print(json_data)
+		
+		return render_template('view-evac.html', json_data=json_data)
+	else:
+		return redirect('unauthorized')
+
+
+
+@app.route('/add/center', methods=['POST', 'GET'])
+def add_center():
+	if g.user:
+		if request.method == 'POST':
+			name = request.form.get('name', '')
+			address = request.form.get('address', '')
+			capacity = request.form.get('capacity', '')
+			url = 'http://127.0.0.1:5000/distcenter/'
+			headers = { 
+				'Authorization' : '{}'.format(session['token']) 
+			}	
+			files = {
+			
+				'name': (None, name),
+				'address': (None, address),
+				'capacity': (None, capacity)
+			}
+
+			response = requests.request('POST', url, files=files, headers=headers)
+			distcenter_dict = json.loads(response.text)
+			print(response.text)
+			message = distcenter_dict["message"]
+			print(message)
+			if message == "Name already used.":
+				return redirect(url_for('add_center'))
+			else:
+				print(response)
+			return redirect(url_for('view_center'))
+		else:
+			return render_template('add-evac.html')
+	else:
+		return redirect('unauthorized')
+
+
+
+
+@app.route('/update/center/<public_id>', methods=['POST', 'GET'])
+def update_center(public_id):
+	if g.user:
+		if request.method != 'POST':
+			url1 = 'http://127.0.0.1:5000/distcenter/'+public_id
+			headers = { 
+					'Authorization' : '{}'.format(session['token']) 
+				}
+			response1 = requests.request('GET', url1, headers=headers)
+			print(response1.text)
+			center_dict = json.loads(response1.text)
+
+			return render_template('edit-evacs.html', name=center_dict['name'], address=center_dict['address'], public_id=center_dict['public_id'], capacity=center_dict['capacity'])
+
+
+
+		if request.method == 'POST':
+			name = request.form.get('name', '')
+			address = request.form.get('address', '')
+			capacity = request.form.get('capacity', '')
+
+			print(session['token'])
+			
+			public_id = public_id
+			print(public_id)
+			url2 = 'http://127.0.0.1:5000/distcenter/'+public_id
+			headers = { 
+					'Authorization' : '{}'.format(session['token']) 
+				}
+			files = {
+				'name' : (None, name),
+				'address' : (None, address),
+				'capacity' : (None, capacity)
+			}
+			response = requests.request('PUT', url2, headers=headers, files=files)
+			del_dict = json.loads(response.text)
+			print(response.text)
+
+			return redirect(url_for('view_center'))
+		else:
+			return render_template('edit-evacs.html', name=name, address=address, public_id=public_id, capacity=capacity)
+
+
+
+
+@app.route('/delete/center/<public_id>')
+def delete_evac(public_id):
+	if g.user:
+		print(session['token'])
+		headers = { 'Authorization' : '{}'.format(session['token']) }
+		public_id = public_id
+		print(public_id)
+		url = 'http://127.0.0.1:5000/distcenter/'+public_id
+		files = {
+				'public_id' : (None, public_id),
+			}
+		response = requests.request('DELETE', url, headers=headers, files=files)
+	
+		return redirect(url_for('view_center'))
+	else: 
+		return render_template('unauthorized')
+
 
 
 
