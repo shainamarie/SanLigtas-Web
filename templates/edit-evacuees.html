@@ -1,0 +1,60 @@
+{% extends "mainadmin-base.html" %}
+{% block content %}
+<div class="content-holder">
+	<div class="title">
+		<h4>EVACUEES</h4>
+		<span>Home / Evacuees / <b> Update  </b></span>
+	</div>
+
+	<div class="form-holder">
+		<h2>Evacuees Information</h2>
+	
+    <div class="add-form">
+  		<form action="{{ url_for('add_evacuees') }}" method="post" xmlns="http://www.w3.org/1999/html">
+
+        <div class="form1" align="center">
+          <label for="name"><b>Name</b></label>
+          <input type="text" placeholder="Enter Name" name="name" required>
+
+          <label for="home_id"><b>Home ID</b></label>
+          <input type="integer" placeholder="Enter home ID" name="home_id" required>
+          </div>
+
+          <div class="form2" align="center">
+
+              <label for="address"><b>Address</b></label>
+              <input type="text" placeholder="Enter address" name="address" required>
+        
+              <label for="gender"><b>Gender</b></label>
+              <input type="text" placeholder="Enter gender"name="gender" required>
+            </div>
+
+            <div class="form3" align="center">
+              <label for="age"><b>Age</b></label>
+              <input type="integer" placeholder="Enter age" name="age" required>
+
+              <label for="religion"><b>Religion</b></label>
+              <input type="text" placeholder="Enter religion" name="religion" required>
+            </div>
+
+
+            <div class="form4" align="center">
+              <label for="civil_status"><b>Civil Status</b></label>
+              <input type="text" placeholder="Enter civil status" name="civil_status" required>
+
+              <label for="educ_attainment"><b>Education Attainment</b></label>
+              <input type="text" placeholder="Enter education attainment" name="educ_attainment" required>
+
+              <label for="occupation"><b>Occupation</b></label>
+              <input type="text" placeholder="Enter occupation" name="occupation" required>
+            </div>
+
+            <div class="submit-button">  
+              <button style="background-color: #1ab394;" type="submit">Submit</button>
+              <button style="background-color: #0bbc94;" type="submit" value="Cancel" formnovalidate="formnovalidate">Cancel</button>
+            </div>
+      </form>
+    </div>
+</div>
+
+{% endblock %}

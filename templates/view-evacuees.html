@@ -1,0 +1,157 @@
+{% extends "mainadmin-base.html" %}
+{% block content %}
+
+<div class="content-holder">
+
+	<div class="title">
+		<h4>EVACUEES</h4>
+		<span>Home / Evacuees / <b> View </b></span>
+	</div>
+
+
+<div class="holder">
+<div class="table">
+<table id="customers">	
+
+	<div class="column">
+		<tr>
+        <th>NAME</th>
+        <th>HOME ID</th>
+        <th>ADDRESS</th>
+        <th>GENDER</th>
+        <th>ACTIONS</th>
+		</tr>
+	</div>
+   {% for evac in query %}
+  <tr>
+    <td> {{ evacuees.name }}</td>
+    <td> {{ evacuees.home_id }}</td>
+    <td> {{ evacuees.address }}</td>
+    <td> {{ evacuees.gender }}</td>
+    <td style="position: relative; display: flex; ">
+      <a href = "{{ url_for('update_evac', public_id=evacuees.public_id) }}"><img src="/static/img/edits.png" style="margin:5px;" width="20" height="25"  /></a>
+
+      <a href = "{{ url_for('delete_evacuees', public_id=evacuees.public_id) }}"><img src="/static/img/deletes.png"  width="20" height="25" style="margin: 5px;" /></a>
+
+      <!-- <button id="myBtn"><a href="#myModal"><img src="/static/img/deletes.png"  width="20" height="25" style="margin: 5px;" /></input></a></button> -->
+    </td>
+  </tr>
+  {% endfor %}
+</table>
+<!-- Trigger/Open The Modal -->
+
+
+<!-- The Modal -->
+  <div id="myModal" class="modal">
+
+  <!-- Modal content -->
+  <div class="modal-content" >
+    <span class="close">&times;</span>
+    <p>Are you sure to delete this center?</p>
+    <div style="position: relative; display: flex; justify-content: center;" >
+    <button style="background-color:#de0020;"><a href="{{ url_for('delete_evac', public_id=public_id) }}">Yes</a></button>
+    <button style="background-color: #0bbc94;"><a href="">No</a></button>
+  </div>
+  </div>
+ 
+</div>
+</div>
+</div>
+</div>
+
+  
+
+<script>
+// Get the modal
+var modal = document.getElementById('myModal');
+
+// Get the button that opens the modal
+var btn = document.getElementById("myBtn");
+
+// Get the <span> element that closes the modal
+var span = document.getElementsByClassName("close")[0];
+
+// When the user clicks the button, open the modal 
+btn.onclick = function() {
+  modal.style.display = "block";
+}
+
+// When the user clicks on <span> (x), close the modal
+span.onclick = function() {
+  modal.style.display = "none";
+}
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+  if (event.target == modal) {
+    modal.style.display = "none";
+  }
+}
+</script>	
+
+<script>
+function format ( d ) {
+    return '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">'+
+        '<tr>'+
+            '<td>Age:</td>'+
+            '<td>'+d.age+'</td>'+
+        '</tr>'+
+        '<tr>'+
+            '<td>Religion:</td>'+
+            '<td>'+d.religion+'</td>'+
+        '</tr>'+
+        '<tr>'+
+            '<td>Civil Status:</td>'+
+            '<td>'+d.civil_status+'</td>'+
+        '</tr>'+
+        '<tr>'+
+            '<td>Occupation:</td>'+
+            '<td>'+d.occupation+'</td>'+
+        '</tr>'+
+        '<tr>'+
+            '<td>Education Attainment:</td>'+
+            '<td>'+d.educ_attainment+'</td>'+
+        '</tr>'+
+    '</table>';
+}
+ 
+$(document).ready(function() {
+    var table = $('#example').DataTable( {
+        "ajax": "../ajax/data/objects.txt",
+        "columns": [
+            {
+                "className":      'details-control',
+                "orderable":      false,
+                "data":           null,
+                "defaultContent": ''
+            },
+            { "data": "name" },
+            { "data": "home_id" },
+            { "data": "address" },
+            { "data": "gender" }
+        ],
+        "order": [[1, 'asc']]
+    } );
+     
+    // Add event listener for opening and closing details
+    $('#example tbody').on('click', 'td.details-control', function () {
+        var tr = $(this).closest('tr');
+        var row = table.row( tr );
+ 
+        if ( row.child.isShown() ) {
+            // This row is already open - close it
+            row.child.hide();
+            tr.removeClass('shown');
+        }
+        else {
+            // Open this row
+            row.child( format(row.data()) ).show();
+            tr.addClass('shown');
+        }
+    } );
+} );
+
+
+</script>
+{% endblock %}
+
