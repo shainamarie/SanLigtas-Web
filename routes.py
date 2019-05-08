@@ -16,10 +16,13 @@ api_url = 'http://127.0.0.1:5000'
 
 app.config['MAIL_SERVER']='smtp.mailtrap.io'
 app.config['MAIL_PORT'] = 2525
-app.config['MAIL_USERNAME'] = '5379c5a04f264e'
-app.config['MAIL_PASSWORD'] = '7896cd6b514abe'
+app.config['MAIL_USERNAME'] = '3c42180c5ffb31'
+app.config['MAIL_PASSWORD'] = '2f695055c2fd0f'
 app.config['MAIL_USE_TLS'] = True
 app.config['MAIL_USE_SSL'] = False
+#mailtrap.io credentials:
+#sanligtas@gmail.com
+#csc18series
 
 mail = Mail(app)
 
@@ -79,7 +82,7 @@ def loginprocess():
 			autho = login_dict["Authorization"]
 			user = login_dict["public_id"]
 			token = api_login(autho, user)
-		return redirect(url_for('mainadminhome', username=g.user['data']['username'], last_name=g.user['data']['last_name'], first_name=g.user['data']['first_name']))
+		return redirect(url_for('mainadminhome'))
 	else:
 		return render_template('login.html')
 
@@ -101,11 +104,11 @@ def logout():
 
 
 
-@app.route('/main-admin/home/<username>/<first_name>/<last_name>')
-def mainadminhome(username, first_name, last_name):
+@app.route('/main-admin/home/')
+def mainadminhome():
 	print(g.user)
 	if g.user:
-		return render_template('mainadmin-base.html', username=g.user['data']['username'], last_name=g.user['data']['last_name'], first_name=g.user['data']['first_name'])
+		return render_template('mainadmin-base.html')
 	else:
 		return redirect('unauthorized')
 
@@ -176,7 +179,7 @@ def add_user():
 
 
 @app.route('/delete/user/<public_id>')
-def delete(public_id):
+def delete_user(public_id):
 	if g.user:
 		print(session['token'])
 		headers = { 'Authorization' : '{}'.format(session['token']) }
@@ -232,132 +235,252 @@ def update_user(public_id):
 	else:
 		return redirect('unauthorized')
 
-
-#@app.route('/view-evacuees')
-#def viewevacuees():
-#	if g.user:
-#		url = api_url+'/evcuees/'
-#		headers = {
-#			'Authorization' : '{}'.format(session['token'])
-#		}
-#		response = requests.request('GET', url, headers=headers)
-#		json_data = response.json()
-#		email = json_data['data'][0]['email']
-#		date1 = json_data['data'][0]['registered_on']
-#		return render_template('view-user.html', json_data=json_data, dict=convert_to_str_role)
-#	else:
-#		return redirect('unauthorized')
-
-
-#@app.route('/evacuees/add', methods=['POST', 'GET'])
-#def add_evac():	
-#	if g.user:
-#		if request.method == 'POST':
-#			name = request.form.get('name', '')
-#			home_id = request.form.get('home_id')
-#			address = request.form.get('address')
-#			gender = request.form.get('gender')
-#			age = request.form.get('age', '')
-#			religion = request.form.get('religion', '')
-#			civil_status = request.form.get('civil', '')
-#			educ_attainment = request.form.get('educ', '')
-#			occupation = request.form.get('occupaton', '')
-#			url = api_url+'/evacuees/'
-#			files = {
-#				'name' : (None, name),
-#				'home_id' : (None, home_id),
-#				'address' : (None, address),
-#				'gender' : (None, gender),
-#				'age' : (None, age),
-#				'religion' : (None, religion),
-#				'civil_status' : (None, civil_status),
-#				'educ_attainment' : (None, educ_attainment),
-#				'occupaton' : (None, occupaton)
-#			}
-#			response = requests.request('POST', url, files=files)
-#			login_dict = json.loads(response.text)
-#			print(response.text)
-#			message = login_dict["message"]
-#			print(message)
-#			if message == "Email already used.":
-#				return redirect(url_for('add_evac'))
-#			else:
-#				print(response)
-#			return redirect(url_for('viewuser'))
-#		else:
-#			return render_template('add-user.html')
-#	else:
-#		return redirect('unauthorized')
-#
-
-#@app.route('/update/evacuees/<home_id>', methods=['POST', 'GET'])
-#def update_evac(public_id):
-#	if g.user:
-#		get_url = api_url+'/evacuees/'+public_id
-#		headers = { 'Authorization' : '{}'.format(session['token']) }
-#		use = requests.request('GET', url=get_url, headers=headers)
-#
-#		json_data = use.json()
-#		name = json_data['data']['name']
-#		address = json_data['data']['address']
-#		gender = json_data['data']['gender']
-#		age = json_data['data']['age']
-#		religion = json_data['data']['religion']
-#		civil_status = json_data['data']['civil_status']
-#		educ_attainment = json_data['data']['educ_attainment']
-#		occupation = json_data['data']['occupation']
-#		if request.method == 'POST':
-#			name = request.form.get('name', '')
-#			home_id = request.form.get('home_id')
-#			address = request.form.get('address')
-#			gender = request.form.get('gender')
-#			age = request.form.get('age', '')
-#			religion = request.form.get('religion', '')
-#			civil_status = request.form.get('civil', '')
-#			educ_attainment = request.form.get('educ', '')
-#			occupation = request.form.get('occupaton', '')
-#			url = api_url+'/evacuees/'
-#			files = {
-#				'name' : (None, name),
-#				'home_id' : (None, home_id),
-#				'address' : (None, address),
-#				'gender' : (None, gender),
-#				'age' : (None, age),
-#				'religion' : (None, religion),
-#				'civil_status' : (None, civil_status),
-#				'educ_attainment' : (None, educ_attainment),
-#				'occupaton' : (None, occupaton)
-#			}
-#			response = requests.request('PUT', url, headers=headers, files=files)
-#			del_dict = json.loads(response.text)
-#			print(response.text)
-#
-#			return redirect(url_for('viewevacuees'))
-#		else:
-#			# return render_template('add-user.html')
-#			return render_template('edit-user.html')
-#	else:
-#		return redirect('unauthorized')
-#
+@app.route('/view/center')
+def view_center():
+	if g.user:
+		url = 'http://127.0.0.1:5000/distcenter/'
+		headers = {
+			'Authorization' : '{}'.format(session['token'])
+		}
+		response = requests.request('GET', url, headers=headers)
+		json_data = response.json()
+		print(json_data)
+		
+		return render_template('view-evac.html', json_data=json_data)
+	else:
+		return redirect('unauthorized')
 
 
-#@app.route('/delete/evacuees/<home_id>')
-#def delete_evacuees(public_id):
-#	if g.user:
-#		print(session['token'])
-#		headers = { 'Authorization' : '{}'.format(session['token']) }
-#		print(public_id)
-#		url = api_url+'/evacuees/'+home_id
-#		files = {
-#				'home_id' : (None, home_id),
-#			}
-#		response = requests.request('DELETE', url, headers=headers, files=files)
-#		del_dict = json.loads(response.text)
-#		print(response.text)
-#		return redirect(url_for('viewevacuees'))
-#	else: 
-#		return render_template('unauthorized')
-#
+
+@app.route('/add/center', methods=['POST', 'GET'])
+def add_center():
+	if g.user:
+		if request.method == 'POST':
+			name = request.form.get('name', '')
+			address = request.form.get('address', '')
+			capacity = request.form.get('capacity', '')
+			url = 'http://127.0.0.1:5000/distcenter/'
+			headers = { 
+				'Authorization' : '{}'.format(session['token']) 
+			}	
+			files = {
+			
+				'name': (None, name),
+				'address': (None, address),
+				'capacity': (None, capacity)
+			}
+
+			response = requests.request('POST', url, files=files, headers=headers)
+			distcenter_dict = json.loads(response.text)
+			print(response.text)
+			message = distcenter_dict["message"]
+			print(message)
+			if message == "Name already used.":
+				return redirect(url_for('add_center'))
+			else:
+				print(response)
+			return redirect(url_for('view_center'))
+		else:
+			return render_template('add-evac.html')
+	else:
+		return redirect('unauthorized')
+
+
+
+
+@app.route('/update/center/<public_id>', methods=['POST', 'GET'])
+def update_center(public_id):
+	if g.user:
+		if request.method != 'POST':
+			url1 = 'http://127.0.0.1:5000/distcenter/'+public_id
+			headers = { 
+					'Authorization' : '{}'.format(session['token']) 
+				}
+			response1 = requests.request('GET', url1, headers=headers)
+			print(response1.text)
+			center_dict = json.loads(response1.text)
+
+			return render_template('edit-evacs.html', name=center_dict['name'], address=center_dict['address'], public_id=center_dict['public_id'], capacity=center_dict['capacity'])
+
+
+
+		if request.method == 'POST':
+			name = request.form.get('name', '')
+			address = request.form.get('address', '')
+			capacity = request.form.get('capacity', '')
+
+			print(session['token'])
+			
+			public_id = public_id
+			print(public_id)
+			url2 = 'http://127.0.0.1:5000/distcenter/'+public_id
+			headers = { 
+					'Authorization' : '{}'.format(session['token']) 
+				}
+			files = {
+				'name' : (None, name),
+				'address' : (None, address),
+				'capacity' : (None, capacity)
+			}
+			response = requests.request('PUT', url2, headers=headers, files=files)
+			del_dict = json.loads(response.text)
+			print(response.text)
+
+			return redirect(url_for('view_center'))
+		else:
+			return render_template('edit-evacs.html', name=name, address=address, public_id=public_id, capacity=capacity)
+
+
+
+
+@app.route('/delete/center/<public_id>')
+def delete_evac(public_id):
+	if g.user:
+		print(session['token'])
+		headers = { 'Authorization' : '{}'.format(session['token']) }
+		public_id = public_id
+		print(public_id)
+		url = 'http://127.0.0.1:5000/distcenter/'+public_id
+		files = {
+				'public_id' : (None, public_id),
+			}
+		response = requests.request('DELETE', url, headers=headers, files=files)
+	
+		return redirect(url_for('view_center'))
+	else: 
+		return render_template('unauthorized')
+
+
+@app.route('/view-evacuees')
+def viewevacuees():
+	if g.user:
+		url = api_url+'/evacuees/'
+		headers = {
+			'Authorization' : '{}'.format(session['token'])
+		}
+		response = requests.request('GET', url, headers=headers)
+		json_data = response.json()
+		print (json_data['data'])
+		#email = json_data['data'][0]['email']
+		#date1 = json_data['data'][0]['registered_on']
+		return render_template('view-evacuees.html', query=json_data['data'], dict=convert_to_str_role)
+	else:
+		return redirect('unauthorized')
+
+
+@app.route('/evacuees/add', methods=['POST', 'GET'])
+def add_evac():	
+	if g.user:
+		if request.method == 'POST':
+			name = request.form.get('name', '')
+			home_id = request.form.get('home_id')
+			address = request.form.get('address')
+			gender = request.form.get('gender')
+			age = request.form.get('age', '')
+			religion = request.form.get('religion', '')
+			civil_status = request.form.get('civil_status', '')
+			educ_attainment = request.form.get('educ_attainment', '')
+			occupation = request.form.get('occupation', '')
+			url = api_url+'/evacuees/'
+			files = {
+				'name' : (None, name),
+				'home_id' : (None, home_id),
+				'address' : (None, address),
+				'gender' : (None, gender),
+				'age' : (None, age),
+				'religion' : (None, religion),
+				'civil_status' : (None, civil_status),
+				'educ_attainment' : (None, educ_attainment),
+				'occupation' : (None, occupation)
+			}
+			headers = {
+			'Authorization' : '{}'.format(session['token'])
+			}
+			response = requests.request('POST', url, files=files, headers=headers)
+			login_dict = json.loads(response.text)
+			print(response.text)
+			message = login_dict["message"]
+			print(message)
+			if message == "Email already used.":
+				return redirect(url_for('add_evac'))
+			else:
+				print(response)
+			return redirect(url_for('viewevacuees'))
+		else:
+			return render_template('add-evacuees.html')
+	else:
+		return redirect('unauthorized')
+
+
+@app.route('/update/evacuees/<home_id>', methods=['POST', 'GET'])
+def update_evac(home_id):
+	if g.user:
+		get_url = api_url+'/evacuees/'+home_id
+		headers = { 'Authorization' : '{}'.format(session['token']) }
+		use = requests.request('GET', url=get_url, headers=headers)
+
+		json_data = use.json()
+		print(json_data)
+		name = json_data['name']
+		print (name)
+		address = json_data['address']
+		gender = json_data['gender']
+		age = json_data['age']
+		religion = json_data['religion']
+		civil_status = json_data['civil_status']
+		educ_attainment = json_data['educ_attainment']
+		occupation = json_data['occupation']
+		if request.method == 'POST':
+			name = request.form.get('name', '')
+			home_id = request.form.get('home_id')
+			address = request.form.get('address')
+			gender = request.form.get('gender')
+			age = request.form.get('age', '')
+			religion = request.form.get('religion', '')
+			civil_status = request.form.get('civil', '')
+			educ_attainment = request.form.get('educ', '')
+			occupation = request.form.get('occupation', '')
+			url = api_url+'/evacuees/'+home_id
+			files = {
+				'name' : (None, name),
+				'home_id' : (None, home_id),
+				'address' : (None, address),
+				'gender' : (None, gender),
+				'age' : (None, age),
+				'religion' : (None, religion),
+				'civil_status' : (None, civil_status),
+				'educ_attainment' : (None, educ_attainment),
+				'occupation' : (None, occupation)
+			}
+			response = requests.request('PUT', url, headers=headers, files=files)
+			del_dict = json.loads(response.text)
+			print(response.text)
+
+			return redirect(url_for('viewevacuees'))
+		else:
+			#return render_template('add-user.html')
+			return render_template('edit-evacuees.html', ename=name, home_id=home_id, address=address, gender=gender, age=age, religion=religion, civil_status=civil_status, educ_attainment=educ_attainment, occupation=occupation)
+	else:
+		return redirect('unauthorized')
+
+
+
+@app.route('/delete/evacuees/<home_id>')
+def delete_evacuees(home_id):
+	if g.user:
+		print(session['token'])
+		headers = { 'Authorization' : '{}'.format(session['token']) }
+		url = api_url+'/evacuees/'+home_id
+		files = {
+				'home_id' : (None, home_id),
+			}
+		response = requests.request('DELETE', url, headers=headers, files=files)
+		del_dict = json.loads(response.text)
+		print(response.text)
+		return redirect(url_for('viewevacuees'))
+	else: 
+		return render_template('unauthorized')
+
 
 @app.route('/home')
 def home():

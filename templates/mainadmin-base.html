@@ -18,14 +18,14 @@
   <ul>
   	<li><div class="logout"><a href="{{ url_for('logout') }}">Log out</a></div></li>
   	<li><img src="/static/img/logout.png" align="right"/></li>
-  	<li><div class="welcome">Welcome, {{ username }}</div></li>
+  	<li><div class="welcome">Welcome, {{ g.user['data']['username'] }}</div></li>
 
 </div>
 
 <div class="w3-sidebar w3-light-#343a40; w3-bar-block" style="width: 225px; z-index: 2; background-color:#343a40; position: fixed; top:0;">
 	<div class="name">
 		<img src="/static/img/avatarq.png" align="left" />
-		<h1>{{ first_name }} {{ last_name }}</h1>
+		<h1>{{ g.user['data']['first_name'] }} {{ g.user['data']['last_name'] }}</h1>
 		<p>Main Admin</p>
 	</div>
 
@@ -57,7 +57,15 @@
 
 	<div class="evacs">
 		<img src="/static/img/evacs.png" align="left" />
-		<h1><a href="#">Evacuation </a></h1>
+
+		<h1><a href="#">Evacuation > </a></h1>
+		<div class="dropdown">
+			<a href="/view/center">View Center</a>
+			<a href="/add/center">Add Center</a>
+			<a href="/view/center">Update Center</a>
+			<a href="/view/center">Assign Users</a>
+		</div>
+
 	</div>
 
 	<div class="maps">

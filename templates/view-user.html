@@ -17,8 +17,8 @@
 		<tr>
 		  	<th>USERNAME</th>
         <th>NAME</th>
-        <th>ADMIN</th>
-        <th>DATE REG</th>
+        <th>GENDER</th>
+        <th>ROLE</th>
 		    <th>EMAIL</th>
         <th>ACTIONS</th>
 		  </tr>
@@ -27,18 +27,73 @@
   <tr>
     <td> {{ user.username }}</td>
     <td> {{ user.first_name }} {{ user.last_name }}</td>
-    <td> {{ dict[user.role] }}</td>
-    <td> {{ user.registered_on }} </td>
-    <td>{{ user.email }}</td>
-    {% if user.role!=3 %}
-    <td><a href = "/update/user/{{user.public_id}}"><img src="/static/img/edits.png" style="margin-right: 15px; margin-left: 15px;" width="20" height="25"  /></a><a href = "{{ url_for('delete', public_id=user.public_id) }}"><img src="/static/img/deletes.png"  width="20" height="25" style="margin-left: 15px; margin-right: 15px;" /></input></a>
+
+    <td> {{ user.gender }}</td>
+    <td> {{ user.role }}</td>
+    <td> {{ user.email }}</td>
+
+    <td style="position: relative; display: flex; ">
+      <a href = "{{ url_for('update_user',public_id=user.public_id) }}"><img src="/static/img/edits.png" style="margin:5px;" width="20" height="25"  /></a>
+
+      <a href = "{{ url_for('delete_user', public_id=user.public_id) }}"><img src="/static/img/deletes.png"  width="20" height="25" style="margin: 5px;" /></a>
+
+
+      <!-- <button id="myBtn"><a href="#myModal"><img src="/static/img/deletes.png"  width="20" height="25" style="margin: 5px;" /></input></a></button> -->
+      
     </td>
-    {% endif %}
+
   </tr>
-  {% endfor %}
+  <div id="myModal" class="modal">
+      <!-- Modal content -->
+        <div class="modal-content" >
+          <span class="close">&times;</span>
+          <p>Are you sure to delete this user?</p>
+          <div style="position: relative; display: flex; justify-content: center;" >
+          <button style="background-color:#de0020;"><a href="{{ url_for('delete_user', public_id=public_id) }}">Yes</a></button>
+          <button style="background-color: #0bbc94;"><a href="{{ url_for('viewuser') }}">No</a></button>
+        </div>
+  </div> 
+ 
+ {% endfor %}
 </table>
+<!-- Trigger/Open The Modal -->
+
+
+<!-- The Modal -->
+
 </div>
 </div>
 </div>
-	
+</div>
+
+
+
+<script>
+// Get the modal
+var modal = document.getElementById('myModal');
+
+// Get the button that opens the modal
+var btn = document.getElementById("myBtn");
+
+// Get the <span> element that closes the modal
+var span = document.getElementsByClassName("close")[0];
+
+// When the user clicks the button, open the modal 
+btn.onclick = function() {
+  modal.style.display = "block";
+}
+
+// When the user clicks on <span> (x), close the modal
+span.onclick = function() {
+  modal.style.display = "none";
+}
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+  if (event.target == modal) {
+    modal.style.display = "none";
+  }
+}
+</script>	
+
 {% endblock %}
