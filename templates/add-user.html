@@ -6,30 +6,30 @@
 		<span>Home / Users / <b> Add </b></span>
 	</div>
 
-	<div class="form-holder">
-		<h2>User Information</h2>
+	<div class="information-holder">
+		<h4>USER INFORMATION</h4>
+    <hr>
 	
     <div class="add-form">
   		<form action="{{ url_for('add_user') }}" method="post" xmlns="http://www.w3.org/1999/html">
         <div class="form1">
-          <label for="username"><b>Username</b></label>
-          <input type="text" placeholder="Enter username" name="username" required>
+          <!-- <label for="username"><b>Username</b></label> -->
+          <input type="text" placeholder="Username" name="username" required>
             
-          <label for="email"><b>Email</b></label>
-          <input type="text" placeholder="Enter email" name="email" required>
+          <!-- <label for="email"><b>Email</b></label> -->
+          <input type="text" placeholder="Email" name="email" required>
         </div>
 
         <div class="form2">
-          <label for="first_name"><b>First Name</b></label>
-          <input type="text" placeholder="Enter first name" name="first_name" required>
+          <!-- <label for="first_name"><b>First Name</b></label> -->
+          <input type="text" placeholder="First Name" name="first_name" required>
              
-          <label for="last_name"><b>Last name</b></label>
-          <input type="text" placeholder="Enter last name" name="last_name" required>
+          <!-- <label for="last_name"><b>Last name</b></label> -->
+          <input type="text" placeholder="Last Name" name="last_name" required>
         </div>
 
         <div class="form3">
-
-          <label for="role"><b>Role</b></label>
+          <!-- <label for="role"><b>Role</b></label> -->
           <select name="role">
             <option>Select Role</option>
             <option value="Main Admin">Main Admin</option>
@@ -37,23 +37,31 @@
             <option value="Social Worker Admin">Social Worker Admin</option>
           </select>
             
-          <label for="password"><b>Gender</b></label>
+          <!-- <label for="password"><b>Gender</b></label> -->
           <select name="gender">
+            <option>Select Gender</option>
             <option value="Male">Male</option>
             <option value="Female">Female</option>
-
           </select>
         </div>
 
         <div class="submit-button">  
-
           <button style="background-color: #1ab394;" type="submit">Submit</button>
           <button style="background-color: #0bbc94;" type="submit" value="Cancel" formnovalidate="formnovalidate">Cancel</button>
-
         </div>
       </form>
      </div>
 	</div>
+
+  <div class="change-picture">
+      <h4>ADD PICTURE</h4>
+      <hr>
+      <img src="/static/img/avatarq.png" align="left" />
+      <form name="myWebForm" action="mailto:youremail@email.com" method="post">
+      <input type="file" name="uploadField" />
+    </form>
+  </div>
 </div>
+
 
 {% endblock %}

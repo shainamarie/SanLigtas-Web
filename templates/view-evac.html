@@ -18,7 +18,7 @@
         <th>NAME</th>
         <th>ADDRESS</th>
         <th>CAPACITY</th>
-        <th>ACTIONS</th>
+        <th>VIEW</th>
 		</tr>
 	</div>
   {% for evac in json_data.data %}
@@ -27,10 +27,7 @@
     <td> {{ evac.address }}</td>
     <td> {{ evac.capacity }}</td>
     <td style="position: relative; display: flex; ">
-      <a href = "{{ url_for('update_center', public_id=evac.public_id) }}"><img src="/static/img/edits.png" style="margin:5px;" width="20" height="25"  /></a>
-
-      <a href = "{{ url_for('delete_evac', public_id=evac.public_id) }}"><img src="/static/img/deletes.png"  width="20" height="25" style="margin: 5px;" /></a>
-
+      <a href = "{{ url_for('view_spec_center', name=evac.name, public_id=evac.public_id) }}"><img src="/static/img/web.png" style="margin:5px;" width="25" height="25"  /></a>
       <!-- <button id="myBtn"><a href="#myModal"><img src="/static/img/deletes.png"  width="20" height="25" style="margin: 5px;" /></input></a></button> -->
     </td>
   </tr>

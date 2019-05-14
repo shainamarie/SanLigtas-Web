@@ -27,14 +27,12 @@ def api_login(autho, username, last_name, first_name):
 
 
 
-
 def generate_password():
 	characters = string.ascii_letters + string.punctuation + string.digits
 	password = "".join(choice(characters) for x in range(randint(8, 16)))
 	# print(password)
 
 	return password
-
 
 
 @app.before_request
@@ -63,9 +61,7 @@ def loginprocess():
 		session.pop('user', None)
 		email = request.form['email']
 		password = request.form['password']
-
 		url = 'http://127.0.0.1:5000/authadmin/login'
-
 		files = {
 			'email' : (None, email),
 			'password' : (None, password),
@@ -90,13 +86,46 @@ def loginprocess():
 
 
 
+
+@app.route('/change-password/admin/<public_id>', methods=['POST', 'GET'])
+def change_pass_admin(public_id):
+	if g.user:
+		if request.method == 'POST':
+			email = request.form.get('email', '')
+			password = request.form.get('password', '') 
+			new_pass = request.form.get('new_pass', '')
+
+			url = 'http://127.0.0.1:5000/user/admin/password/'+public_id
+			headers = {
+				'Authorization': '{}'.format(session['token'])
+			}
+			files = {
+				'email' : (None, email),
+				'password' : (None, password),
+				'new_pass' : (None, new_pass)
+			}
+			response = requests.request('PUT', url, headers=headers, files=files)
+			pass_dict = json.loads(response.text)
+			message = pass_dict["message"]
+			if message == "Password cannot change":
+				return 'Cannot change'
+			else:
+				print(message)
+				return redirect(url_for('loginpage'))
+
+		else:
+			return redirect(url_for('change_pass_admin', public_id=public_id))
+	else:
+		return redirect('unauthorized')
+
+
+
+
 @app.route('/logout', methods=['POST', 'GET'])
 def logout():
 	if g.user:
 		print(session['token'])
-
 		url = 'http://127.0.0.1:5000/authadmin/logout'
-
 		headers = { 
 			'Authorization' : '{}'.format(session['token']) 
 		}
@@ -105,6 +134,26 @@ def logout():
 		return redirect(url_for('index'))
 	else:
 		return redirect('unauthorized')
+
+
+@app.route('/profile-page/<username>/<public_id>')
+def viewprofile(username, public_id):
+	if g.user:
+		url = 'http://127.0.0.1:5000/user/admin/'+public_id
+		headers = {
+			'Authorization': '{}'.format(session['token'])
+		}
+		response = requests.request('GET', url, headers=headers)
+		json_data = response.json()
+		print(username)
+		print(json_data)
+		if json_data['username'] == session['user']:
+			return render_template('profile-own.html', json_data=json_data)
+		else:
+			return render_template('profile-page.html', json_data=json_data)
+	else:
+		return redirect('unauthorized')
+
 
 
 
@@ -120,25 +169,21 @@ def mainadminhome(username, first_name, last_name):
 
 
 
+
 @app.route('/view-user')
 def viewuser():
 	if g.user:
-
 		url = 'http://127.0.0.1:5000/user/admin/'
-
 		headers = {
 			'Authorization' : '{}'.format(session['token'])
 		}
 		response = requests.request('GET', url, headers=headers)
 		json_data = response.json()
-
 		# print(json_data['data'][0]['registered_on'])
 		print(json_data)
-
 		return render_template('view-user.html', json_data=json_data)
 	else:
 		return redirect('unauthorized')
-
 
 
 
@@ -152,6 +197,7 @@ def add_user():
 			last_name = request.form.get('last_name', '')
 			role = request.form.get('role', '')
 			username = request.form.get('username', '')
+			# password = 'admin'
 			gender = request.form.get('gender', '')
 			print(role)
 			print(gender)
@@ -171,12 +217,10 @@ def add_user():
 			response = requests.request('POST', url, files=files)
 			login_dict = json.loads(response.text)
 			print(email)
-			print(password)
 			print(response.text)
 			message = login_dict["message"]
 			print(message)
 			if message == "Email already used.":
-
 				return redirect(url_for('add_user'))
 			else:
 				print(response)
@@ -196,15 +240,16 @@ def delete_user(public_id):
 		public_id = public_id
 		print(public_id)
 		url = 'http://127.0.0.1:5000/user/admin/'+public_id
-
 		files = {
 				'public_id' : (None, public_id),
 			}
 		response = requests.request('DELETE', url, headers=headers, files=files)
-
+	
 		return redirect(url_for('viewuser'))
 	else: 
 		return render_template('unauthorized')
+
+
 
 
 
@@ -282,6 +327,35 @@ def view_center():
 
 
 
+
+@app.route('/view/center/<name>/<public_id>')
+def view_spec_center(name, public_id):
+	if g.user:
+		url = 'http://127.0.0.1:5000/distcenter/'+public_id
+		headers = {
+			'Authorization': '{}'.format(session['token'])
+		}
+		response = requests.request('GET', url, headers=headers)
+		json_data = response.json()
+		print(json_data)
+		address = json_data['address']
+
+		google_response = requests.get('https://maps.googleapis.com/maps/api/geocode/json?address='+address+'&key=AIzaSyAayoLLtuuXjGtgaxIURWpfzRrGDZ1KgVc')
+		google_dict = json.loads(google_response.text)
+		print(google_dict)
+
+		latitude=google_dict['results'][0]['geometry']['location']['lat']
+		longitude=google_dict['results'][0]['geometry']['location']['lng']
+
+		print(latitude)
+		print(longitude)
+
+
+		return render_template('view-center.html', json_data=json_data, latitude=latitude, longitude=longitude)
+	else:
+		return redirect('unauthorized')
+
+
 @app.route('/add/center', methods=['POST', 'GET'])
 def add_center():
 	if g.user:
@@ -289,6 +363,20 @@ def add_center():
 			name = request.form.get('name', '')
 			address = request.form.get('address', '')
 			capacity = request.form.get('capacity', '')
+
+			# google_response = requests.get('https://maps.googleapis.com/maps/api/geocode/json?address='+address+'&key=AIzaSyAayoLLtuuXjGtgaxIURWpfzRrGDZ1KgVc')
+			# google_dict = json.loads(google_response.text)
+			# print(google_dict)
+			# latitude=google_dict['results'][0]['geometry']['location']['lat']
+			# longitude=google_dict['results'][0]['geometry']['location']['lng']
+
+			# print(latitude)
+			# print(longitude)
+
+			# lat = latitude.encode('ascii')
+			# long1 = longitude.encode('ascii')
+
+
 			url = 'http://127.0.0.1:5000/distcenter/'
 			headers = { 
 				'Authorization' : '{}'.format(session['token']) 
@@ -359,6 +447,8 @@ def update_center(public_id):
 			return redirect(url_for('view_center'))
 		else:
 			return render_template('edit-evacs.html', name=name, address=address, public_id=public_id, capacity=capacity)
+	else:
+		return redirect('unauthorized')
 
 
 
@@ -379,7 +469,6 @@ def delete_evac(public_id):
 		return redirect(url_for('view_center'))
 	else: 
 		return render_template('unauthorized')
-
 
 
 

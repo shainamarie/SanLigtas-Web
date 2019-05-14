@@ -20,25 +20,19 @@
         <th>GENDER</th>
         <th>ROLE</th>
 		    <th>EMAIL</th>
-        <th>ACTIONS</th>
+        <th>VIEW</th>
 		  </tr>
 	</div>
   {% for user in json_data.data %}
   <tr>
     <td> {{ user.username }}</td>
     <td> {{ user.first_name }} {{ user.last_name }}</td>
-
     <td> {{ user.gender }}</td>
     <td> {{ user.role }}</td>
     <td> {{ user.email }}</td>
 
     <td style="position: relative; display: flex; ">
-      <a href = "{{ url_for('update_user',public_id=user.public_id) }}"><img src="/static/img/edits.png" style="margin:5px;" width="20" height="25"  /></a>
-
-      <a href = "{{ url_for('delete_user', public_id=user.public_id) }}"><img src="/static/img/deletes.png"  width="20" height="25" style="margin: 5px;" /></a>
-
-
-      <!-- <button id="myBtn"><a href="#myModal"><img src="/static/img/deletes.png"  width="20" height="25" style="margin: 5px;" /></input></a></button> -->
+      <a href = "{{ url_for('viewprofile',public_id=user.public_id, username=user.username) }}"><img src="/static/img/web.png" style="margin:5px;" width="25" height="25"  /></a>
       
     </td>
 
@@ -95,5 +89,4 @@ window.onclick = function(event) {
   }
 }
 </script>	
-
 {% endblock %}
