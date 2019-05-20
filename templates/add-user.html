@@ -4,10 +4,17 @@
 	<div class="title">
 		<h4>USER MANAGEMENT</h4>
 		<span>Home / Users / <b> Add </b></span>
+
+    <div class="search-container">
+      <form action="{{ url_for('search_user') }}" method="post">
+        <input type="text" name="keyword" placeholder="Search user.." name="search">
+        <button type="submit"><i class="fa fa-search"></i></button>
+      </form>
+    </div>
 	</div>
 
 	<div class="information-holder">
-		<h4>USER INFORMATION</h4>
+		<h4>User Information</h4>
     <hr>
 	
     <div class="add-form">
@@ -47,14 +54,15 @@
 
         <div class="submit-button">  
           <button style="background-color: #1ab394;" type="submit">Submit</button>
-          <button style="background-color: #0bbc94;" type="submit" value="Cancel" formnovalidate="formnovalidate">Cancel</button>
+          <button style="background-color: #0bbc94;" type="submit" value="Cancel" formnovalidate="formnovalidate"><a href="{{ url_for('viewuser') }}">Cancel</a></button>
         </div>
       </form>
      </div>
-	</div>
 
+     
+	</div>
   <div class="change-picture">
-      <h4>ADD PICTURE</h4>
+      <h4>Add Picture</h4>
       <hr>
       <img src="/static/img/avatarq.png" align="left" />
       <form name="myWebForm" action="mailto:youremail@email.com" method="post">

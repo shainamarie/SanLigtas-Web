@@ -5,11 +5,11 @@
 
 
 	<div class="title">
-		<h4>EVACUATION CENTER</h4> 
-		<span>Home / Evacuaton / View / <b> {{ json_data.name }} </b> </span> 
-    <div class="action-icon">
-
-		<span><p><a href="{{ url_for('assign_admin', name=json_data.name, public_id=json_data.public_id) }}">Assign Admin</a> | </p><p><a href = "{{ url_for('update_center', public_id=json_data.public_id ) }}">Edit</a></p> | <a href="#"><p id="myBtn">Delete</p></a></span>
+		<h4>EVACUATION CENTER</h4>
+		<span>Home / Evacuaton / View / <b> {{ name }} </b> </span> 
+		<div class="action-icon">
+		<span><p><a href = "{{ url_for('update_center', public_id=public_id ) }}">edit</a></p> | <a href="#"><p id="myBtn">delete</p></a>
+</span>
 		</div>
 	</div>
 
@@ -17,13 +17,22 @@
 
 
   <div class="information-holder">
-  	<h4>CENTER INFORMATION</h4>
+  	<h4>ASSIGN ADMIN</h4>
   	<hr>
-  	<h5>NAME:</h5> <p>{{ json_data.name }}</p> <br/>
-  	<h5>LOCATION:</h5> <p>{{ json_data.address }}</p> <br/>
-  	<h5>CAPACITY:</h5> <p>{{ json_data.capacity}}</p> <br/>
-    <h5>ADMIN:</h5>{% for ad in json_data1.data %} <p>{{ ad.center_admin }} , </p> {% endfor %} <br/>
+  	<div class="add-form">
+      <form action="{{ url_for('assign_admin', name=name, public_id=public_id ) }}" method="post" xmlns="http://www.w3.org/1999/html">
+        <div class="form1">
+          <!-- <label for="name"><b>Name</b></label> -->
+          <input type="text" placeholder="Center Admin" name="center_admin" required>
+            
+        </div>
 
+        <div class="submit-button">  
+          <button style="background-color: #1ab394;" type="submit">Submit</button>
+          <button style="background-color: #0bbc94;" type="submit" value="Cancel" formnovalidate="formnovalidate">Cancel</button>
+        </div>
+      </form>
+    </div>
   </div>
 
   <div class="map-holder">
@@ -40,8 +49,8 @@
           <span class="close">&times;</span>
           <p>Are you sure to delete this center?</p>
           <div style="position: relative; display: flex; justify-content: center;" >
-          <button style="background-color:#de0020;"><a href="{{ url_for('delete_evac', public_id=json_data.public_id) }}">Yes</a></button>
-          <button style="background-color: #0bbc94;"><a href="{{ url_for('view_spec_center', name=json_data.name, public_id=json_data.public_id) }}" >No</a></button>
+          <button style="background-color:#de0020;"><a href="{{ url_for('delete_evac', public_id=public_id) }}">Yes</a></button>
+          <button style="background-color: #0bbc94;"><a href="{{ url_for('view_spec_center', name=name, public_id=public_id) }}" >No</a></button>
         </div>
   </div> 
 
@@ -79,7 +88,7 @@ window.onclick = function(event) {
 <script>
 function myMap() {
 var mapProp= {
-  center:new google.maps.LatLng('{{ json_data.latitude }}','{{ json_data.longitude }}'),
+  center:new google.maps.LatLng('{{ latitude }}','{{ longitude }}'),
   zoom:17,
   gestureHandling: 'cooperative'
 };
