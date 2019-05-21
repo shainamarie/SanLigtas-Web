@@ -4,9 +4,21 @@
 <div class="content-holder">
 
 	<div class="title">
-		<h4>EVACUEES</h4>
-		<span>Home / Evacuees / <b> View </b></span>
+		<h4>USER MANAGEMENT</h4>
+		<span>Home / Users / Evacuees / <b> View </b></span>
+
+     <div class="search-container">
+      <form action="{{ url_for('search_user') }}" method="post">
+        <input type="text" name="keyword" placeholder="Search user.." name="search">
+        <button type="submit"><i class="fa fa-search"></i></button>
+      </form>
+    </div>
 	</div>
+
+  <div class="action-holder">
+          <a href="/add/user/admin"><img src="/static/img/add-user.png" width="30" height="30" style="margin: 5px;" align="left"  /></a>
+          <!-- <h1><a href="#">Evacuation &nbsp &nbsp > </a></h1> -->
+</div>
 
 
 <div class="holder">
@@ -15,51 +27,56 @@
 
 	<div class="column">
 		<tr>
-        <th>NAME</th>
-        <th>HOME ID</th>
+		<th>NAME</th>
         <th>ADDRESS</th>
         <th>GENDER</th>
-        <th>ACTIONS</th>
-		</tr>
+        <th>AGE</th>
+		<th>RELIGION</th>
+		<th>EDUC ATTAINMENT</th>
+		<th>OCCUPATION</th>
+        <th>VIEW</th>
+		  </tr>
 	</div>
-   {% for evac in query %}
+  {% for user in json_data.data %}
   <tr>
-    <td> {{ evacuees.name }}</td>
-    <td> {{ evacuees.home_id }}</td>
-    <td> {{ evacuees.address }}</td>
-    <td> {{ evacuees.gender }}</td>
+    <td> {{ user.name }}</td>
+    <td> {{ user.address }}</td>
+    <td> {{ user.gender }}</td>
+    <td> {{ user.age }}</td>
+    <td> {{ user.religion }}</td>
+    <td> {{ user.educ_attainment }}</td>
+    <td> {{ user.occupation }}</td>
+
     <td style="position: relative; display: flex; ">
-      <a href = "{{ url_for('update_evac', public_id=evacuees.public_id) }}"><img src="/static/img/edits.png" style="margin:5px;" width="20" height="25"  /></a>
-
-      <a href = "{{ url_for('delete_evacuees', public_id=evacuees.public_id) }}"><img src="/static/img/deletes.png"  width="20" height="25" style="margin: 5px;" /></a>
-
-      <!-- <button id="myBtn"><a href="#myModal"><img src="/static/img/deletes.png"  width="20" height="25" style="margin: 5px;" /></input></a></button> -->
+      <a href = "{{ url_for('viewprofile_evacuee', home_id=user.home_id, name=user.name) }}"><img src="/static/img/web.png" style="margin:5px;" width="25" height="25"  /></a>
+      
     </td>
+
   </tr>
-  {% endfor %}
+  <div id="myModal" class="modal">
+      <!-- Modal content -->
+        <div class="modal-content" >
+          <span class="close">&times;</span>
+          <p>Are you sure to delete this user?</p>
+          <div style="position: relative; display: flex; justify-content: center;" >
+          <button style="background-color:#de0020;"><a href="{{ url_for('delete_admin', public_id=public_id) }}">Yes</a></button>
+          <button style="background-color: #0bbc94;"><a href="{{ url_for('viewuser') }}">No</a></button>
+        </div>
+  </div> 
+ 
+ {% endfor %}
 </table>
 <!-- Trigger/Open The Modal -->
 
 
 <!-- The Modal -->
-  <div id="myModal" class="modal">
 
-  <!-- Modal content -->
-  <div class="modal-content" >
-    <span class="close">&times;</span>
-    <p>Are you sure to delete this center?</p>
-    <div style="position: relative; display: flex; justify-content: center;" >
-    <button style="background-color:#de0020;"><a href="{{ url_for('delete_evac', public_id=public_id) }}">Yes</a></button>
-    <button style="background-color: #0bbc94;"><a href="">No</a></button>
-  </div>
-  </div>
- 
 </div>
 </div>
 </div>
 </div>
 
-  
+
 
 <script>
 // Get the modal
@@ -88,70 +105,4 @@ window.onclick = function(event) {
   }
 }
 </script>	
-
-<script>
-function format ( d ) {
-    return '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">'+
-        '<tr>'+
-            '<td>Age:</td>'+
-            '<td>'+d.age+'</td>'+
-        '</tr>'+
-        '<tr>'+
-            '<td>Religion:</td>'+
-            '<td>'+d.religion+'</td>'+
-        '</tr>'+
-        '<tr>'+
-            '<td>Civil Status:</td>'+
-            '<td>'+d.civil_status+'</td>'+
-        '</tr>'+
-        '<tr>'+
-            '<td>Occupation:</td>'+
-            '<td>'+d.occupation+'</td>'+
-        '</tr>'+
-        '<tr>'+
-            '<td>Education Attainment:</td>'+
-            '<td>'+d.educ_attainment+'</td>'+
-        '</tr>'+
-    '</table>';
-}
- 
-$(document).ready(function() {
-    var table = $('#example').DataTable( {
-        "ajax": "../ajax/data/objects.txt",
-        "columns": [
-            {
-                "className":      'details-control',
-                "orderable":      false,
-                "data":           null,
-                "defaultContent": ''
-            },
-            { "data": "name" },
-            { "data": "home_id" },
-            { "data": "address" },
-            { "data": "gender" }
-        ],
-        "order": [[1, 'asc']]
-    } );
-     
-    // Add event listener for opening and closing details
-    $('#example tbody').on('click', 'td.details-control', function () {
-        var tr = $(this).closest('tr');
-        var row = table.row( tr );
- 
-        if ( row.child.isShown() ) {
-            // This row is already open - close it
-            row.child.hide();
-            tr.removeClass('shown');
-        }
-        else {
-            // Open this row
-            row.child( format(row.data()) ).show();
-            tr.addClass('shown');
-        }
-    } );
-} );
-
-
-</script>
 {% endblock %}
-
