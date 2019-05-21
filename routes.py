@@ -529,11 +529,11 @@ def add_evacuee():
 	if g.user:
 		if request.method == 'POST':
 			if session['role'] == 'Main Admin' or session['role'] == 'Social Worker Admin':
-				Numbers = range(1, 5)
-				RandomNumber = random.choice(Numbers)
+				n = 4
+				
 
 				name = request.form.get('name', '')
-				home_id = RandomNumber
+				home_id = ''.join(["%s" % randint(0, 9) for num in range(0, n)])
 				address = request.form.get('address', '')
 				gender = request.form.get('gender', '')
 				age = request.form.get('age', '')
