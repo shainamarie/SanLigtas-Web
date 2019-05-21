@@ -4,12 +4,12 @@ body {
   background-color: #f3f3f4; 
 }
 
-
-/*#map_canvas {
-	height: 100%;
+.action-holder {
+	float: left;
+	margin-bottom: 20px;
+	margin-top: 5px;
+	margin-left: 20px;
 }
-
-*/
 
 .search-container {
   float: right;
@@ -506,6 +506,11 @@ button {
 	background-color: white;
 }
 
+
+.title h4 {
+	width: 250px;
+}
+
 .title a:hover {
 	color: red;
 }
@@ -588,6 +593,7 @@ button {
 	font-size: 23px;
 	margin-left: 20px;
 	text-align: center;
+	
 }
 
 .information-holder h5 {
@@ -595,6 +601,9 @@ button {
 	font-size: 15px;
 	margin-left: 30px;
 	display: inline-block;
+	margin-bottom: 4px;
+	margin-top: 4px;
+
 	/*left: 20px;*/
 	/*font-weight: bold;		*/
 }
@@ -603,6 +612,8 @@ button {
 	display: inline-block;
 	color: #1f6a9c;
 	margin-left: 10px;
+	margin-bottom: 0px;
+	margin-top: 0px;
 }
 
 .map-holder {
@@ -671,7 +682,7 @@ button {
 	background-color: white; 
 	margin-left: 20px;
 	margin-right: 20px;
-	margin-top: 20px;
+	margin-top: 50px;
 	border-top: 5px solid #e7eaec;
 	border-bottom: 5px solid #e7eaec;
 	margin-bottom: 50px;

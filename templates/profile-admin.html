@@ -7,18 +7,16 @@
     	<img src="/static/img/avatarq.png" align="left" />
     </div>
     <div class="action-icon">
-    	<!-- <p><a href = "{{ url_for('update_user', public_id=json_data.public_id ) }}">edit</a></p> | <a href="#"><p id="myBtn">delete</p></a> -->
-
-    	<!-- <img src="/static/img/settings.png"  width="30" height="30" style="margin: 5px;" align="right" /> -->
+    	
 
       <div class="settings">
           <img src="/static/img/settings.png" width="30" height="30" style="margin: 5px;" align="right"  />
           <!-- <h1><a href="#">Evacuation &nbsp &nbsp > </a></h1> -->
           <div class="dropdown-settings">
-            <a href="{{ url_for('update_user', public_id=json_data.public_id ) }}">Edit Profile</a>
+            <a href="{{ url_for('update_admin', public_id=json_data.public_id ) }}">Edit Profile</a>
             <a href="{{ url_for('change_pass', public_id=json_data.public_id ) }}">Change Password</a>
             <a id="myBtn" href="#">Delete Profile</a>
-=      </div>
+      </div>
 
   </div>
     	<!-- <img src="/static/img/edits.png" style="margin:5px;" width="20" height="25" align="right" /> -->
@@ -53,8 +51,8 @@
           <span class="close">&times;</span>
           <p>Are you sure to delete this user?</p>
           <div style="position: relative; display: flex; justify-content: center;" >
-          <button style="background-color:#de0020;"><a href="{{ url_for('delete_user', public_id=json_data.public_id) }}">Yes</a></button>
-          <button style="background-color: #0bbc94;"><a href="{{ url_for('viewprofile', username=json_data.username, public_id=json_data.public_id) }}" >No</a></button>
+          <button style="background-color:#de0020;"><a href="{{ url_for('delete_admin', public_id=json_data.public_id) }}">Yes</a></button>
+          <button style="background-color: #0bbc94;"><a href="{{ url_for('viewprofile_admin', username=json_data.username, public_id=json_data.public_id) }}" >No</a></button>
         </div>
   </div> 
 

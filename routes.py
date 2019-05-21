@@ -6,6 +6,7 @@ import requests, json
 import pytemperature
 import string
 from random import *
+import random
 
 
 
@@ -161,8 +162,8 @@ def ownprofile():
 
 
 
-@app.route('/profile-page/<username>/<public_id>')
-def viewprofile(username, public_id):
+@app.route('/profile-page/admin/<username>/<public_id>')
+def viewprofile_admin(username, public_id):
 	if g.user:
 		url = 'http://127.0.0.1:5000/user/admin/'+public_id
 		headers = {
@@ -172,9 +173,80 @@ def viewprofile(username, public_id):
 		json_data = response.json()
 		print(username)
 		print(json_data)
-		return render_template('profile-page.html', json_data=json_data)
+		return render_template('profile-admin.html', json_data=json_data)
 	else:
 		return redirect('unauthorized')
+
+@app.route('/profile-page/admin2/<username>/<public_id>')
+def viewprofile_admin2(username, public_id):
+	if g.user:
+		url = 'http://127.0.0.1:5000/user/admin/search/'+username
+		headers = {
+			'Authorization': '{}'.format(session['token'])
+		}
+		response = requests.request('GET', url, headers=headers)
+		json_data = response.json()
+		print(username)
+		print(json_data['data'][0]['username'])
+		print(json_data)
+		return render_template('profile-admin2.html', json_data=json_data)
+	else:
+		return redirect('unauthorized')
+
+
+@app.route('/profile-page/mobile/<username>/<public_id>')
+def viewprofile_mobile(username, public_id):
+	if g.user:
+		url = 'http://127.0.0.1:5000/user/mobile/'+public_id
+		headers = {
+			'Authorization': '{}'.format(session['token'])
+		}
+		response = requests.request('GET', url, headers=headers)
+		json_data = response.json()
+		print(username)
+		print(json_data)
+		return render_template('profile-mobile.html', json_data=json_data)
+	else:
+		return redirect('unauthorized')
+
+
+@app.route('/profile-page/dependent/<name>/<dependents_id>')
+def viewprofile_dependent(name, dependents_id):
+	if g.user:
+		url = 'http://127.0.0.1:5000/dependents/'+dependents_id
+		headers = {
+			'Authorization': '{}'.format(session['token'])
+		}
+		response = requests.request('GET', url, headers=headers)
+		json_data = response.json()
+		print(json_data)
+		return render_template('profile-dependent.html', json_data=json_data)
+	else:
+		return redirect('unauthorized')
+
+
+@app.route('/profile-page/evacuees/<name>/<home_id>')
+def viewprofile_evacuee(name, home_id):
+	if g.user:
+		url = 'http://127.0.0.1:5000/evacuees/'+home_id 	        
+		headers = {
+			'Authorization': '{}'.format(session['token'])
+		}
+		response = requests.request('GET', url, headers=headers)
+		json_data = response.json()
+		print(name)
+		print(json_data)
+
+
+		url1 = 'http://127.0.0.1:5000/dependents/get/'+home_id 	
+		response1 = requests.request('GET', url1, headers=headers)
+		json_data1 = response1.json()
+		print(json_data1)
+		return render_template('profile-evacuee.html', json_data=json_data, json_data1=json_data1)
+	else:
+		return redirect('unauthorized')
+
+
 
 
 
@@ -187,6 +259,9 @@ def mainadminhome(username, first_name, last_name):
 		return render_template('mainadmin-base.html', username=username, first_name=first_name, last_name=last_name)
 	else:
 		return redirect('unauthorized')
+
+
+
 
 
 @app.route('/search/center', methods=['POST', 'GET'])
@@ -215,6 +290,12 @@ def search_center():
 		return redirect('unauthorized')	
 
 
+
+
+
+
+
+
 @app.route('/search/user', methods=['POST', 'GET'])
 def search_user():
 	if g.user:
@@ -240,7 +321,61 @@ def search_user():
 		return redirect('unauthorized')
 
 
-@app.route('/view-user')
+
+@app.route('/search/evacuee/<name>/<public_id>', methods=['POST', 'GET'])
+def search_evacuee(name, public_id):
+	if g.user:
+		if request.method == 'POST':
+			keywords = request.form.get('keyword', '')
+
+			url = 'http://127.0.0.1:5000/evacuees/search/'+keywords
+			print(url)
+			headers = {
+				'Authorization' : '{}'.format(session['token'])
+			}
+			response = requests.request('GET', url, headers=headers)
+			json_data = response.json()
+			print(json_data)
+			if json_data == {'data': []}:
+				return render_template('no-user-result.html')
+			else:
+				return render_template('evacuee-result.html', json_data=json_data, name=name, public_id=public_id)
+		else:
+			return 'Wala mumsh'
+
+	else:
+		return redirect('unauthorized')
+
+
+@app.route('/search/admin/<name>/<public_id>', methods=['POST', 'GET'])
+def search_admin(name, public_id):
+	if g.user:
+		if request.method == 'POST':
+			keywords = request.form.get('keyword', '')
+
+			url = 'http://127.0.0.1:5000/user/admin/search/'+keywords
+			print(url)
+			headers = {
+				'Authorization' : '{}'.format(session['token'])
+			}
+			response = requests.request('GET', url, headers=headers)
+			json_data = response.json()
+			print(json_data)
+			if json_data == {'data': []}:
+				return render_template('no-user-result.html')
+			else:
+				return render_template('admin-result.html', json_data=json_data, name=name, public_id=public_id)
+		else:
+			return 'Wala mumsh'
+
+	else:
+		return redirect('unauthorized')
+
+
+
+
+
+@app.route('/view/admin')
 def viewuser():
 	if g.user:
 		url = 'http://127.0.0.1:5000/user/admin/'
@@ -251,9 +386,48 @@ def viewuser():
 		json_data = response.json()
 		# print(json_data['data'][0]['registered_on'])
 		print(json_data)
-		return render_template('view-user.html', json_data=json_data)
+		if json_data == {'data': []}:
+			return render_template('no-user-result.html')
+		else:
+			return render_template('view-user.html', json_data=json_data)
 	else:
 		return redirect('unauthorized')
+
+
+@app.route('/view/mobile')
+def viewmobile():
+	if g.user:
+		url = 'http://127.0.0.1:5000/user/mobile/'
+		headers = {
+			'Authorization' : '{}'.format(session['token'])
+		}
+		response = requests.request('GET', url, headers=headers)
+		json_data = response.json()
+		# print(json_data['data'][0]['registered_on'])
+		print(json_data)
+		if json_data == {'data': []}:
+			return render_template('no-user-result.html')
+		else:
+			return render_template('view-mobile.html', json_data=json_data)
+	else:
+		return redirect(url_for('unauthorized'))
+
+
+@app.route('/view/evacuees')
+def viewevacuees():
+	if g.user:
+		url = 'http://127.0.0.1:5000/evacuees/'
+		headers = {
+			'Authorization' : '{}'.format(session['token'])
+		}
+		response = requests.request('GET', url, headers=headers)
+		json_data = response.json()
+		# print(json_data['data'][0]['registered_on'])
+		print(json_data)
+		return render_template('view-evacuees.html', json_data=json_data)
+	else:
+		return redirect(url_for('unauthorized'))
+
 
 
 
@@ -262,54 +436,141 @@ def viewuser():
 def add_user():	
 	if g.user:
 		if request.method == 'POST':
-			email = request.form.get('email', '')
-			first_name = request.form.get('first_name', '')
-			last_name = request.form.get('last_name', '')
-			role = request.form.get('role', '')
-			username = request.form.get('username', '')
-			# password = 'admin'
-			gender = request.form.get('gender', '')
-			print(role)
-			print(gender)
-			password_generator = generate_password()
-			print(password_generator)
-			password = password_generator
-			url = 'http://127.0.0.1:5000/user/admin/'
-			files = {
-				'email' : (None, email),
-				'username' : (None, username),
-				'password' : (None, password),
-				'role' : (None, role),
-				'first_name' : (None, first_name),
-				'last_name' : (None, last_name),
-				'gender' : (None, gender)
-			}
-			response = requests.request('POST', url, files=files)
-			login_dict = json.loads(response.text)
-			print(email)
-			print(response.text)
-			message = login_dict["message"]
-			print(message)
-			if message == "Email already used.":
-				return redirect(url_for('add_user'))
+			if session['role'] == 'Main Admin':
+				email = request.form.get('email', '')
+				first_name = request.form.get('first_name', '')
+				last_name = request.form.get('last_name', '')
+				role = request.form.get('role', '')
+				username = request.form.get('username', '')
+				# password = 'admin'
+				gender = request.form.get('gender', '')
+				print(role)
+				print(gender)
+				password_generator = generate_password()
+				print(password_generator)
+				password = password_generator
+				url = 'http://127.0.0.1:5000/user/admin/'
+				files = {
+					'email' : (None, email),
+					'username' : (None, username),
+					'password' : (None, password),
+					'role' : (None, role),
+					'first_name' : (None, first_name),
+					'last_name' : (None, last_name),
+					'gender' : (None, gender)
+				}
+				response = requests.request('POST', url, files=files)
+				login_dict = json.loads(response.text)
+				print(email)
+				print(response.text)
+				message = login_dict["message"]
+				print(message)
+				if message == "Email already used.":
+					return redirect(url_for('add_user'))
+				else:
+					print(response)
+					mat = password
+					msg = Message(body="You have been registered on SanLigtas.\n Username:"+username+"\n Password: "+mat+"\n Welcome to the team!",
+						sender="noreply@sanligtas.com",
+						recipients=[email],
+						subject="Welcome to San Ligtas")
+					mail.send(msg)
+				return redirect(url_for('viewuser'))
 			else:
-				print(response)
-				mat = password
-				msg = Message(body="You have been registered on SanLigtas.\n Username:"+username+"\n Password: "+mat+"\n Welcome to the team!",
-					sender="noreply@sanligtas.com",
-					recipients=[email],
-					subject="Welcome to San Ligtas")
-				mail.send(msg)
-			return redirect(url_for('viewuser'))
+				return redirect(url_for('unauthorized'))
 		else:
 			return render_template('add-user.html')
 	else:
-		return redirect('unauthorized')
+		return redirect(url_for('unauthorized'))
 
 
 
-@app.route('/delete/user/<public_id>')
-def delete_user(public_id):
+
+
+
+@app.route('/add/dependent/<name>/<home_id>',methods=['POST', 'GET'])
+def add_dependent(home_id, name):
+	if g.user:
+		if request.method == 'POST':
+			if session['role'] == 'Main Admin' or session['role'] == 'Social Worker Admin':
+				name = request.form.get('name', '')
+				home_id = home_id
+				address = request.form.get('address', '')
+				gender = request.form.get('gender', '')
+				age = request.form.get('age', '')
+				educ_attainment = request.form.get('educ_attainment', '')
+				occupation = request.form.get('occupation', '')
+
+				url = 'http://127.0.0.1:5000/dependents/'
+				files = {
+					'name' : (None, name),
+					'home_id' : (None, home_id),
+					'address' : (None, address),
+					'gender' : (None, gender),
+					'age' : (None, age),
+					'educ_attainment' : (None, educ_attainment),
+					'occupation' : (None, occupation)
+				}
+				headers = { 'Authorization' : '{}'.format(session['token']) }
+				response = requests.request('POST', url, files=files, headers=headers)
+				json_data = response.json()
+
+				return redirect(url_for('viewprofile_evacuee', name=name, home_id=home_id))
+			else:
+				return redirect(url_for('unauthorized'))
+		else:
+			return render_template('add-dependent.html', name=name, home_id=home_id)
+
+	else:
+		return redirect(url_for('unauthorized'))
+
+@app.route('/add/evacuee',methods=['POST', 'GET'])
+def add_evacuee():
+	if g.user:
+		if request.method == 'POST':
+			if session['role'] == 'Main Admin' or session['role'] == 'Social Worker Admin':
+				Numbers = range(1, 5)
+				RandomNumber = random.choice(Numbers)
+
+				name = request.form.get('name', '')
+				home_id = RandomNumber
+				address = request.form.get('address', '')
+				gender = request.form.get('gender', '')
+				age = request.form.get('age', '')
+				religion = request.form.get('religion', '')
+				civil_status = request.form.get('civil_status', '')
+				educ_attainment = request.form.get('educ_attainment', '')
+				occupation = request.form.get('occupation', '')
+
+				url = 'http://127.0.0.1:5000/evacuees/'
+				files = {
+					'name' : (None, name),
+					'home_id' : (None, home_id),
+					'address' : (None, address),
+					'gender' : (None, gender),
+					'age' : (None, age),
+					'religion' : (None, religion),
+					'civil_status' : (None, civil_status),
+					'educ_attainment' : (None, educ_attainment),
+					'occupation' : (None, occupation)
+				}
+				headers = { 'Authorization' : '{}'.format(session['token']) }
+				response = requests.request('POST', url, files=files, headers=headers)
+				json_data = response.json()
+
+				return redirect(url_for('viewevacuees'))
+			else:
+				return redirect(url_for('unauthorized'))
+		else:
+			return render_template('add-evacuee.html')
+
+	else:
+		return redirect(url_for('unauthorized'))
+
+
+
+@app.route('/delete/admin/<public_id>')
+def delete_admin(public_id):
 	if g.user:
 		print(session['token'])
 		headers = { 'Authorization' : '{}'.format(session['token']) }
@@ -324,6 +585,100 @@ def delete_user(public_id):
 		return redirect(url_for('viewuser'))
 	else: 
 		return render_template('unauthorized')
+
+
+@app.route('/delete/mobile/<public_id>')
+def delete_mobile(public_id):
+	if g.user:
+		if session['role'] == 'Main Admin':
+			print(session['token'])
+			headers = { 'Authorization' : '{}'.format(session['token']) }
+			public_id = public_id
+			print(public_id)
+			url = 'http://127.0.0.1:5000/user/mobile/'+public_id
+			files = {
+					'public_id' : (None, public_id),
+				}
+			response = requests.request('DELETE', url, headers=headers, files=files)
+		
+			return redirect(url_for('viewmobile'))
+		else:
+			return redirect(url_for('unauthorized'))
+	else: 
+		return render_template('unauthorized')
+
+
+@app.route('/delete/evacuee/<home_id>')
+def delete_evacuee(home_id):
+	if g.user:
+		if session['role'] == 'Social Worker Admin' or session['role'] == 'Main Admin':
+			print(session['token'])
+			headers = { 'Authorization' : '{}'.format(session['token']) }
+			
+			print(home_id)
+			url = 'http://127.0.0.1:5000/evacuees/'+home_id
+			files = {
+					'public_id' : (None, home_id),
+				}
+			response = requests.request('DELETE', url, headers=headers, files=files)
+		
+			return redirect(url_for('viewevacuees'))
+		else:
+			return redirect(url_for('unauthorized'))
+	else: 
+		return render_template('unauthorized')
+
+
+@app.route('/delete/dependent/<home_id>/<dependents_id>')
+def delete_dependent(dependents_id, home_id):
+	if g.user:
+		if session['role'] == 'Social Worker Admin' or session['role'] == 'Main Admin':
+			print(session['token'])
+			headers = { 'Authorization' : '{}'.format(session['token']) }
+			
+			url1 = 'http://127.0.0.1:5000/evacuees/'+home_id
+			response1 = requests.request('GET', url1, headers=headers)
+			json_data = response1.json()
+
+			
+			url = 'http://127.0.0.1:5000/dependents/'+dependents_id
+			files = {
+					'dependents_id' : (None, dependents_id),
+				}
+			response = requests.request('DELETE', url, headers=headers, files=files)
+		
+			return redirect(url_for('viewprofile_evacuee', home_id=json_data['home_id'], name=json_data['name']))
+		else:
+			return redirect(url_for('unauthorized'))
+	else: 
+		return render_template('unauthorized')
+
+
+@app.route('/remove/dependent/<home_id>/<dependents_id>')
+def remove_dependent(dependents_id, home_id):
+	if g.user:
+		if session['role'] == 'Social Worker Admin' or session['role'] == 'Main Admin':
+			print(home_id)
+			print(session['token'])
+			headers = { 'Authorization' : '{}'.format(session['token']) }
+			
+			url1 = 'http://127.0.0.1:5000/evacuees/'+home_id
+			response1 = requests.request('GET', url1, headers=headers)
+			json_data = response1.json()
+
+			
+			url = 'http://127.0.0.1:5000/dependents/remove/'+dependents_id
+			files = {
+					'home_id' : (None, home_id),
+				}
+			response = requests.request('PUT', url, headers=headers, files=files)
+		
+			return redirect(url_for('viewprofile_evacuee', home_id=json_data['home_id'], name=json_data['name']))
+		else:
+			return redirect(url_for('unauthorized'))
+	else: 
+		return render_template('unauthorized')
+
 
 
 @app.route('/change/password/<public_id>', methods=['POST', 'GET'])
@@ -367,7 +722,7 @@ def change_pass(public_id):
 				else:
 					return render_template('change-password.html', public_id=public_id)
 			else:
-				return "Old password entered and old password did not matched."
+				return "unauthorized ka gurl"
 		else:
 			return render_template('change-password.html', public_id=public_id)
 
@@ -377,8 +732,8 @@ def change_pass(public_id):
 
 
 
-@app.route('/update/user/<public_id>', methods=['POST', 'GET'])
-def update_user(public_id):
+@app.route('/update/admin/<public_id>', methods=['POST', 'GET'])
+def update_admin(public_id):
 	if g.user:
 		url1 = 'http://127.0.0.1:5000/user/admin/'+public_id
 		headers = { 
@@ -430,7 +785,132 @@ def update_user(public_id):
 
 		else:
 
-			return render_template('edit-user.html', username=json_data1['username'], email=json_data1['email'], public_id=json_data1['public_id'], first_name=json_data1['first_name'], last_name=json_data1['last_name'], role=json_data1['role'], gender=json_data1['gender'] )	
+			return render_template('edit-admin.html', username=json_data1['username'], email=json_data1['email'], public_id=json_data1['public_id'], first_name=json_data1['first_name'], last_name=json_data1['last_name'], role=json_data1['role'], gender=json_data1['gender'] )	
+
+	else:
+		return redirect('unauthorized')
+
+
+@app.route('/update/mobile/<public_id>', methods=['POST', 'GET'])
+def update_mobile(public_id):
+	if g.user:
+		url1 = 'http://127.0.0.1:5000/user/mobile/'+public_id
+		headers = { 
+			'Authorization' : '{}'.format(session['token']) 
+		}
+		response1 = requests.request('GET', url1, headers=headers)
+		json_data1 = response1.json()
+
+		print(json_data1['username'])
+
+		
+		if request.method == 'POST':
+
+			if session['role'] == 'Main Admin':
+
+				username = request.form.get('username', '')
+				email = request.form.get('email', '')
+				first_name = request.form.get('first_name', '')
+				last_name = request.form.get('last_name', '')
+				birth_date = request.form.get('birth_date', '')
+				address = request.form.get('address', '')
+				gender = request.form.get('gender', '')
+				contact_number = request.form.get('contact_number', '')
+
+				public_id = public_id
+				print(public_id)
+				url = 'http://127.0.0.1:5000/user/mobile/'+public_id
+				headers = { 
+					'Authorization' : '{}'.format(session['token']) 
+				}
+				payload = {
+						
+					'username' : (None, username),
+					'email' : (None, email),
+					'first_name' : (None, first_name),
+					'last_name' : (None, last_name),
+					'birth_date' : (None, birth_date),
+					'address' : (None, address),
+					'contact_number' : (None, contact_number),
+					'gender' : (None, gender)
+				}
+				response = requests.request('PUT', url, headers=headers, data=payload)
+		
+				del_dict = json.loads(response.text)
+				print(response.text)
+
+				return redirect(url_for('viewmobile'))
+
+			else:
+
+				return redirect('unauthorized')
+
+		else:
+
+			return render_template('edit-mobile.html', address=json_data1['address'], username=json_data1['username'], birth_date=json_data1['birth_date'], email=json_data1['email'], public_id=json_data1['public_id'], first_name=json_data1['first_name'], last_name=json_data1['last_name'], contact_number=json_data1['contact_number'], gender=json_data1['gender'] )	
+
+	else:
+		return redirect('unauthorized')
+
+
+
+@app.route('/update/evacuee/<home_id>', methods=['POST', 'GET'])
+def update_evacuee(home_id):
+	if g.user:
+		url1 = 'http://127.0.0.1:5000/evacuees/'+home_id
+		headers = { 
+			'Authorization' : '{}'.format(session['token']) 
+		}
+		response1 = requests.request('GET', url1, headers=headers)
+		json_data1 = response1.json()
+
+		print(json_data1['name'])
+
+		
+		if request.method == 'POST':
+
+			if session['role'] == 'Main Admin':
+
+				name = request.form.get('name', '')
+				address = request.form.get('address', '')
+				gender = request.form.get('gender', '')
+				age = request.form.get('age', '')
+				religion = request.form.get('religion', '')
+				civil_status = request.form.get('civil_status', '')
+				educ_attainment = request.form.get('educ_attainment', '')
+				occupation = request.form.get('occupation', '')
+
+				print(home_id)
+				url = 'http://127.0.0.1:5000/evacuees/'+home_id
+				headers = { 
+					'Authorization' : '{}'.format(session['token']) 
+				}
+				payload = {
+						
+					'name' : (None, name),
+					'address' : (None, address),
+					'gender' : (None, gender),
+					'age' : (None, age),
+					'religion' : (None, religion),
+					'civil_status' : (None, civil_status),
+					'educ_attainment' : (None, educ_attainment),
+					'occupation' : (None, occupation)
+				}
+
+				response = requests.request('PUT', url, headers=headers, data=payload)
+		
+				del_dict = json.loads(response.text)
+				print(response.text)
+
+				return redirect(url_for('viewevacuees'))
+
+			else:
+
+				return redirect('unauthorized')
+
+		else:
+
+			return render_template('edit-evacuee.html', address=json_data1['address'], name=json_data1['name'], religion=json_data1['religion'], age=json_data1['age'], home_id=json_data1['home_id'], civil_status=json_data1['civil_status'], educ_attainment=json_data1['educ_attainment'], occupation=json_data1['occupation'] )	
 
 	else:
 		return redirect('unauthorized')
@@ -481,7 +961,7 @@ def assign_admin(public_id, name):
 
 			role = json_data2["data"][0]["role"]
 
-			if role == "Social Worker Admin":
+			if role == "Social Worker Admin" or role == "Main Admin":
 				files = {
 					
 					'center_public_id': (None, center_public_id),
@@ -490,7 +970,7 @@ def assign_admin(public_id, name):
 				headers = {
 					'Authorization': '{}'.format(session['token'])
 				}
-				url = 'http://127.0.0.1:5000/distcenter/assign/admin'
+				url = 'http://127.0.0.1:5000/distcenter/assign/admin/'+public_id
 				response = requests.request('POST', url, files=files, headers=headers)
 				json_data = response.json()
 				print(json_data)
@@ -505,6 +985,124 @@ def assign_admin(public_id, name):
 		else:
 			return render_template('assign_admin.html', name=name, public_id=public_id, latitude=latitude, longitude=longitude)
 	else:
+		return redirect(url_for('unauthorized'))
+
+@app.route('/assign/searched/admin/<name>/<public_id>/<username>')
+def assign_searched_admin(name, public_id, username):
+	if g.user:
+		headers = {
+			'Authorization': '{}'.format(session['token'])
+		}
+		# url = 'http://127.0.0.1:5000/distcenter/search/'+public_id
+		# response = requests.request('GET', url, headers=headers)
+		# json_data = response.json()
+		# centerid = json_data["data"][0]["id"]
+		# print(centerid)
+		# files = {
+		# 	'home_id' : (None, home_id),
+		# 	'center_id' : (None, centerid)
+		# }
+		headers = {
+			'Authorization': '{}'.format(session['token'])
+		}
+		files = {	
+			'center_public_id': (None, public_id),
+			'center_admin': (None, username)
+		}
+		url = 'http://127.0.0.1:5000/distcenter/assign/admin/'+public_id
+		response = requests.request('POST', url, headers=headers, files=files,  )
+		json_data1 = response.json()
+		print(public_id)
+		print(username)
+		print(json_data1)
+
+		message = json_data1["message"]
+
+		if message == "admin assigned successfully":
+			return redirect(url_for('view_spec_center', public_id=public_id, name=name ))
+		else:
+			return "Dili pwede dzaii"
+	else:
+		return redirect('unauthorized')
+
+
+
+@app.route('/assign/evacuee/<name>/<public_id>', methods=['POST', 'GET'])
+def assign_evacuee(name, public_id):
+	if g.user:
+		url1 = 'http://127.0.0.1:5000/distcenter/'+public_id
+		headers = {
+			'Authorization': '{}'.format(session['token'])
+		}
+		response1 = requests.request('GET', url1, headers=headers)
+		json_data1 = response1.json()
+		latitude = json_data1["latitude"]
+		longitude = json_data1["longitude"]
+
+		if request.method == "POST":
+			if session['role'] == "Main Admin" or session['role'] == "Social Worker Admin":
+				name = request.form.get('name', '')
+
+				url1 = 'http://127.0.0.1:5000/evacuees/search/'+name
+				headers = {
+						'Authorization': '{}'.format(session['token'])
+					}
+				response1 = requests.request('GET', url1, headers=headers)
+				json_data1 = response1.json()
+				homeid = json_data1["data"][0]["home_id"]
+				print(homeid)
+
+				url2 = 'http://127.0.0.1:5000/distcenter/search/'+public_id
+				response2 = requests.request('GET', url2, headers=headers)
+				json_data2 = response2.json()
+				centerid = json_data2["data"][0]["id"]
+				print(centerid)
+
+				files = {
+					'home_id' : (None, homeid),
+					'center_id' : (None, centerid)
+				}
+				url3 = 'http://127.0.0.1:5000/evacuees/assign/evacuee'
+				response3 = requests.request('PUT', url3, headers=headers, files=files,  )
+				json_data3 = response3.json()
+
+				print(json_data3)
+
+				return redirect(url_for('view_spec_center', public_id=public_id, name=name))
+			else: 
+				return "Dili ka Main Admin dzaii"
+				# return redirect(url_for('unauthorized'))
+		else:
+			return render_template('assign-evacuee.html', public_id=public_id, name=name, latitude=latitude, longitude=longitude)
+
+	else:
+		return redirect('unauthorized')
+
+
+@app.route('/assign/searched/evacuee/<name>/<public_id>/<home_id>')
+def assign_searched_evacuee(name, public_id, home_id):
+	if g.user:
+		headers = {
+			'Authorization': '{}'.format(session['token'])
+		}
+		url = 'http://127.0.0.1:5000/distcenter/search/'+public_id
+		response = requests.request('GET', url, headers=headers)
+		json_data = response.json()
+		centerid = json_data["data"][0]["id"]
+		print(centerid)
+		files = {
+			'home_id' : (None, home_id),
+			'center_id' : (None, centerid)
+		}
+		url1 = 'http://127.0.0.1:5000/evacuees/assign/evacuee'
+		response1 = requests.request('PUT', url1, headers=headers, files=files,  )
+		json_data1 = response1.json()
+
+		print(json_data1)
+
+		return redirect(url_for('view_spec_center', public_id=public_id, name=name))
+
+	else:
 		return redirect('unauthorized')
 
 
@@ -518,21 +1116,27 @@ def view_spec_center(name, public_id):
 		}
 		response = requests.request('GET', url, headers=headers)
 		json_data = response.json()
+		center_id = json_data["id"]
+		print(center_id)
 		
 		url1 = 'http://127.0.0.1:5000/distcenter/assign/admin/'+public_id
 		response1 = requests.request('GET', url1, headers=headers)
 		json_data1 = response1.json()
 		# print(json_data)
-		print(json_data1["data"][0]["center_admin"])
+		# print(json_data1["data"][0]["center_admin"])
 		address = json_data['address']
 
 		print(json_data['latitude'])
 		print(json_data['longitude'])
 
-		admin = "Wala pa gurl"
+		url2 = 'http://127.0.0.1:5000/evacuees/get/center/'+center_id
+		response2 = requests.request('GET', url2, headers=headers)
+		json_data2 = response2.json()
+		print(json_data2)
 
 
-		return render_template('view-center.html', json_data=json_data, json_data1=json_data1, admin=admin)
+
+		return render_template('view-center.html', json_data=json_data, json_data1=json_data1, json_data2=json_data2)
 	else:
 		return redirect('unauthorized')
 
