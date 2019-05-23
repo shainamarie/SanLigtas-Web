@@ -12,19 +12,19 @@
     	<div class="add-form">
 	  		<form action="{{ url_for('update_center', public_id=public_id) }}" method="post" xmlns="http://www.w3.org/1999/html">
 	        <div class="form1">
-	          <label for="name"><b>Name</b></label>
+	          <!-- <label for="name"><b>Name</b></label> -->
 	          <input type="text" placeholder="{{ name }}" name="name" required>
 	            
-	          <label for="address"><b>Address</b></label>
+	          <!-- <label for="address"><b>Address</b></label> -->
 	          <input type="text" placeholder="{{ address }}" name="address" required>
 
-	          <label for="capacity"><b>Capacity</b></label>
+	          <!-- <label for="capacity"><b>Capacity</b></label> -->
 	          <input type="number" placeholder="{{ capacity }}" name="capacity" required>
 	        </div>
 
 	        <div class="submit-button">  
 	          <button style="background-color: #1ab394;" type="submit">Submit</button>
-	          <button style="background-color: #0bbc94;" type="submit" value="Cancel" formnovalidate="formnovalidate">Cancel</button>
+	          <button style="background-color: #0bbc94;" type="submit" value="Cancel" formnovalidate="formnovalidate"><a href="{{ url_for('view_spec_center', name="{{ name }}", public_id=public_id) }}">Cancel</a></button>
 	        </div>
 	      </form>
 	    </div>
