@@ -1,5 +1,5 @@
 body {
-  background-color: #324a60;
+  /*background-color: #324a60;*/
   font-family: arial, sans-serif;
   color: #cdcdcd;
 }
@@ -154,7 +154,7 @@ body {
   width: 100%;
 }
 #bar-chart .y-axis li {
-  border-top: 1px solid #4e5464;
+  border-top: 1px solid #cdcdcd;
   display: block;
   height: 63.25px;
   width: 100%;
