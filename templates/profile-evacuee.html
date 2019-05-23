@@ -97,7 +97,7 @@ profile-mobile.html{% extends "mainadmin-base.html" %}
       <!-- Modal content -->
         <div class="modal-content" >
           <span class="close">&times;</span>
-          <p>Are you sure to delete this user?</p>
+          <p style="color: #717476;">Are you sure to delete this user?</p>
           <div style="position: relative; display: flex; justify-content: center;" >
           <button style="background-color:#de0020;"><a href="{{ url_for('delete_dependent', home_id=json_data.home_id, dependents_id=json_data.dependents_id) }}">Yes</a></button>
           <button style="background-color: #0bbc94;"><a href="{{ url_for('viewprofile_evacuee', name=json_data.name, home_id=json_data.home_id) }}" >No</a></button>

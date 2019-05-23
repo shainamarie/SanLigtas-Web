@@ -70,6 +70,53 @@ def before_request():
 
 
 
+@app.route('/relief/updates')
+def relief_updates():
+	if g.user:
+		url = 'http://127.0.0.1:5000/reliefupdates/'
+		headers = {
+			'Authorization' : '{}'.format(session['token'])
+		}
+		response = requests.request('GET', url, headers=headers)
+		json_data = response.json()
+		print(json_data)
+
+
+		return render_template('relief-updates.html', json_data=json_data)
+	else:
+		return redirect(url_for('unauthorized'))
+
+
+@app.route('/add/relief/<name>/<public_id>', methods=['POST', 'GET'])
+def add_relief(name, public_id):
+	if g.user:
+		if request.method == 'POST':
+			if session['role'] == 'Main Admin' or session['role'] == 'Relief Admin':
+				number_goods = request.form.get('number_goods', '')
+				center_public_id = public_id
+				center = name
+
+				url = 'http://127.0.0.1:5000/reliefupdates/'
+				files = {
+					'center' : (None, center),
+					'center_public_id' : (None, center_public_id),
+					'number_goods' : (None, number_goods)
+				}
+				headers = { 'Authorization' : '{}'.format(session['token']) }
+				response = requests.request('POST', url, files=files, headers=headers)
+				json_data = response.json()
+				print(json_data)
+
+				return redirect(url_for('view_spec_center', name=name, public_id=public_id))
+			else:
+				return redirect(url_for('unauthorized'))
+		else:
+			return render_template('add-relief.html', name=name, public_id=public_id)
+
+	else:
+		return redirect(url_for('unauthorized'))	
+
+
 @app.route('/maps')
 def maps():
 	if g.user:
@@ -1430,14 +1477,19 @@ def view_spec_center(name, public_id):
 		print(json_data['latitude'])
 		print(json_data['longitude'])
 
+
 		url2 = 'http://127.0.0.1:5000/evacuees/get/center/'+center_id
 		response2 = requests.request('GET', url2, headers=headers)
 		json_data2 = response2.json()
 		print(json_data2)
 
+		url3 = 'http://127.0.0.1:5000/reliefupdates/get/'+public_id
+		response3 = requests.request('GET', url3, headers=headers)
+		json_data3 = response3.json()
+		# print(json_data3["data"][0]["number_goods"])
 
 
-		return render_template('view-center.html', json_data=json_data, json_data1=json_data1, json_data2=json_data2)
+		return render_template('view-center.html', json_data=json_data, json_data1=json_data1, json_data2=json_data2, json_data3=json_data3)
 	else:
 		return redirect('unauthorized')
 

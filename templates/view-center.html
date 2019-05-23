@@ -9,7 +9,7 @@
   		<span>Home / Evacuation / View / <b> {{ json_data.name }} </b> </span> 
       <div class="action-icon">
 
-  		<span><p><a href="{{ url_for('assign_admin', name=json_data.name, public_id=json_data.public_id) }}">Assign Admin</a></p> | <p><a href="{{ url_for('assign_evacuee', name=json_data.name, public_id=json_data.public_id) }}">Assign Evacuee</a></p> | </p><p><a href = "{{ url_for('update_center', public_id=json_data.public_id ) }}">Edit</a></p> | <a href="#"><p id="myBtn">Delete</p></a></span>
+  		<span><p><a href="{{ url_for('add_relief', name=json_data.name, public_id=json_data.public_id) }}">Add Relief Goods</a></p> | <p><a href="{{ url_for('assign_admin', name=json_data.name, public_id=json_data.public_id) }}">Assign Admin</a></p> | <p><a href="{{ url_for('assign_evacuee', name=json_data.name, public_id=json_data.public_id) }}">Assign Evacuee</a></p> | </p><p><a href = "{{ url_for('update_center', public_id=json_data.public_id ) }}">Edit</a></p> | <a href="#"><p id="myBtn">Delete</p></a></span>
   		</div>
   	</div>
 
@@ -21,7 +21,8 @@
     	<hr>
     	<h5>NAME:</h5> <p>{{ json_data.name }}</p> <br/>
     	<h5>LOCATION:</h5> <p>{{ json_data.address }}</p> <br/>
-    	<h5>CAPACITY:</h5> <p>{{ json_data.capacity}}</p> <br/>
+      <h5>CAPACITY:</h5> <p>{{ json_data.capacity}}</p> <br/>
+      <h5>RELIEF GOODS:</h5> <p>{{ json_data3.data.number_goods}}</p> <br/>
     </div>
 
     <div class="map-holder">
@@ -61,7 +62,7 @@
 
 
 </div>
-<div class="information-holder">
+<div style="margin-bottom: 50px;" class="information-holder">
     <h4>EVACUEES ASSIGNED</h4>
     <hr style="margin-bottom: 0px;">
     <div class="table">
