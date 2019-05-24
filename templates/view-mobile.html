@@ -4,27 +4,17 @@
 <div class="content-holder">
 
 	<div class="title">
-		<h4>USER MANAGEMENT</h4> 
-		<span>Home / Users / Admin / <b> View </b></span>
-
-    
-
+		<h4>USER MANAGEMENT</h4>
+		<span>Home / Users / Mobile / <b> View </b></span>
 
      <div class="search-container">
-      
       <form action="{{ url_for('search_user') }}" method="post">
         <input type="text" name="keyword" placeholder="Search user.." name="search">
         <button type="submit"><i class="fa fa-search"></i></button>
       </form>
     </div>
-
-     
 	</div>
 
-<div class="action-holder">
-          <a href="/add/user/admin"><img src="/static/img/add-user.png" width="30" height="30" style="margin: 5px;" align="left"  /></a>
-          <!-- <h1><a href="#">Evacuation &nbsp &nbsp > </a></h1> -->
-</div>
 
 <div class="holder">
 <div class="table">
@@ -32,11 +22,13 @@
 
 	<div class="column">
 		<tr>
-		  	<th>USERNAME</th>
+		<th>USERNAME</th>
         <th>NAME</th>
         <th>GENDER</th>
-        <th>ROLE</th>
-		    <th>EMAIL</th>
+        <th>ADDRESS</th>
+		<th>EMAIL</th>
+		<th>CONTACT NUMBER</th>
+		<th>BIRTH DATE</th>
         <th>VIEW</th>
 		  </tr>
 	</div>
@@ -45,11 +37,13 @@
     <td> {{ user.username }}</td>
     <td> {{ user.first_name }} {{ user.last_name }}</td>
     <td> {{ user.gender }}</td>
-    <td> {{ user.role }}</td>
+    <td> {{ user.address }}</td>
     <td> {{ user.email }}</td>
+    <td> {{ user.contact_number }}</td>
+    <td> {{ user.birth_date }}</td>
 
     <td style="position: relative; display: flex; ">
-      <a href = "{{ url_for('viewprofile_admin',public_id=user.public_id, username=user.username) }}"><img src="/static/img/web.png" style="margin:5px;" width="25" height="25"  /></a>
+      <a href = "{{ url_for('viewprofile_mobile',public_id=user.public_id, username=user.username) }}"><img src="/static/img/web.png" style="margin:5px;" width="25" height="25"  /></a>
       
     </td>
 
@@ -60,7 +54,7 @@
           <span class="close">&times;</span>
           <p>Are you sure to delete this user?</p>
           <div style="position: relative; display: flex; justify-content: center;" >
-          <button style="background-color:#de0020;"><a href="{{ url_for('delete_admin', public_id=public_id) }}">Yes</a></button>
+          <button style="background-color:#de0020;"><a href="{{ url_for('delete_mobile', public_id=public_id) }}">Yes</a></button>
           <button style="background-color: #0bbc94;"><a href="{{ url_for('viewuser') }}">No</a></button>
         </div>
   </div> 
