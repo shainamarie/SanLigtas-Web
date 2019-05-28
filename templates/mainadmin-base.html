@@ -5,6 +5,7 @@
 <link rel="stylesheet" type="text/css" href="/static/css/mainadmin.css" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" type="text/css" href="/static/css/plot.css" />
 
 <title>San Ligtas | Main Admin</title>
 
@@ -22,11 +23,16 @@
 
 </div>
 
-<div class="w3-sidebar w3-light-#343a40; w3-bar-block" style="width: 225px; z-index: 2; background-color:#343a40; position: fixed; top:0;">
+<div class="w3-sidebar w3-light-#343a40; w3-bar-block" style="width: 225px; z-index: 5; background-color:#343a40; position: fixed; top:0;">
 	<div class="name">
 		<img src="/static/img/avatarq.png" align="left" />
 		<h1><a href="{{ url_for('ownprofile') }}">{{ session['first_name'] }} {{ session['last_name'] }}</a></h1>
 		<p>{{ session['role'] }}</p>
+	</div>
+
+	<div class="dashboard">
+		<img src="/static/img/dashboard.png" align="left"  />
+		<h1><a href="{{ url_for('mainadminhome', username=session['user'], first_name=session['first_name'], last_name=session['last_name']) }}">Dashboard</a></h1>
 	</div>
 
 	<div class="users">
@@ -47,7 +53,7 @@
 	
 	<div class="updates">
 		<img src="/static/img/updates.png" align="left" />
-		<h1><a href="#">Updates</a></h1>
+		<h1><a href="/relief">Updates</a></h1>
 	</div>
 
 	<div class="alerts">
@@ -72,7 +78,7 @@
 
 	<div class="stats">
 		<img src="/static/img/stats.png" align="left" />
-		<h1><a href="#">Statistics</a></h1>
+		<h1><a href="/statistics-frequency">Statistics</a></h1>
 	</div>
 
 	<div class="webs">

@@ -1,0 +1,55 @@
+{% extends "mainadmin-base.html" %}
+{% block content %}
+
+<div class="content-holder">
+
+	<div class="title">
+		<h4>RELIEF UPDATES</h4>
+		<span>Home / Updates / <b> Relief </b></span>
+
+   
+
+	</div>
+
+
+    <div style="margin-top: 50px; margin-right: 100px;" class="search-container">
+      <form action="{{ url_for('add_relief') }}" method="post">
+        <input style="z-index: -5;" type="text" name="keyword" placeholder="Search center.." name="search">
+        <button type="submit"><i class="fa fa-search"></i></button>
+      </form>
+    </div>
+
+
+<div style="margin: 100px;" class="holder">
+  <h4>Search any center</h4>
+</div>
+</div>
+
+<script>
+// Get the modal
+var modal = document.getElementById('myModal');
+
+// Get the button that opens the modal
+var btn = document.getElementById("myBtn");
+
+// Get the <span> element that closes the modal
+var span = document.getElementsByClassName("close")[0];
+
+// When the user clicks the button, open the modal 
+btn.onclick = function() {
+  modal.style.display = "block";
+}
+
+// When the user clicks on <span> (x), close the modal
+span.onclick = function() {
+  modal.style.display = "none";
+}
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+  if (event.target == modal) {
+    modal.style.display = "none";
+  }
+}
+</script>	
+{% endblock %}

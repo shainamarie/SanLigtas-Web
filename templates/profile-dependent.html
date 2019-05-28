@@ -1,4 +1,4 @@
-profile-mobile.html{% extends "mainadmin-base.html" %}
+{% extends "mainadmin-base.html" %}
 {% block content %}
 <div class="content-holder">
 
@@ -15,6 +15,7 @@ profile-mobile.html{% extends "mainadmin-base.html" %}
           <img src="/static/img/settings.png" width="30" height="30" style="margin: 5px;" align="right"  />
           <!-- <h1><a href="#">Evacuation &nbsp &nbsp > </a></h1> -->
           <div class="dropdown-settings">
+            <a href="{{ url_for('update_dependent', dependents_id=json_data.dependents_id, name=json_data.name ) }}">Update Profile</a>
             <a href="{{ url_for('remove_dependent', dependents_id=json_data.dependents_id, home_id=json_data.home_id ) }}">Remove Dependent</a>
             <a id="myBtn" href="#">Delete Dependent</a>
       </div>
@@ -25,7 +26,18 @@ profile-mobile.html{% extends "mainadmin-base.html" %}
     <h4>{{ json_data.name }}</h4>
     <span>Dependent</span>      
   </div>
-
+      {% if error %}
+         <p style="color:red; text-align: center; font-size: 12px;"><strong>Error:</strong> {{ error }}
+      {% endif %}
+      {% with messages = get_flashed_messages() %}
+         {% if messages %}
+            <ul>
+               {% for message in messages %}
+               <p style="color: green">{{ message }}</p>
+               {% endfor %}
+            </ul>
+         {% endif %}
+      {% endwith %}
 
   <div class="information-holder">
   	<h4>USER INFORMATION</h4>

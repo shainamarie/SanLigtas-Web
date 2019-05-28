@@ -25,7 +25,18 @@
           <a href="/add/user/admin"><img src="/static/img/add-user.png" width="30" height="30" style="margin: 5px;" align="left"  /></a>
           <!-- <h1><a href="#">Evacuation &nbsp &nbsp > </a></h1> -->
 </div>
-
+    {% if error %}
+         <p style="color:red; text-align: center; font-size: 12px;"><strong>Error:</strong> {{ error }}
+      {% endif %}
+      {% with messages = get_flashed_messages() %}
+         {% if messages %}
+            <ul>
+               {% for message in messages %}
+               <p style="color: green">{{ message }}</p>
+               {% endfor %}
+            </ul>
+         {% endif %}
+      {% endwith %}
 <div class="holder">
 <div class="table">
 <table id="customers">	

@@ -1,4 +1,4 @@
-profile-mobile.html{% extends "mainadmin-base.html" %}
+{% extends "mainadmin-base.html" %}
 {% block content %}
 <div class="content-holder">
 
@@ -7,36 +7,44 @@ profile-mobile.html{% extends "mainadmin-base.html" %}
     	<img src="/static/img/avatarq.png" align="left" />
     </div>
     <div class="action-icon">
-    	<!-- <p><a href = "{{ url_for('update_mobile', public_id=json_data.public_id ) }}">edit</a></p> | <a href="#"><p id="myBtn">delete</p></a> -->
-
-    	<!-- <img src="/static/img/settings.png"  width="30" height="30" style="margin: 5px;" align="right" /> -->
+    	
 
       <div class="settings">
           <img src="/static/img/settings.png" width="30" height="30" style="margin: 5px;" align="right"  />
           <!-- <h1><a href="#">Evacuation &nbsp &nbsp > </a></h1> -->
           <div class="dropdown-settings">
-            <!-- <a href="{{ url_for('update_mobile', public_id=json_data.public_id ) }}">Edit Profile</a> -->
+            <a href="{{ url_for('update_admin', public_id=json_data.public_id ) }}">Edit Profile</a>
+            <a href="{{ url_for('change_pass', public_id=json_data.public_id ) }}">Change Password</a>
             <a id="myBtn" href="#">Delete Profile</a>
       </div>
-
+      {% for ad in json_data.data %}
   </div>
     	<!-- <img src="/static/img/edits.png" style="margin:5px;" width="20" height="25" align="right" /> -->
     </div>
-    <h4>{{ json_data.first_name }} {{ json_data.last_name }}</h4>
-    <span>Mobile User</span>      
+    <h4>{{ ad.first_name }} {{ ad.last_name }}</h4>
+    <span>{{ ad.role }}</span>      
   </div>
-
+{% if error %}
+         <p style="color:red; text-align: center; font-size: 12px;"><strong>Error:</strong> {{ error }}
+      {% endif %}
+      {% with messages = get_flashed_messages() %}
+         {% if messages %}
+            <ul>
+               {% for message in messages %}
+               <p style="color: green">{{ message }}</p>
+               {% endfor %}
+            </ul>
+         {% endif %}
+      {% endwith %}
 
   <div class="information-holder">
-  	<h4>USER INFORMATION</h4>
+  	<h4>ADMIN INFORMATION</h4>
   	<hr>
-  	<h5>NAME:</h5> <p>{{ json_data.first_name }} {{ json_data.last_name }}</p> <br/>
-  	<h5>USERNAME:</h5> <p>{{ json_data.username }}</p> <br/>
-  	<h5>EMAIL ADRESS:</h5> <p>{{ json_data.email}}</p> <br/>
-  	<h5>BIRTHDATE:</h5> <p>{{ json_data.birth_date }}</p> <br/>
-  	<h5>GENDER:</h5> <p>{{ json_data.gender }}</p> <br/>
-  	<h5>ADDRESS:</h5> <p>{{ json_data.address }}</p> <br/>
-  	<h5>CONTACT NUMBER:</h5> <p>{{ json_data.contact_number }}</p> <br/>
+  	<h5>NAME:</h5> <p>{{ ad.first_name }} {{ ad.last_name }}</p> <br/>
+  	<h5>USERNAME:</h5> <p>{{ ad.username }}</p> <br/>
+  	<h5>EMAIL ADRESS:</h5> <p>{{ ad.email}}</p> <br/>
+  	<h5>ROLE:</h5> <p>{{ ad.role }}</p> <br/>
+  	<h5>GENDER:</h5> <p>{{ ad.gender }}</p> <br/>
   </div>
 
   <div class="change-picture">
@@ -52,13 +60,13 @@ profile-mobile.html{% extends "mainadmin-base.html" %}
       <!-- Modal content -->
         <div class="modal-content" >
           <span class="close">&times;</span>
-          <p style="color: #717476;">Are you sure to delete this user?</p>
+          <p>Are you sure to delete this user?</p>
           <div style="position: relative; display: flex; justify-content: center;" >
-          <button style="background-color:#de0020;"><a href="{{ url_for('delete_mobile', public_id=json_data.public_id) }}">Yes</a></button>
-          <button style="background-color: #0bbc94;"><a href="{{ url_for('viewprofile_mobile', username=json_data.username, public_id=json_data.public_id) }}" >No</a></button>
+          <button style="background-color:#de0020;"><a href="{{ url_for('delete_admin', public_id=ad.public_id) }}">Yes</a></button>
+          <button style="background-color: #0bbc94;"><a href="{{ url_for('viewprofile_admin', username=ad.username, public_id=json_data.public_id) }}" >No</a></button>
         </div>
   </div> 
-
+{% endfor %}
 
 </div>
 

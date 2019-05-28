@@ -4,6 +4,59 @@ body {
   background-color: #f3f3f4; 
 }
 
+.square {
+  height: 20px;
+  width: 25px;
+  margin-left: 60px;
+}
+
+
+.icon  {
+	text-align: center;
+	height: 30px;
+	margin-bottom: 50px;
+}
+
+.information-holder2 h4 {
+	color: #717476;
+	font-size: 20px;
+	margin-left: 20px;
+	text-align: center;
+	
+}
+
+.information-holder2 h5 {
+	color: #717476;
+	font-size: 18px;
+	margin-left: 20px;
+	text-align: center;
+	/*font-weight: bold;*/
+	
+}
+
+.information-holder2 p {
+	display: inline-block;
+	color: #717476;
+	margin-left: 50px;
+	margin-bottom: 0px;
+	margin-top: 0px;
+}
+
+
+.information-holder2 {
+	float: right;
+	display: inline-block;
+	background-color: white; 
+	margin: 0 10px;
+	width: 500px;
+	/*margin-left: 550px;*/
+	margin-right: 30px;
+	margin-top: 20px;
+	border-top: 5px solid #e7eaec;
+	border-bottom: 5px solid #e7eaec;
+	/*margin-bottom: 50px;*/
+}
+
 .action-holder {
 	float: left;
 	margin-bottom: 20px;
@@ -47,7 +100,7 @@ body {
    	margin-bottom: 20px;
    	top: 0;
    	position: fixed;
-   	z-index: 1;
+   	z-index: 5;
 }
 
 #navbar img {
@@ -237,9 +290,18 @@ a {
 	border-bottom: 1px solid #4d5158;
 }
 
+.dashboard {
+	border-bottom: 1px solid #4d5158;
+}
+
 .messages:hover {
 	opacity: 0.8;
 }
+
+.dashboard:hover {
+	opacity: 0.8;
+}
+
 
 .messages h1 {
 	color: white;
@@ -249,7 +311,23 @@ a {
 	margin-left: 30px;
 }
 
+
+.dashboard h1 {
+	color: white;
+	font-size: 14px;
+	font-weight: 600;
+	padding-left: 25px;
+	margin-left: 30px;
+}
+
 .messages img {
+	height: 12px;
+	width: 15px;
+	margin-left: 30px;
+	margin-top: 5px;
+}
+
+.dashboard img {
 	height: 12px;
 	width: 15px;
 	margin-left: 30px;
@@ -508,7 +586,7 @@ button {
 
 
 .title h4 {
-	width: 250px;
+	/*width: 250px;*/
 }
 
 .title a:hover {
@@ -590,7 +668,7 @@ button {
 
 .information-holder h4 {
 	color: #717476;
-	font-size: 23px;
+	font-size: 20px;
 	margin-left: 20px;
 	text-align: center;
 	
@@ -680,8 +758,8 @@ button {
 
 .holder {
 	background-color: white; 
-	margin-left: 20px;
-	margin-right: 20px;
+	margin-left: 50px;
+	margin-right: 50px;
 	margin-top: 50px;
 	border-top: 5px solid #e7eaec;
 	border-bottom: 5px solid #e7eaec;

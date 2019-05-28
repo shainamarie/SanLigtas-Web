@@ -4,8 +4,8 @@
 <div class="content-holder">
 
 	<div class="title">
-		<h4>EVACUATION CENTER</h4>
-		<span>Home / Evacuaton / <b> View </b></span>
+		<h4>RELIEF UPDATES</h4>
+		<span>Home / Updates / <b> Relief </b></span>
 
     <div class="search-container">
       <form action="{{ url_for('search_center') }}" method="post">
@@ -17,7 +17,7 @@
 	</div>
 
 <div class="action-holder">
-          <a href="/add/center"><img src="/static/img/add-location.png" width="30" height="30" style="margin: 5px;" align="left"  /></a>
+          <a href="/add/relief"><img src="/static/img/goods.png" width="30" height="30" style="margin: 5px;" align="left"  /></a>
           <!-- <h1><a href="#">Evacuation &nbsp &nbsp > </a></h1> -->
 </div>
 
@@ -28,18 +28,16 @@
 	<div class="column">
 		<tr>
         <th>NAME</th>
-        <th>ADDRESS</th>
-        <th>CAPACITY</th>
+        <th>No. of Goods</th>
         <th>VIEW</th>
 		</tr>
 	</div>
   {% for evac in json_data.data %}
   <tr>
-    <td> {{ evac.name }}</td>
-    <td> {{ evac.address }}</td>
-    <td> {{ evac.capacity }}</td>
+    <td> {{ evac.center }}</td>
+    <td> {{ evac.number_goods }}</td>
     <td style="position: relative; display: flex; ">
-      <a href = "{{ url_for('view_spec_center', name=evac.name, public_id=evac.public_id) }}"><img src="/static/img/web.png" style="margin:5px;" width="25" height="25"  /></a>
+      <a href = "{{ url_for('view_spec_center', name=evac.center, public_id=evac.center_public_id) }}"><img src="/static/img/web.png" style="margin:5px;" width="25" height="25"  /></a>
       <!-- <button id="myBtn"><a href="#myModal"><img src="/static/img/deletes.png"  width="20" height="25" style="margin: 5px;" /></input></a></button> -->
     </td>
   </tr>

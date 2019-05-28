@@ -14,7 +14,18 @@
       </form>
     </div>
 	</div>
-
+{% if error %}
+         <p style="color:red; text-align: center; font-size: 12px;"><strong>Error:</strong> {{ error }}
+      {% endif %}
+      {% with messages = get_flashed_messages() %}
+         {% if messages %}
+            <ul>
+               {% for message in messages %}
+               <p style="color: green">{{ message }}</p>
+               {% endfor %}
+            </ul>
+         {% endif %}
+      {% endwith %}
 
 <div class="holder">
 <div class="table">

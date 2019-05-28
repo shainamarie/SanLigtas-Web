@@ -13,6 +13,9 @@
 <body>
 
 <div class="login-container">
+	{% if error %}
+         <p style="color:red; text-align: center; font-size: 12px;"><strong>Error:</strong> {{ error }}
+      {% endif %}
 	<div class="admin-container">
 	<h2 style="font-family: 'Oswald', sans-serif;">Welcome to San Ligtas</h2>
 		<button onclick="document.getElementById('id01').style.display='block'">MAIN ADMIN</button>

@@ -4,43 +4,73 @@
 <div class="content-holder">
 
 
-	<div class="title">
-		<h4>EVACUATION CENTER</h4> 
-		<span>Home / Evacuaton / View / <b> {{ json_data.name }} </b> </span> 
-    <div class="action-icon">
+	 
+   <div class="title">
+      <h4>EVACUATION CENTER</h4> 
+      <span>Home / Evacuation / View / <b> {{ json_data.name }} </b> </span> 
 
-		<span><p><a href="{{ url_for('assign_admin', name=json_data.name, public_id=json_data.public_id) }}">Assign Admin</a></p> | <p><a href="{{ url_for('assign_evacuee', name=json_data.name, public_id=json_data.public_id) }}">Assign Evacuee</a></p> | </p><p><a href = "{{ url_for('update_center', public_id=json_data.public_id ) }}">Edit</a></p> | <a href="#"><p id="myBtn">Delete</p></a></span>
-		</div>
-	</div>
+      <div class="settings">
+          <img src="/static/img/settings.png" width="30" height="30" style="margin-right: 40px;" align="right"  />
+          <!-- <h1><a href="#">Evacuation &nbsp &nbsp > </a></h1> -->
+          <div class="dropdown-settings">
+            <a href="{{ url_for('update_center', public_id=json_data.public_id ) }}">Update Center</a>
+            <a href="{{ url_for('assign_admin', name=json_data.name, public_id=json_data.public_id ) }}">Assign Admin</a>
+            <a href="{{ url_for('assign_evacuee', name=json_data.name, public_id=json_data.public_id ) }}">Assign Evacuee</a>
+            <a href="{{ url_for('add_relief_spec', name=json_data.name, public_id=json_data.public_id ) }}">Add Relief</a>
+            <a href="{{ url_for('delete_relief', name=json_data.name, center_public_id=json_data.public_id ) }}">Delete Relief</a>
+            <a href="{{ url_for('update_relief', name=json_data.name, center_public_id=json_data.public_id ) }}">Update Relief</a>
+            <a href="#"><p id="myBtn">Delete Center</p></a>
 
-	
 
+          </div>
+      
+
+      </div>
+    </div>
+      {% with messages = get_flashed_messages() %}
+         {% if messages %}
+            <ul>
+               {% for message in messages %}
+               <p style="color: green">{{ message }}</p>
+               {% endfor %}
+            </ul>
+         {% endif %}
+      {% endwith %}
+
+    <div class="information-holder">
+    	<h4>CENTER INFORMATION</h4>
+    	<hr>
+    	<h5>NAME:</h5> <p>{{ json_data.name }}</p> <br/>
+    	<h5>LOCATION:</h5> <p>{{ json_data.address }}</p> <br/>
+      <h5>CAPACITY:</h5> <p>{{ json_data.capacity}}</p> <br/>
+      <h5>RELIEF GOODS:</h5> <p>{{ json_data3.data.number_goods}}</p> <br/>
+    </div>
+
+    <div class="map-holder">
+    	<div id="googleMap" style="width:100%;height:400px;"></div>
+    </div>
 
   <div class="information-holder">
-  	<h4>CENTER INFORMATION</h4>
-  	<hr>
-  	<h5>NAME:</h5> <p>{{ json_data.name }}</p> <br/>
-  	<h5>LOCATION:</h5> <p>{{ json_data.address }}</p> <br/>
-  	<h5>CAPACITY:</h5> <p>{{ json_data.capacity}}</p> <br/>
-    <h5>ADMIN:</h5>{% for ad in json_data1.data %} <p>{{ ad.center_admin }} , </p> {% endfor %} <br/>
-
+    <h4>ADMIN ASSIGNED</h4>
+    <hr style="margin-bottom: 0px;">
+    <div class="table">
+    <table id="customers"> 
+     {% for ad in json_data1.data %}   
+      <tr>
+        <td> {{ ad.center_admin }}</td>
+        <td style="position: relative; display: flex; ">
+          <a href = "{{ url_for('viewprofile_admin2', username=ad.center_admin, public_id=ad.center_public_id) }}"><img src="/static/img/web.png" style="margin:5px;" width="25" height="25"  /></a>
+        </td>
+      </tr>
+      {% endfor %}
+    </table>
   </div>
-
-  <div class="map-holder">
-  	<div id="googleMap" style="width:100%;height:400px;"></div>
-  </div>
-
-  <div class="information-holder">
-    <h4>EVACUEES ASSIGNED</h4>
-    <hr>
-    {% for evac in json_data2.data %}
-    <h5>NAME:</h5> <p>{{ evac.name }}</p> <br/>
-    {% endfor %}
-  </div>
-
 </div>
 
-<div id="myModal" class="modal">
+
+
+
+  <div id="myModal" class="modal">
       <!-- Modal content -->
         <div class="modal-content" >
           <span class="close">&times;</span>
@@ -53,7 +83,21 @@
 
 
 </div>
-
+<div style="margin-bottom: 50px;" class="information-holder">
+    <h4>EVACUEES ASSIGNED</h4>
+    <hr style="margin-bottom: 0px;">
+    <div class="table">
+    <table id="customers"> 
+     {% for evac in json_data2.data %}   
+      <tr>
+        <td> {{ evac.name }}</td>
+        <td style="position: relative; display: flex; ">
+          <a href = "{{ url_for('viewprofile_evacuee', name=evac.name, home_id=evac.home_id) }}"><img src="/static/img/web.png" style="margin:5px;" width="25" height="25"  /></a>
+        </td>
+      </tr>
+      {% endfor %}
+    </table>
+  </div>
 <script>
 // Get the modal
 var modal = document.getElementById('myModal');

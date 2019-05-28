@@ -13,8 +13,9 @@
           <img src="/static/img/settings.png" width="30" height="30" style="margin: 5px;" align="right"  />
           <!-- <h1><a href="#">Evacuation &nbsp &nbsp > </a></h1> -->
           <div class="dropdown-settings">
-            <a href="{{ url_for('update_admin', public_id=json_data.public_id ) }}">Edit Profile</a>
+            <a href="{{ url_for('update_admin', public_id=json_data.public_id ) }}">Update Profile</a>
             <a href="{{ url_for('change_pass', public_id=json_data.public_id ) }}">Change Password</a>
+            <a href="{{ url_for('remove_admin', username=json_data.username ) }}">Remove Admin</a>
             <a id="myBtn" href="#">Delete Profile</a>
       </div>
 
@@ -24,7 +25,18 @@
     <h4>{{ json_data.first_name }} {{ json_data.last_name }}</h4>
     <span>{{ json_data.role }}</span>      
   </div>
-
+      {% if error %}
+         <p style="color:red; text-align: center; font-size: 12px;"><strong>Error:</strong> {{ error }}
+      {% endif %}
+      {% with messages = get_flashed_messages() %}
+         {% if messages %}
+            <ul>
+               {% for message in messages %}
+               <p style="color: green">{{ message }}</p>
+               {% endfor %}
+            </ul>
+         {% endif %}
+      {% endwith %}
 
   <div class="information-holder">
   	<h4>ADMIN INFORMATION</h4>

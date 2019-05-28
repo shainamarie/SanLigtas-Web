@@ -47,19 +47,21 @@
 
         <div class="submit-button">  
           <button style="background-color: #1ab394;" type="submit">Submit</button>
-          <button style="background-color: #0bbc94;" type="submit" value="Cancel" formnovalidate="formnovalidate">Cancel</button>
+          <button style="background-color: #0bbc94;" type="submit" value="Cancel" formnovalidate="formnovalidate"><a href="{{ url_for('viewevacuees') }}">Cancel</a></button>
         </div>
       </form>
     </div>
 	</div>
 
   <div class="change-picture">
-      <h4>Add Picture</h4>
+      <h4>Search dependent</h4>
       <hr>
-      <img src="/static/img/avatarq.png" align="left" />
-      <form name="myWebForm" action="mailto:youremail@email.com" method="post">
-      <input type="file" name="uploadField" />
+      <div class="search-container">
+      <form action="{{ url_for('search_dependent', home_id=home_id, name=name) }}" method="post">
+        <input style="z-index: -5;" type="text" name="keyword" placeholder="Search center.." name="search">
+        <button type="submit"><i class="fa fa-search"></i></button>
       </form>
+    </div>
     </div>
 </div>
 

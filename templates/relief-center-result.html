@@ -4,11 +4,11 @@
 <div class="content-holder">
 
 	<div class="title">
-		<h4>EVACUATION CENTER</h4>
-		<span>Home / Evacuaton / <b> View </b></span>
+		<h4>RELIEF UPDATES</h4>
+		<span>Home / Updates / Center / <b> Result </b></span>
 
     <div class="search-container">
-      <form action="{{ url_for('search_center') }}" method="post">
+      <form action="{{ url_for('add_relief') }}" method="post">
         <input style="z-index: -5;" type="text" name="keyword" placeholder="Search center.." name="search">
         <button type="submit"><i class="fa fa-search"></i></button>
       </form>
@@ -16,10 +16,6 @@
 
 	</div>
 
-<div class="action-holder">
-          <a href="/add/center"><img src="/static/img/add-location.png" width="30" height="30" style="margin: 5px;" align="left"  /></a>
-          <!-- <h1><a href="#">Evacuation &nbsp &nbsp > </a></h1> -->
-</div>
 
 <div class="holder">
 <div class="table">
@@ -39,7 +35,7 @@
     <td> {{ evac.address }}</td>
     <td> {{ evac.capacity }}</td>
     <td style="position: relative; display: flex; ">
-      <a href = "{{ url_for('view_spec_center', name=evac.name, public_id=evac.public_id) }}"><img src="/static/img/web.png" style="margin:5px;" width="25" height="25"  /></a>
+      <a href = "{{ url_for('add_relief_spec', name=evac.name, public_id=evac.public_id) }}"><img src="/static/img/goods.png" style="margin:5px;" width="25" height="25"  /></a>
       <!-- <button id="myBtn"><a href="#myModal"><img src="/static/img/deletes.png"  width="20" height="25" style="margin: 5px;" /></input></a></button> -->
     </td>
   </tr>
