@@ -19,21 +19,16 @@ import random
 
 
 app = Flask(__name__, template_folder="templates")
+api_url = 'http://127.0.0.1:5000'
 app.config['SESSION_TYPE'] = 'filesystem'
 app.config['SECRET_KEY'] = 'zxcvbnm'
 
-
-api_url = 'http://127.0.0.1:5000'
-
-
-app.config['MAIL_SERVER'] = 'smtp.mailtrap.io'
+app.config['MAIL_SERVER'] = 'smtp.mailtrap.io'    #content type sa mail dapat html type
 app.config['MAIL_PORT'] = 2525
 app.config['MAIL_USERNAME'] = '3c42180c5ffb31'
 app.config['MAIL_PASSWORD'] = '2f695055c2fd0f'
 app.config['MAIL_USE_TLS'] = True
 app.config['MAIL_USE_SSL'] = False
-
-
 mail = Mail(app)
 
 #Functions: These define the functions within the views.
@@ -45,7 +40,6 @@ def api_login(autho, username, last_name, first_name, role):
 	session['role'] = role
 	g.token = session['token'] 
 	g.user = session['user']
-	print(g.user)
 	return session['token']
 
 def generate_password():
@@ -60,7 +54,6 @@ def before_request():
     if 'user' in session and 'token' in session:
         g.user = session['user']
         g.token = session['token']
-
 
 
 #Authorization and Index page views
@@ -115,7 +108,6 @@ def logout():
 		return redirect('unauthorized')
 
 
-
 #Profile views
 @app.route('/own/profile')
 def ownprofile():
@@ -136,8 +128,8 @@ def ownprofile():
 	else:
 		return redirect('unauthorized')
 
-@app.route('/profile-page/admin/<username>/<public_id>')
-def viewprofile_admin(username, public_id):
+@app.route('/profile-page/admin/<public_id>')
+def viewprofile_admin(public_id):
 	if g.user:
 		url = api_url+'/user/admin/'+public_id
 		headers = {
@@ -149,8 +141,8 @@ def viewprofile_admin(username, public_id):
 	else:
 		return redirect('unauthorized')
 
-@app.route('/profile-page/admin2/<username>/<public_id>')
-def viewprofile_admin2(username, public_id):
+@app.route('/profile-page/admin2/<public_id>')
+def viewprofile_admin2(public_id):
 	if g.user:
 		url = api_url+'/user/admin/search/'+username
 		headers = {
@@ -163,8 +155,8 @@ def viewprofile_admin2(username, public_id):
 		return redirect('unauthorized')
 
 
-@app.route('/profile-page/mobile/<username>/<public_id>')
-def viewprofile_mobile(username, public_id):
+@app.route('/profile-page/mobile/<public_id>')
+def viewprofile_mobile(public_id):
 	if g.user:
 		url = api_url+'/user/mobile/'+public_id
 		headers = {
@@ -178,22 +170,8 @@ def viewprofile_mobile(username, public_id):
 	else:
 		return redirect('unauthorized')
 
-@app.route('/profile-page/dependent/<name>/<dependents_id>')
-def viewprofile_dependent(name, dependents_id):
-	if g.user:
-		url = api_url+'/dependents/'+dependents_id
-		headers = {
-			'Authorization': '{}'.format(session['token'])
-		}
-		response = requests.request('GET', url, headers=headers)
-		json_data = response.json()
-		print(json_data)
-		return render_template('profile-dependent.html', json_data=json_data)
-	else:
-		return redirect('unauthorized')
-
-@app.route('/profile-page/evacuees/<name>/<public_id>')
-def viewprofile_evacuee(name, public_id):
+@app.route('/profile-page/evacuees/<public_id>')
+def viewprofile_evacuee(public_id):
 	if g.user:
 		url = api_url+'/evacuees/'+public_id 	        
 		headers = {
@@ -201,8 +179,6 @@ def viewprofile_evacuee(name, public_id):
 		}
 		response = requests.request('GET', url, headers=headers)
 		json_data = response.json()
-		print(name)
-		print(json_data)
 
 		return render_template('profile-evacuee.html', json_data=json_data)
 	else:
@@ -233,11 +209,9 @@ def stat():
 	return render_template('stat-freq.html', male_age=male_age, female_age=female_age)
 
 
-
 #Homepage
-@app.route('/main-admin/home/<username>/<first_name>/<last_name>')
-def mainadminhome(username, first_name, last_name):
-	print(g.user)
+@app.route('/main-admin/home/')
+def mainadminhome():
 	if g.user:
 		headers = {
 			'Authorization' : '{}'.format(session['token'])
@@ -255,9 +229,8 @@ def mainadminhome(username, first_name, last_name):
 		
 		response = requests.request('GET', url, headers=headers)
 		json_data = response.json()
-		print(json_data)
 
-		return render_template('dashboard.html', json_data=json_data, username=username, first_name=first_name, last_name=last_name,  weather=formatted_data, weather_icon=weather_icon, celcius=celcius, city=city )
+		return render_template('dashboard.html', json_data=json_data, username=session['user'], first_name=session['first_name'], last_name=session['last_name'],  weather=formatted_data, weather_icon=weather_icon, celcius=celcius, city=city )
 	else:
 		return redirect('unauthorized')
 
@@ -282,7 +255,7 @@ def home():
 
 
 #Search
-@app.route('/search/center', methods=['POST', 'GET'])
+@app.route('/search/center', methods=['POST'])
 def search_center():
 	if g.user:
 		if request.method == 'POST':
@@ -301,13 +274,10 @@ def search_center():
 				return render_template('no-center-result.html')
 			else:
 				return render_template('center-result.html', json_data=json_data)
-		else:
-			return 'Wala mumsh'
-
 	else:
 		return redirect('unauthorized')	
 
-@app.route('/search/user', methods=['POST', 'GET'])
+@app.route('/search/user', methods=['POST'])
 def search_user():
 	if g.user:
 		if request.method == 'POST':
@@ -325,13 +295,10 @@ def search_user():
 				return render_template('no-user-result.html')
 			else:
 				return render_template('user-result.html', json_data=json_data)
-		else:
-			return 'Wala mumsh'
-
 	else:
 		return redirect('unauthorized')
 
-@app.route('/search/evacuee/<name>/<public_id>', methods=['POST', 'GET'])
+@app.route('/search/evacuee/<name>/<public_id>', methods=['POST'])
 def search_evacuee(name, public_id):
 	if g.user:
 		if request.method == 'POST':
@@ -349,13 +316,10 @@ def search_evacuee(name, public_id):
 				return render_template('no-user-result.html')
 			else:
 				return render_template('evacuee-result.html', json_data=json_data, name=name, public_id=public_id)
-		else:
-			return 'Wala mumsh'
-
 	else:
 		return redirect('unauthorized')
 
-@app.route('/search/admin/<name>/<public_id>', methods=['POST', 'GET'])
+@app.route('/search/admin/<name>/<public_id>', methods=['POST'])
 def search_admin(name, public_id):
 	if g.user:
 		if request.method == 'POST':
@@ -373,9 +337,6 @@ def search_admin(name, public_id):
 				return render_template('no-user-result.html')
 			else:
 				return render_template('admin-result.html', json_data=json_data, name=name, public_id=public_id)
-		else:
-			return 'Wala mumsh'
-
 	else:
 		return redirect('unauthorized')
 
@@ -407,12 +368,8 @@ def add_user():
 				last_name = request.form.get('last_name', '')
 				role = request.form.get('role', '')
 				username = request.form.get('username', '')
-				# password = 'admin'
 				gender = request.form.get('gender', '')
-				print(role)
-				print(gender)
 				password_generator = generate_password()
-				print(password_generator)
 				password = password_generator
 				url = api_url+'/user/admin/'
 				files = {
@@ -426,14 +383,10 @@ def add_user():
 				}
 				response = requests.request('POST', url, files=files)
 				login_dict = json.loads(response.text)
-				print(email)
-				print(response.text)
 				message = login_dict["message"]
-				print(message)
 				if message == "Email already used.":
 					return redirect(url_for('add_user'))
 				else:
-					print(response)
 					mat = password
 					msg = Message(body="You have been registered on SanLigtas.\n Username:"+username+"\n Password: "+mat+"\n Welcome to the team!",
 						sender="noreply@sanligtas.com",
@@ -606,7 +559,7 @@ def update_mobile(public_id):
 		return redirect('unauthorized')
 
 
-
+#Household
 #Evacuee	
 @app.route('/view/evacuees')
 def viewevacuees():
@@ -690,8 +643,7 @@ def update_evacuee(public_id):
 				headers = { 
 					'Authorization' : '{}'.format(session['token']) 
 				}
-				payload = {
-						
+				payload = {	
 					'name' : (None, name),
 					'gender' : (None, gender),
 					'age' : (None, age),
@@ -705,7 +657,6 @@ def update_evacuee(public_id):
 				del_dict = json.loads(response.text)
 				
 				return redirect(url_for('viewevacuees'))
-
 			else:
 				return redirect('unauthorized')
 		else:
@@ -1070,7 +1021,6 @@ def delete_evac(public_id):
 
 			headers = { 'Authorization' : '{}'.format(session['token']) }
 			public_id = public_id
-			print(public_id)
 			url = api_url+'/distcenter/'+public_id
 			files = {
 					'public_id' : (None, public_id),
