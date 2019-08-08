@@ -38,9 +38,14 @@
 		  </tr>
 	</div>
   {% for user in json_data.data %}
+
   <tr>
     <td> {{ user.name }}</td>
-    <td> {{ user.address }}</td>
+    {% for x in json_data2.data %}
+    {% if x.public_id == user.home_id %}
+    <td> {{ x.address }}</td>
+    {% endif %}
+    {% endfor %}
     <td> {{ user.gender }}</td>
     <td> {{ user.age }}</td>
     <td> {{ user.religion }}</td>
@@ -48,7 +53,7 @@
     <td> {{ user.occupation }}</td>
 
     <td style="position: relative; display: flex; ">
-      <a href = "{{ url_for('viewprofile_evacuee', home_id=user.home_id, name=user.name) }}"><img src="/static/img/web.png" style="margin:5px;" width="25" height="25"  /></a>
+      <a href = "{{ url_for('viewprofile_evacuee', public_id=user.public_id, name=user.name) }}"><img src="/static/img/web.png" style="margin:5px;" width="25" height="25"  /></a>
       
     </td>
 

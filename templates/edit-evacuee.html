@@ -10,13 +10,13 @@
     <h2>User Information</h2>
   
     <div class="add-form">
-      <form action="{{ url_for('update_evacuee', home_id=home_id) }}" method="post" xmlns="http://www.w3.org/1999/html">
+      <form action="{{ url_for('update_evacuee', public_id=public_id) }}" method="post" xmlns="http://www.w3.org/1999/html">
         <div class="form1">
           <!-- <label for="username"><b>Username</b></label> -->
           <input type="text" placeholder="{{ name }}" name="name" required>
             
           <!-- <label for="email"><b>Email</b></label> -->
-          <input type="text" placeholder="{{ address }}" name="address" required>
+          <input type="text" placeholder="{{ address }}" name="address">
         </div>
 
         <div class="form2">
@@ -49,7 +49,7 @@
 
         <div class="submit-button">  
           <button style="background-color: #1ab394;" type="submit">Submit</button>
-          <button style="background-color: #0bbc94;" type="submit" value="Cancel" formnovalidate="formnovalidate"><a href="{{ url_for('viewprofile_evacuee', name = "{{name}}" , home_id=home_id) }}">Cancel</a></button>
+          <button style="background-color: #0bbc94;" type="submit" value="Cancel" formnovalidate="formnovalidate"><a href="{{ url_for('viewprofile_evacuee', name = "{{name}}" , public_id=public_id) }}">Cancel</a></button>
         </div>
       </form>
      </div>

@@ -15,8 +15,8 @@ profile-mobile.html{% extends "mainadmin-base.html" %}
           <img src="/static/img/settings.png" width="30" height="30" style="margin: 5px;" align="right"  />
           <!-- <h1><a href="#">Evacuation &nbsp &nbsp > </a></h1> -->
           <div class="dropdown-settings">
-            <a href="{{ url_for('update_evacuee', home_id=json_data.home_id ) }}">Edit Profile</a>
-            <a id="myBtn" href="#">Delete Profile</a>
+            <a href="{{ url_for('update_evacuee', public_id=json_data.public_id ) }}">Edit Profile</a>
+            <a id="myBtn" href="{{ url_for('delete_evacuee', public_id=json_data.public_id ) }}">Delete Profile</a>
       </div>
 
   </div>
@@ -52,57 +52,10 @@ profile-mobile.html{% extends "mainadmin-base.html" %}
   </div>
 
 <div class="holder">
-<div class="table">
-<table id="customers">  
-<h4>DEPENDENTS</h4>
-      <div style="margin-bottom: 0px;" class="action-holder">
-            <a href="{{ url_for('add_dependent', name=json_data.name, home_id=json_data.home_id) }}"><img src="/static/img/add-dependents.png" width="30" height="30" align="left"  /></a>
-      </div> 
-      
-      <br/>
-      <hr>
-  <div class="column">
-    <tr>
-        <th>NAME</th>
-        <th>ADDRESS</th>
-        <th>GENDER</th>
-        <th>AGE</th>
-        <th>EDUC ATTAINMENT</th>
-        <th>OCCUPATION</th>
-        <th>VIEW</th>
-      </tr>
-  </div>
-  {% for user in json_data1.data %}
-  <tr>
-    <td> {{ user.name }}</td>
-    <td> {{ user.address }}</td>
-    <td> {{ user.gender }}</td>
-    <td> {{ user.age }}</td>
-    <td> {{ user.educ_attainment }}</td>
-    <td> {{ user.occupation }}</td>
 
-    <td style="position: relative; display: flex; ">
-      <a href = "{{ url_for('viewprofile_dependent',  dependents_id=user.dependents_id, name=user.name) }}"><img src="/static/img/web.png" style="margin:5px;" width="25" height="25"  /></a>
-      
-    </td>
-
-  </tr>
- 
- {% endfor %}
-</table>
-</div>
 </div>
 
-  <div id="myModal" class="modal">
-      <!-- Modal content -->
-        <div class="modal-content" >
-          <span class="close">&times;</span>
-          <p style="color: #717476;">Are you sure to delete this user?</p>
-          <div style="position: relative; display: flex; justify-content: center;" >
-          <button style="background-color:#de0020;"><a href="{{ url_for('delete_dependent', home_id=json_data.home_id, dependents_id=json_data.dependents_id) }}">Yes</a></button>
-          <button style="background-color: #0bbc94;"><a href="{{ url_for('viewprofile_evacuee', name=json_data.name, home_id=json_data.home_id) }}" >No</a></button>
-        </div>
-  </div> 
+
 
   
 
