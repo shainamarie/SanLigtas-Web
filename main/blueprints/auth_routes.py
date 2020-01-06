@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, session, g
-from .. import app.config.['API_URL'] as api
-
+from flask import current_app as app
 auth_bp = Blueprint('auth', __name__)
+api_url = app.config['API_URL']
 
 @auth_bp.route('/', methods=['POST', 'GET'])
 def index():
@@ -15,7 +15,7 @@ def unauthorized():
 	return render_template('unauthorized.html')
 
 @auth_bp.route('/login', methods=['POST', 'GET'])
-def login():, 
+def login():
 	#if logged out/ session['user'] = anonymous/none,
 	#continue below
 	#else if logged in

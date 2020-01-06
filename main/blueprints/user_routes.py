@@ -1,5 +1,6 @@
 from flask import Blueprint, render_template, session, g
-from .. import app.config.['API_URL'] as api
+from flask import current_app as app
+api_url = app.config['API_URL']
 
 user_bp = Blueprint('user', __name__)
 
@@ -41,7 +42,7 @@ def add_user():
 					'first_name' : (None, first_name),
 					'last_name' : (None, last_name),
 					'gender' : (None, gender)
-				}yt
+				}
 				response = requests.request('POST', url, files=files)
 				login_dict = json.loads(response.text)
 				message = login_dict["message"]

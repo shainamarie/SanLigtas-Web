@@ -1,5 +1,6 @@
 from flask import Blueprint, render_template, session, g
-from .. import app.config.['API_URL'] as api
+from flask import current_app as app
+api_url = app.config['API_URL']
 
 profile_bp = Blueprint('profile', __name__)
 
