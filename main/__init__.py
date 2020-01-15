@@ -24,14 +24,19 @@ app.config.from_pyfile('config.py')
 app.app_context().push()
 
 mail = Mail(app)
+g.mail = mail
 
-
+from .blueprints.account_routes import account_bp
+from .blueprints.announcement_routes import announce_bp
 from .blueprints.auth_routes import auth_bp
+from .blueprints.barangay_routes import barangay_bp
 from .blueprints.general_routes import app_bp
 from .blueprints.center_routes import center_bp
+from .blueprints.family_routes import family_bp
 from .blueprints.evac_routes import evac_bp
 from .blueprints.goods_routes import goods_bp
 from .blueprints.profile_routes import profile_bp
+from .blueprints.role_routes import role_bp
 from .blueprints.search_routes import search_bp
 from .blueprints.user_routes import user_bp
 	
@@ -43,22 +48,11 @@ app.register_blueprint(goods_bp, url_prefix='/goods')
 app.register_blueprint(profile_bp, url_prefix='/profile')
 app.register_blueprint(search_bp, url_prefix='/search')
 app.register_blueprint(user_bp, url_prefix='/user')
-
-#Functions: These define the functions within the views.
-def api_login(autho, username, last_name, first_name, role):
-	session['user'] = username
-	session['token'] = autho
-	session['first_name'] = first_name 
-	session['last_name'] = last_name
-	session['role'] = role
-	g.token = session['token'] 
-	g.user = session['user']
-	return session['token']
-
-def generate_password():
-	characters = string.ascii_letters + string.punctuation + string.digits
-	password = "".join(choice(characters) for x in range(randint(8, 16)))
-	return password
+app.register_blueprint(account_bp, url_prefix='/account')
+app.register_blueprint(announce_bp, url_prefix='/announcement')
+app.register_blueprint(barangay_bp, url_prefix='/barangay')
+app.register_blueprint(family_bp, url_prefix='/family')
+app.register_blueprint(role_bp, url_prefix='/role')
 
 @app.before_request
 def before_request():

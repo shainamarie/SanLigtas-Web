@@ -17,7 +17,7 @@
 
 <div id="navbar">
   <ul>
-  	<li><div class="logout"><a href="{{ url_for('logout') }}">Log out</a></div></li>
+  	<li><div class="logout"><a href="{{ url_for('auth.logout') }}">Log out</a></div></li>
   	<li><img src="/static/img/logout.png" align="right"/></li>
   	<li><div class="welcome">Welcome, {{ session['user'] }}</div></li>
 
@@ -26,22 +26,22 @@
 <div class="w3-sidebar w3-light-#343a40; w3-bar-block" style="width: 225px; z-index: 5; background-color:#343a40; position: fixed; top:0;">
 	<div class="name">
 		<img src="/static/img/avatarq.png" align="left" />
-		<h1><a href="{{ url_for('ownprofile') }}">{{ session['first_name'] }} {{ session['last_name'] }}</a></h1>
+		<h1><a href="{{ url_for('profile.ownprofile') }}">{{ session['first_name'] }} {{ session['last_name'] }}</a></h1>
 		<p>{{ session['role'] }}</p>
 	</div>
 
 	<div class="dashboard">
 		<img src="/static/img/dashboard.png" align="left"  />
-		<h1><a href="{{ url_for('mainadminhome', username=session['user'], first_name=session['first_name'], last_name=session['last_name']) }}">Dashboard</a></h1>
+		<h1><a href="{{ url_for('apple.mainadminhome', username=session['user']) }}">Dashboard</a></h1>
 	</div>
 
 	<div class="users">
 		<img src="/static/img/users.png" align="left" />
 		<h1><a href="#">Users &nbsp  &nbsp  &nbsp &nbsp &nbsp &nbsp > </a></h1>
 		<div class="dropdown">
-			<a href="/view/admin">Admin</a>
-			<a href="/view/mobile">Mobile</a>
-			<a href="/view/evacuees">Evacuee</a>
+			<a href="/user/view-list">Admin</a>
+			<a href="/mobile/view">Mobile</a>
+			<a href="/evacuees/view">Evacuee</a>
 		</div>
 	</div>
 	
@@ -65,9 +65,9 @@
 		<img src="/static/img/evacs.png" align="left" />
 		<h1><a href="#">Evacuation &nbsp &nbsp > </a></h1>
 		<div class="dropdown">
-			<a href="/view/center">View Center</a>
-			<a href="/add/center">Add Center</a>
-			<a href="/view/center">Assign Users</a>
+			<a href="/center/view">View Center</a>
+			<a href="/center/add">Add Center</a>
+			<a href="/center/view">Assign Users</a>
 		</div>
 	</div>
 

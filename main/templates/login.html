@@ -22,7 +22,7 @@
 
 	<div id="id01" class="modal">
 	  
-	  <form class="modal-content animate" action="{{ url_for('loginprocess') }}" method="post">
+	  <form class="modal-content animate" action="{{ url_for('auth.login') }}" method="post">
 	    <div class="imgcontainer">
 	      <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">&times;</span>
 	      <img src="static/img/superadmin1.png">
@@ -51,7 +51,7 @@
 
 	<div id="id02" class="modal">
 	  
-	  <form class="modal-content animate" action="{{ url_for('loginprocess') }}">
+	  <form class="modal-content animate" action="{{ url_for('auth.login') }}">
 	    <div class="imgcontainer">
 	      <span onclick="document.getElementById('id02').style.display='none'" class="close" title="Close Modal">&times;</span>
 	      <img src="static/img/admin1.png">
@@ -80,7 +80,7 @@
 
 	<div id="id03" class="modal">
 	  
-	  <form class="modal-content animate" action="{{ url_for('loginprocess') }}">
+	  <form class="modal-content animate" action="{{ url_for('auth.login') }}">
 	    <div class="imgcontainer">
 	      <span onclick="document.getElementById('id03').style.display='none'" class="close" title="Close Modal">&times;</span>
 	      <img src="static/img/admin1.png">

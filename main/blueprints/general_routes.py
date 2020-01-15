@@ -1,5 +1,6 @@
-from flask import Blueprint, render_template, session, g
+from flask import Blueprint, render_template, session, g, request, redirect, url_for
 from flask import current_app as app
+import requests, json
 app_bp = Blueprint('apple', __name__)
 api_url = app.config['API_URL']
 
@@ -40,21 +41,21 @@ def mainadminhome():
 		headers = {
 			'Authorization' : '{}'.format(session['token'])
 		}
-		api_address = 'http://api.openweathermap.org/data/2.5/weather?appid=8f46c985e7b5f885798e9a5a68d9c036&q=Iligan'
-		json_data = requests.get(api_address).json()
-		city = json_data['name']
-		formatted_data = json_data['weather'][0]['description']
-		weather_icon = json_data['weather'][0]['icon']
-		temp = json_data['main']['temp']
-		final_temp = pytemperature.k2c(temp)
-		celcius = round(final_temp, 2)
+		#api_address = 'http://api.openweathermap.org/data/2.5/weather?appid=8f46c985e7b5f885798e9a5a68d9c036&q=Iligan'
+		#json_data = requests.get(api_address).json()
+		#city = json_data['name']
+		#formatted_data = json_data['weather'][0]['description']
+		#weather_icon = json_data['weather'][0]['icon']
+		#temp = json_data['main']['temp']
+		#final_temp = pytemperature.k2c(temp)
+		#celcius = round(final_temp, 2)
 
-		url = api_url+'/distcenter/'
+		url = api_url+'/center/'
 		
 		response = requests.request('GET', url, headers=headers)
 		json_data = response.json()
 
-		return render_template('dashboard.html', json_data=json_data, username=session['user'], first_name=session['first_name'], last_name=session['last_name'],  weather=formatted_data, weather_icon=weather_icon, celcius=celcius, city=city )
+		return render_template('dashboard.html', json_data=json_data, username=session['user'])
 	else:
 		return redirect('unauthorized')
 

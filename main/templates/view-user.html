@@ -12,7 +12,7 @@
 
      <div class="search-container">
       
-      <form action="{{ url_for('search_user') }}" method="post">
+      <form action="{{ url_for('search.search_user') }}" method="post">
         <input type="text" name="keyword" placeholder="Search user.." name="search">
         <button type="submit"><i class="fa fa-search"></i></button>
       </form>
@@ -22,7 +22,7 @@
 	</div>
 
 <div class="action-holder">
-          <a href="/add/user/admin"><img src="/static/img/add-user.png" width="30" height="30" style="margin: 5px;" align="left"  /></a>
+          <a href="/user/add"><img src="/static/img/add-user.png" width="30" height="30" style="margin: 5px;" align="left"  /></a>
           <!-- <h1><a href="#">Evacuation &nbsp &nbsp > </a></h1> -->
 </div>
 
@@ -49,7 +49,7 @@
     <td> {{ user.email }}</td>
 
     <td style="position: relative; display: flex; ">
-      <a href = "{{ url_for('viewprofile_admin',public_id=user.public_id, username=user.username) }}"><img src="/static/img/web.png" style="margin:5px;" width="25" height="25"  /></a>
+      <a href = "{{ url_for('user.viewprofile_admin',public_id=user.public_id, username=user.username) }}"><img src="/static/img/web.png" style="margin:5px;" width="25" height="25"  /></a>
       
     </td>
 
@@ -60,8 +60,8 @@
           <span class="close">&times;</span>
           <p>Are you sure to delete this user?</p>
           <div style="position: relative; display: flex; justify-content: center;" >
-          <button style="background-color:#de0020;"><a href="{{ url_for('delete_admin', public_id=public_id) }}">Yes</a></button>
-          <button style="background-color: #0bbc94;"><a href="{{ url_for('viewuser') }}">No</a></button>
+          <button style="background-color:#de0020;"><a href="{{ url_for('user.delete_admin', public_id=public_id) }}">Yes</a></button>
+          <button style="background-color: #0bbc94;"><a href="{{ url_for('user.viewuser') }}">No</a></button>
         </div>
   </div> 
  

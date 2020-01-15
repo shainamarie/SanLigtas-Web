@@ -1,10 +1,11 @@
-from flask import Blueprint, render_template, session, g
+from flask import Blueprint, render_template, session, g, request, redirect, url_for
 from flask import current_app as app
+import requests, json
 api_url = app.config['API_URL']
 
 profile_bp = Blueprint('profile', __name__)
 
-@profile_bp.route('/<public_id>')
+@profile_bp.route('/')
 #@app.route('/profile/user_id')
 def ownprofile():
 	if g.user:

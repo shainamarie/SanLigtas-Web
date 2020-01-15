@@ -1,7 +1,19 @@
-from flask import Blueprint, render_template, session, g
+from flask import Blueprint, render_template, session, g, request, redirect, url_for
 from flask import current_app as app
+import requests, json
+
 auth_bp = Blueprint('auth', __name__)
 api_url = app.config['API_URL']
+
+def api_login(autho, username, last_name, first_name, role):
+	session['user'] = username
+	session['token'] = autho
+	session['first_name'] = first_name 
+	session['last_name'] = last_name
+	session['role'] = role
+	g.token = session['token'] 
+	g.user = session['user']
+	return session['token']
 
 @auth_bp.route('/', methods=['POST', 'GET'])
 def index():
@@ -42,7 +54,7 @@ def login():
 			last_name = login_dict["last_name"]
 			username = login_dict["username"]
 			token = api_login(autho, username, last_name, first_name, role)
-		return redirect(url_for('mainadminhome', username=username, last_name=last_name, first_name=first_name))
+		return redirect(url_for('apple.mainadminhome'))
 	else:
 		return render_template('login.html')
 
@@ -56,6 +68,6 @@ def logout():
 		}
 		response = requests.request('POST', url, headers=headers)
 		print(response.text)
-		return redirect(url_for('index'))
+		return redirect(url_for('auth.index'))
 	else:
 		return redirect('unauthorized')

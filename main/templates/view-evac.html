@@ -8,7 +8,7 @@
 		<span>Home / Evacuaton / <b> View </b></span>
 
     <div class="search-container">
-      <form action="{{ url_for('search_center') }}" method="post">
+      <form action="{{ url_for('search.search_center') }}" method="post">
         <input style="z-index: -5;" type="text" name="keyword" placeholder="Search center.." name="search">
         <button type="submit"><i class="fa fa-search"></i></button>
       </form>
@@ -39,7 +39,7 @@
     <td> {{ evac.address }}</td>
     <td> {{ evac.capacity }}</td>
     <td style="position: relative; display: flex; ">
-      <a href = "{{ url_for('view_spec_center', name=evac.name, public_id=evac.public_id) }}"><img src="/static/img/web.png" style="margin:5px;" width="25" height="25"  /></a>
+      <a href = "{{ url_for('center.view_spec_center', name=evac.name, public_id=evac.public_id) }}"><img src="/static/img/web.png" style="margin:5px;" width="25" height="25"  /></a>
       <!-- <button id="myBtn"><a href="#myModal"><img src="/static/img/deletes.png"  width="20" height="25" style="margin: 5px;" /></input></a></button> -->
     </td>
   </tr>
@@ -56,7 +56,7 @@
     <span class="close">&times;</span>
     <p>Are you sure to delete this center?</p>
     <div style="position: relative; display: flex; justify-content: center;" >
-    <button style="background-color:#de0020;"><a href="{{ url_for('delete_evac', public_id=public_id) }}">Yes</a></button>
+    <button style="background-color:#de0020;"><a href="{{ url_for('center.delete_evac', public_id=public_id) }}">Yes</a></button>
     <button style="background-color: #0bbc94;"><a href="">No</a></button>
   </div>
   </div>
